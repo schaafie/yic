@@ -4,6 +4,7 @@ You're in Control: Elixir JAM Stack based web solution for Content, Site, Asset 
 Mix commands for basic structure
 
 mix new yic --umbrella
+
 cd yic/apps
 mix phx.new api --no-html --no-brunch --no-ecto
 mix phx.new.ecto db
