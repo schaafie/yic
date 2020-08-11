@@ -1,3 +1,0 @@
-# Yic
-
-**TODO: Add description**
