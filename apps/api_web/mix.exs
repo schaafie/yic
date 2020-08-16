@@ -41,7 +41,8 @@ defmodule ApiWeb.Mixfile do
       {:phoenix_pubsub, "~> 1.0"},
       {:gettext, "~> 0.11"},
       {:api, in_umbrella: true},
-      {:cowboy, "~> 1.0"}
+      {:cowboy, "~> 1.0"},
+      {:plug_cowboy, "~> 1.0"}
     ]
   end
 

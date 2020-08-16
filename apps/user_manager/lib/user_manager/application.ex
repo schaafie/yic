@@ -9,7 +9,7 @@ defmodule UserManager.Application do
     # List all child processes to be supervised
     children = [
       # Starts a worker by calling: UserManager.Worker.start_link(arg)
-      # {UserManager.Worker, arg}
+      {Task.Supervisor, name: UserManager.TaskSupervisor}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
