@@ -17,15 +17,14 @@ Rename the yic_umbrella to yic
 Goto apps folder
 
 ```
-mix phx.new.ecto db
-mix new version_manager --sup
-mix new user_manager --sup
-mix new api_manager --sup
-mix new iam --sup
-mix new content_manager --sup
-mix new asset_manager --sup
-mix new site_manager --sup
-mix new publisher --sup
-mix new wf_manager --sup
-mix new form_manager --sup
+mix phx.new user_manager --no-html --no-brunch
+mix phx.new version_manager --no-html --no-brunch
+mix phx.new ia_manager --no-html --no-brunch
+mix phx.new content_manager --no-html --no-brunch
+mix phx.new asset_manager --no-html --no-brunch
+mix phx.new site_manager --no-html --no-brunch
+mix phx.new publication_manager --no-html --no-brunch
+mix phx.new form_manager --no-html --no-brunch
+mix phx.new wf_manager --no-html --no-brunch
+mix phx.new api_manager --no-html --no-brunch
 ```
