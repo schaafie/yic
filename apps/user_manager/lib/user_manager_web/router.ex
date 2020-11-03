@@ -7,5 +7,7 @@ defmodule UserManagerWeb.Router do
 
   scope "/api", UserManagerWeb do
     pipe_through :api
+    
+    resources "/users", UserController, except: [:new, :edit]
   end
 end
