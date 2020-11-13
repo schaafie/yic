@@ -15,7 +15,7 @@ export default class pageContent {
                     name: "firstname",
                     label: "Your first name",
                     type: "text",
-                    validations: [],
+                    validations: [], 
                     required: "true"
                 },
                 {
