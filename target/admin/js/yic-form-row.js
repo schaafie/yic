@@ -20,35 +20,29 @@ h2 {
     max-width:400px;
 }
 
+.row {
+    width: 100%;
+}
 </style>
-<h2></h2>
-<div class="container">
-    <form id="yic-form" action="" name="" method="POST" enctype="application/x-www-form-urlencoded">
-    </form>
+<div class="row">
 </div>
 `;
 
-export default class YicForm extends YicSetBase {
+export default class YicFormRow extends YicSetBase {
     
     constructor() {
         super();
-        this.definition = { elements: [], action: "", name: "" };
+        this.definition = {};
         this.elementcouter = 0;
         this._shadowRoot = this.attachShadow({ 'mode': 'open' });
         this._shadowRoot.appendChild(template.content.cloneNode(true));
-        this.$form = this._shadowRoot.querySelector('#yic-form');
-        this.$title = this._shadowRoot.querySelector('h2');
+        this.$row = this._shadowRoot.querySelector('.row');
     }
 
     connectedCallback() {}
 
     _populateSet() {
-        this.$title.innerHTML = this.definition.title;
-        this.elementcounter = 0;
-        this._populate( this.definition.elements, this.$form );
-        // Place submit button
-        var button = document.createElement("yic-form-submit");
-        this.$form.appendChild(button)
+        this._populate( this.definition.elements, this.$row );
     }
 
     static get observedAttributes() { 
@@ -66,4 +60,4 @@ export default class YicForm extends YicSetBase {
     }
 }
 
-window.customElements.define('yic-form', YicForm);
+window.customElements.define('yic-form-row', YicFormRow);

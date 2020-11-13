@@ -39,6 +39,7 @@ mix phx.new site_manager --no-html --no-brunch
 mix phx.new publication_manager --no-html --no-brunch
 
 mix phx.new form_manager --no-html --no-brunch
+mix phx.gen.json Forms Form forms name:string version:string author:string definition:string
 
 mix phx.new wf_manager --no-html --no-brunch
 

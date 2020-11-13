@@ -43,6 +43,7 @@ export default class pageContent {
                 },
 
             ],
+            layout:[]
             globalValidations: [],
             title: "Basic Form"
         }
