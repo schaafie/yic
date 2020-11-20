@@ -1,4 +1,4 @@
-import {YicSetBase} from 'yic-set-base.js';
+import YicSetBase from './yic-set-base.js';
 
 const template = document.createElement('template');
 template.innerHTML = `<style>
@@ -15,8 +15,8 @@ h2 {
 }
 
 .container {
-    margin: 0px 50px 50px;
-    padding: 20px 50px;
+    margin: 0px 0px 50px;
+    padding: 20px 0px;
     max-width:400px;
 }
 
@@ -27,7 +27,10 @@ h2 {
 
 </style>
 <div class="container">
-    <div id="rowsheader"></div>
+    <div id="rowsheader">
+        <span id="rowstitle"></span>
+        <button id="addrow">+</button>
+    </div>
     <div id="rowscontent"></div>
 </div>
 `;
@@ -36,30 +39,56 @@ export default class YicFormRows extends YicSetBase {
     
     constructor() {
         super();
-        this.definition = {};
-        this.elementcouter = 0;
         this._shadowRoot = this.attachShadow({ 'mode': 'open' });
         this._shadowRoot.appendChild(template.content.cloneNode(true));
-        this.$header = this._shadowRoot.querySelector('#rowsheader');
-        this.$content = this._shadowRoot.querySelector('#rowscontent');
+        this.$header = this._shadowRoot.querySelector('#rowstitle');
+        this.$children = this._shadowRoot.querySelector('#rowscontent');
+        this.$addbutton = this._shadowRoot.querySelector('#addrow');
+        this.$addbutton.addEventListener('click', this.addRow.bind(this));
+    }
+
+    addRow() {
+        // Add row to the definition of the rows (copy rowdef to elements array)
+        var lastid = 0;
+        this.definition.elements.forEach(element => {
+            if (element.rowid > lastid) lastid = element.rowid;
+        });
+        var newrow = this.definition.rowdef;
+        newrow.rowid = lastid + 1;
+        this.definition.elements.push( newrow );
+        
+        // Remove all rows that are there
+        this.$children.innerHTML = "";
+        // Repopulate the rows with the new definition of the rows
+        this.populate(this.definition.elements, this.$children, this);
+    }
+
+    removeRow(rowid) {
+
+
+        // Remove all rows that are there
+        this.$children.innerHTML = "";
+        // Repopulate the rows with the new definition of the rows
+        this.populate(this.definition.elements, this.$children, this);
     }
 
     connectedCallback() {}
 
-    _populateSet() {
-        this.$header.innerHTML = this.definition.title;
-        this._populate( this.definition.elements, this.$content );
+    populateElements(element) {
+        this.definition = element;
+        this.setAttribute('name', element.name);
+        this.$header.innerHTML = element.title;
     }
 
     static get observedAttributes() { 
-        return ['value'];
+        return ['name'];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
         switch(name) {
-            case 'value':
-                if (this.value != newValue) {
-                    this.value = newValue;
+            case 'name':
+                if (this.name != newValue) {
+                    this.name = newValue;
                 }
                 break;
         }

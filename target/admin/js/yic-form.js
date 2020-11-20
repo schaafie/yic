@@ -1,4 +1,4 @@
-import {YicSetBase} from 'yic-set-base.js';
+import YicSetBase from './yic-set-base.js';
 
 const template = document.createElement('template');
 template.innerHTML = `<style>
@@ -33,22 +33,24 @@ export default class YicForm extends YicSetBase {
     constructor() {
         super();
         this.definition = { elements: [], action: "", name: "" };
-        this.elementcouter = 0;
+        this.elementcounter = 0;
         this._shadowRoot = this.attachShadow({ 'mode': 'open' });
         this._shadowRoot.appendChild(template.content.cloneNode(true));
-        this.$form = this._shadowRoot.querySelector('#yic-form');
+        this.$children = this._shadowRoot.querySelector('#yic-form');
         this.$title = this._shadowRoot.querySelector('h2');
     }
 
-    connectedCallback() {}
+    setDefinition(definition) {
+        this.definition = definition;
+        this.populateForm();
+    }
 
-    _populateSet() {
+    populateForm() {
         this.$title.innerHTML = this.definition.title;
-        this.elementcounter = 0;
-        this._populate( this.definition.elements, this.$form );
+        this.populate( this.definition.elements, this.$children, this );
         // Place submit button
         var button = document.createElement("yic-form-submit");
-        this.$form.appendChild(button)
+        this.$children.appendChild(button);
     }
 
     static get observedAttributes() { 

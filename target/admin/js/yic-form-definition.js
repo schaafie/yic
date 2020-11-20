@@ -1,4 +1,4 @@
-import {YicSetBase} from 'yic-set-base.js';
+import YicSetBase from './yic-set-base.js';
 
 const template = document.createElement('template');
 template.innerHTML = `<style>
@@ -33,27 +33,32 @@ export default class YicFormDefinition extends YicSetBase {
         this.elementcounter = 0;
         this._shadowRoot = this.attachShadow({ 'mode': 'open' });
         this._shadowRoot.appendChild(template.content.cloneNode(true));
-        this.$definition = this._shadowRoot.querySelector('definitionfield');
+        this.$children = this._shadowRoot.querySelector('definitionfield');
     }
 
     connectedCallback() {}
-
-    _populateSet() {
-        this._populate(this.definition.elements, this.$definition);
+    
+    populateElements(element) {
+        this.setAttribute('name', element.name);
     }
 
     static get observedAttributes() { 
-        return ['value'];
+        return ['value', 'name'];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
         switch(name) {
             case 'value':
-                if (this.value != newValue) {
+                if (oldValue != newValue) {
                     this.value = newValue;
                 }
                 break;
-        }
+            case 'name':
+                if (oldValue != newValue) {
+                    this.name = newValue;
+                }
+                break;
+            }
     }
 }
 

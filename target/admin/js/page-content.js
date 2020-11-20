@@ -16,21 +16,24 @@ export default class pageContent {
                     label: "Your first name",
                     type: "text",
                     validations: [], 
-                    required: "true"
+                    required: "true",
+                    value: "Pieter"
                 },
                 {
                     name: "lastname",
                     label: "Your last name",
                     type: "text",
                     validations: [],
-                    required: "true"
+                    required: "true",
+                    value: "Schaafsma"
                 },
                 {
                     name: "email",
                     label: "Your email address",
                     type: "email",
                     validations: [],
-                    required: "true"
+                    required: "true",
+                    value: "pieter@jort.net"
                 },
                 {
                     name: "birthdate",
@@ -39,11 +42,66 @@ export default class pageContent {
                     validations: [],
                     required: "false",
                     min: "1900-01-01",
-                    max: "today"
+                    max: "today",
+                    value: "11-10-1969"
                 },
+                {
+                    title: "Friends",
+                    type: "rows",
+                    rowdef: { type: "row", elements: [
+                        { name: "firstname", label: "First name", type: "text", validations: [],  required: "true" },
+                        { name: "lastname", label: "Last name", type: "text", validations: [], required: "true" } 
+                    ]},
+                    elements: [
+                        {
+                            type: "row",
+                            rowid: 1,
+                            elements: [
+                                {
+                                    name: "firstname",
+                                    label: "Your first name",
+                                    type: "text",
+                                    validations: [], 
+                                    required: "true",
+                                    value: "Karen"
+                                },
+                                {
+                                    name: "lastname",
+                                    label: "Your last name",
+                                    type: "text",
+                                    validations: [],
+                                    required: "true",
+                                    value: "Leijnse"
+                                }
+                            ]
+                        },
+                        {
+                            type: "row",
+                            rowid: 2,
+                            elements: [
+                                {
+                                    name: "firstname",
+                                    label: "Your first name",
+                                    type: "text",
+                                    validations: [], 
+                                    required: "true",
+                                    value: "Jort"
+                                },
+                                {
+                                    name: "lastname",
+                                    label: "Your last name",
+                                    type: "text",
+                                    validations: [],
+                                    required: "true",
+                                    value: "Schaafsma"
+                                }
+                            ]
+                        }
+                    ]
+                }
 
             ],
-            layout:[]
+            layout:[],
             globalValidations: [],
             title: "Basic Form"
         }

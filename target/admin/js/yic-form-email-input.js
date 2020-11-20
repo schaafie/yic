@@ -38,11 +38,28 @@ export default class YicFormEmailInput extends HTMLElement {
         super();
         this._shadowRoot = this.attachShadow({ 'mode': 'open' });
         this._shadowRoot.appendChild(template.content.cloneNode(true));
-        this.$form = this._shadowRoot.querySelector('#yic-form');
+        this.$field = this._shadowRoot.querySelector('input');
+        
     }
 
     connectedCallback() {
 
+    }
+
+    setCounter(count) {
+        this.elementcounter = count;
+    }
+
+    getCounter() {
+        return this.elementcounter;
+    }
+
+    populateElements(element) {
+        this.setAttribute('name', element.name);
+        this.setAttribute('count', this.elementcounter);
+        this.setAttribute('label', element.label);
+        this.setAttribute('value', element.value);
+        this.setAttribute('required', element.required);
     }
 
     static get observedAttributes() { 
@@ -52,8 +69,8 @@ export default class YicFormEmailInput extends HTMLElement {
     attributeChangedCallback(name, oldValue, newValue) {
         switch(name) {
             case 'name':
-                if (this._shadowRoot.querySelector('input').getAttribute('name') != newValue) {
-                    this._shadowRoot.querySelector('input').setAttribute( 'name', newValue);
+                if (this.$field.getAttribute('name') != newValue) {
+                    this.$field.setAttribute( 'name', newValue);
                 }
                 break;
             case 'label':
@@ -74,8 +91,8 @@ export default class YicFormEmailInput extends HTMLElement {
                 }
                 break;
             case 'value':
-                if (this.value != newValue) {
-                    this.value = newValue;
+                if ( this.$field.getAttribute('value') != newValue ) {
+                    this.$field.setAttribute('value', newValue);
                 }
                 break;
         }

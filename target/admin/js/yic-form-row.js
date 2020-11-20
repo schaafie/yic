@@ -1,4 +1,4 @@
-import {YicSetBase} from 'yic-set-base.js';
+import YicSetBase from './yic-set-base.js';
 
 const template = document.createElement('template');
 template.innerHTML = `<style>
@@ -24,7 +24,11 @@ h2 {
     width: 100%;
 }
 </style>
-<div class="row">
+<div>
+    <div class="rowheader">
+        <button id="removerow">-</button>
+    </div>
+    <div class="rowcontent"></div>
 </div>
 `;
 
@@ -32,31 +36,43 @@ export default class YicFormRow extends YicSetBase {
     
     constructor() {
         super();
-        this.definition = {};
         this.elementcouter = 0;
         this._shadowRoot = this.attachShadow({ 'mode': 'open' });
         this._shadowRoot.appendChild(template.content.cloneNode(true));
-        this.$row = this._shadowRoot.querySelector('.row');
+        this.$children = this._shadowRoot.querySelector('.rowcontent');
+        this.$button = this._shadowRoot.querySelector('#removerow');
+        this.$button.addEventListener('click', this.removeRow.bind(this));
+
     }
 
     connectedCallback() {}
 
-    _populateSet() {
-        this._populate( this.definition.elements, this.$row );
+    removeRow() {
+        this.parent.removeRow( this.rowid );
+    }
+
+    populateElements(element) {
+        this.setAttribute('name', element.name);
+        this.setAttribute('rowid', element.rowid);
     }
 
     static get observedAttributes() { 
-        return ['value'];
+        return ['name', 'rowid'];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
         switch(name) {
-            case 'value':
-                if (this.value != newValue) {
-                    this.value = newValue;
+            case 'name':
+                if (oldValue != newValue) {
+                    this.name = newValue;
                 }
                 break;
-        }
+            case 'rowid':
+                if (oldValue != newValue) {
+                    this.rowid = newValue;
+                }
+                break;
+            }
     }
 }
 

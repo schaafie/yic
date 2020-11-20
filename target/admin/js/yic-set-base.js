@@ -1,70 +1,68 @@
 export default class YicSetBase extends HTMLElement {
-    
+
     constructor() {
         super();
         this.definition = {};
-        this.elementcouter = 0;
+        this.elementcounter = 0;
+        this.webcomponents = [
+            { type: "text", webcomponent: "yic-form-text-input" },
+            { type: "email", webcomponent: "yic-form-email-input" },
+            { type: "rows", webcomponent: "yic-form-rows" },
+            { type: "row", webcomponent: "yic-form-row" },
+            { type: "definition", webcomponent: "yic-form-definition" }
+        ];
     }
 
-    connectedCallback() {}
+    connectedCallback() { }
 
-    setDefinition(definition) {
-        this.definition = definition;
-        this._populateSet();
+    addChildren( children, childlocation, parent ) {
+        this.populate( children, childlocation, parent );
+    }
+
+    setCounter(count) {
+        this.elementcounter = count;
+    }
+
+    getCounter() {
         return this.elementcounter;
     }
 
-    _populateSet() {}
+    setParent(parent) {
+        console.log(parent);
+        this.parent = parent;
+    }
 
-    _populate( elements, elementcouter, localroot ) {
+    populateElements(element) {
+        this.definition = element;
+    }
+
+    populate(elements, contentLocation, parent) {
+        this.setParent( parent );
         elements.forEach(element => {
-            this.elementcouter++;
-            switch(element.type) {
-                case "text":
-                    var input = document.createElement("yic-form-text-input");
-                    input.setAttribute('name', element.name);
-                    input.setAttribute('count', this.elementcouter);
-                    input.setAttribute('label', element.label);
-                    input.setAttribute('required', element.required);
-                    localroot.appendChild(input)
-                    break;
-                case "email":
-                    var input = document.createElement("yic-form-email-input");
-                    input.setAttribute('name', element.name);
-                    input.setAttribute('count', this.elementcouter);
-                    input.setAttribute('label', element.label);
-                    input.setAttribute('required', element.required);
-                    localroot.appendChild(input)
-                    break;
-                case "set":
-                    var set = document.createElement("yic-form-rows");
-                    set.setAttribute('name', element.name);
-                    this._populate(element.rows, set);
-                    localroot.appendChild(set);
-                    break;                    
-                case "row":
-                    var row = document.createElement("yic-form-row");
-                    row.setAttribute('name', element.name);
-                    this._populate(element.elements, row);
-                    localroot.appendChild(row);
-                    break;                    
-                case "definition":
-                    var definition = document.createElement("yic-form-definition");
-                    definition.setAttribute('name', element.name);
-                    definition.elementcounter = this.elementcounter;
-                    this.elementcounter = definition.setDefinition(element.elements);
-                    localroot.appendChild(definition);
-                    break;                    
-            }
+            this.elementcounter++;
+            this.webcomponents.forEach(option => {
+                if (element.type == option.type) {
+                    var component = document.createElement(option.webcomponent);
+                    component.setCounter(this.elementcounter);
+                    // Handle attributes
+                    component.populateElements(element);
+                    // Handle children
+                    if (element.elements) {
+                        this.addChildren(element.elements, component.$children, this);
+                    }
+                    contentLocation.appendChild(component);
+                    this.elementcounter = component.getCounter();
+                }
+            });
         });
     }
 
-    static get observedAttributes() { 
+    static get observedAttributes() {
         return ['value'];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
-        switch(name) {
+        switch (name) {
             case 'value':
                 if (this.value != newValue) {
                     this.value = newValue;
