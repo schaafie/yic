@@ -1,3 +1,5 @@
+import YicSetBase from './yic-set-base.js';
+
 const template = document.createElement('template');
 template.innerHTML = `<style>
 :host {
@@ -45,33 +47,31 @@ input[type="submit"] {
 </p>
 `;
 
-export default class YicFormTextInput extends HTMLElement {
+export default class YicFormTextInput extends YicSetBase {
         constructor() {
         super();
         this.elementcounter = 0;
         this._shadowRoot = this.attachShadow({ 'mode': 'open' });
         this._shadowRoot.appendChild(template.content.cloneNode(true));
         this.$field = this._shadowRoot.querySelector('input');
+        this.$field.addEventListener('change', this.handleValueChange.bind(this));
     }
 
-    connectedCallback() {
+    connectedCallback() {}
 
-    }
-
-    setCounter(count) {
-        this.elementcounter = count;
-    }
-
-    getCounter() {
-        return this.elementcounter;
+    handleValueChange( event ) {
+        this.definition.value = event.target.value;
+        this.parent.propagateValue( this.internalId, this.definition );
     }
 
     populateElements(element) {
+        this.definition = element;
         this.setAttribute('name', element.name);
         this.setAttribute('count', this.elementcounter);
         this.setAttribute('label', element.label);
         this.setAttribute('required', element.required);
-        this.setAttribute('value', element.value);
+        this.setAttribute('value', this.datavault.getValue( element.datapath ));
+        // this.setInternalId();
     }
 
     static get observedAttributes() { 
@@ -82,6 +82,7 @@ export default class YicFormTextInput extends HTMLElement {
         switch(name) {
             case 'name':
                 if (this.$field.getAttribute('name') != newValue) {
+                    this.name = newValue;
                     this.$field.setAttribute( 'name', newValue);
                 }
                 break;
@@ -105,7 +106,6 @@ export default class YicFormTextInput extends HTMLElement {
             case 'value':
                 if (this.value != newValue) {
                     this.$field.setAttribute( 'value', newValue);
-
                 }
                 break;
         }

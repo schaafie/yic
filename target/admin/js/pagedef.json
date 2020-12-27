@@ -1,0 +1,75 @@
+{
+    "menu": {
+        "topMenu": [
+            { "url": "", "title": "Content" },
+            { "url": "", "title": "Flows" },
+            { "url": "", "title": "Forms" }
+        ],
+        "contextMenu": []
+    },
+    "data": {
+        "elements": [
+            { "name": "first", "type":"string", "required": "true", "value": "Pieter" },
+            { "name": "last", "type":"string", "required": "true", "value": "Schaafsma" }, 
+            { "name": "email", "type":"email", "required": "true", "value": "pieter@jort.net" },
+            { "name": "birthdate", "type":"date", "required": "false", "value": "11-10-1969" },
+            { "name": "friends", "type":"set", 
+                "elements": [
+                    { "name": "first", "required": "true", "type":"string" },
+                    { "name": "last", "required": "true", "type":"string" }], 
+                "value": [
+                    { "setid": 1, "value": [
+                        { "name": "first", "type":"string", "required": "true", "value": "Karen" },
+                        { "name": "last", "type":"string", "required": "true", "value": "Leijnse" }
+                    ]},
+                    { "setid": 2, "value": [
+                        { "name": "first", "type":"string", "required": "true", "value": "Jort" },
+                        { "name": "last", "type":"string", "required": "true", "value": "Schaafsma" }
+                    ]}
+                ]
+            }
+        ]
+    },
+    "form" : {
+        "action": "/api/usermanagement/users",
+        "elements": [
+            { "datapath": "first", "label": "Your first name", "type": "text" },
+            { "datapath": "last", "label": "Your last name", "type": "text" },
+            { "datapath": "email", "label": "Your email address", "type": "email" },
+            { "datapath": "birthdate", "label": "Your birthdate", "type": "date",
+                "options": [ {"min": "1900-01-01"}, {"max": "today"} ],
+                "validations": []
+            },
+            {
+                "title": "Friends",
+                "datapath": "friends",
+                "type": "rows",
+                "rowdef": { "type": "row", "elements": [
+                    {  "datapath": "friends/*/first", "label": "First name", "type": "text" },
+                    {  "datapath": "friends/*/first", "label": "Last name", "type": "text" } 
+                ]},
+                "elements": [
+                    {
+                        "type": "row",
+                        "rowid": 1,
+                        "elements": [
+                            { "datapath": "friends/1/first", "label": "Your first name", "type": "text" },
+                            { "datapath": "friends/1/last", "label": "Your last name ", "type": "text" }
+                        ]
+                    },
+                    {
+                        "type": "row",
+                        "rowid": 2,
+                        "elements": [
+                            { "datapath": "friends/2/first", "label": "Your first name", "type": "text" },
+                            { "datapath": "friends/2/last", "label": "Your last name ", "type": "text" }
+                        ]
+                    }
+                ]
+            }
+
+        ],
+        "globalValidations": [],
+        "title": "Basic Form"
+    }
+}

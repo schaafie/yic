@@ -10,8 +10,3 @@ import YicFormDefinition from './yic-form-definition.js';
 import pageContent from './page-content.js';
 
 var pc = new pageContent;
-pc.setContent();
-pc.setMenu();
-
-
-

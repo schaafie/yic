@@ -42,7 +42,19 @@ export default class YicFormRow extends YicSetBase {
         this.$children = this._shadowRoot.querySelector('.rowcontent');
         this.$button = this._shadowRoot.querySelector('#removerow');
         this.$button.addEventListener('click', this.removeRow.bind(this));
+    }
 
+    propagateValue( id, val ) {
+        if ( id.startsWith( this.internalId ) ) {
+            var elementname = this.internalId.substring( id.length );
+            this.definition.elements.forEach( (element, index) => {
+                if (element.name == elementname) {
+                    element.value = val;                    
+                    this.definition.elements[index] = element;
+                }
+            });
+        }
+        this.parent.propagateValue( this.internalId, this.definition );
     }
 
     connectedCallback() {}
@@ -52,6 +64,7 @@ export default class YicFormRow extends YicSetBase {
     }
 
     populateElements(element) {
+        this.definition = element;
         this.setAttribute('name', element.name);
         this.setAttribute('rowid', element.rowid);
     }

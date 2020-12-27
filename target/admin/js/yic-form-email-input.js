@@ -1,3 +1,5 @@
+import YicSetBase from './yic-set-base.js';
+
 const template = document.createElement('template');
 template.innerHTML = `<style>
 :host {
@@ -33,33 +35,30 @@ input[type="password"] {
 </p>
 `;
 
-export default class YicFormEmailInput extends HTMLElement {
+export default class YicFormEmailInput extends YicSetBase {
         constructor() {
         super();
         this._shadowRoot = this.attachShadow({ 'mode': 'open' });
         this._shadowRoot.appendChild(template.content.cloneNode(true));
         this.$field = this._shadowRoot.querySelector('input');
-        
+        this.$field.addEventListener('change', this.handleValueChange.bind(this));        
     }
 
-    connectedCallback() {
+    connectedCallback() {}
 
-    }
-
-    setCounter(count) {
-        this.elementcounter = count;
-    }
-
-    getCounter() {
-        return this.elementcounter;
+    handleValueChange( event ) {
+        this.definition.value = event.target.value;      
+        this.parent.propagateValue( this.internalId, this.definition );
     }
 
     populateElements(element) {
+        this.definition = element;
         this.setAttribute('name', element.name);
         this.setAttribute('count', this.elementcounter);
         this.setAttribute('label', element.label);
         this.setAttribute('value', element.value);
         this.setAttribute('required', element.required);
+        this.setInternalId();
     }
 
     static get observedAttributes() { 
@@ -70,6 +69,7 @@ export default class YicFormEmailInput extends HTMLElement {
         switch(name) {
             case 'name':
                 if (this.$field.getAttribute('name') != newValue) {
+                    this.name = newValue;
                     this.$field.setAttribute( 'name', newValue);
                 }
                 break;

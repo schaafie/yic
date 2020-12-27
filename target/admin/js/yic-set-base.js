@@ -3,6 +3,10 @@ export default class YicSetBase extends HTMLElement {
     constructor() {
         super();
         this.definition = {};
+        this.datavault = {};
+        this.parent = {};
+        // this.internalId = "";
+        // this.name = "";
         this.elementcounter = 0;
         this.webcomponents = [
             { type: "text", webcomponent: "yic-form-text-input" },
@@ -13,11 +17,9 @@ export default class YicSetBase extends HTMLElement {
         ];
     }
 
-    connectedCallback() { }
-
-    addChildren( children, childlocation, parent ) {
-        this.populate( children, childlocation, parent );
-    }
+    connectedCallback() {}
+    static get observedAttributes() { return []; }
+    attributeChangedCallback(name, oldValue, newValue) {}
 
     setCounter(count) {
         this.elementcounter = count;
@@ -27,48 +29,52 @@ export default class YicSetBase extends HTMLElement {
         return this.elementcounter;
     }
 
-    setParent(parent) {
-        console.log(parent);
-        this.parent = parent;
-    }
-
+    // Handle attributes of element
     populateElements(element) {
         this.definition = element;
     }
 
-    populate(elements, contentLocation, parent) {
-        this.setParent( parent );
+    // setInternalId() {
+    //     if (this.type == "form") {
+    //         this.internalId = "form";
+    //     } else {
+    //         if (this.localName == "yic-form-row") {
+    //             this.internalId = this.parent.internalId + "_" + this.name + "." + this.rowid;  
+    //         } else {
+    //             this.internalId = this.parent.internalId + "_" + this.name;
+    //         }
+            
+    //     }
+    // }
+
+    propagateChange() {
+        
+    }
+
+    // Handle elements attribute of element
+    populate(elements, datavault, contentLocation) {
+        this.datavault = datavault;
+        var me = this;
+        // this.setInternalId();
         elements.forEach(element => {
             this.elementcounter++;
             this.webcomponents.forEach(option => {
                 if (element.type == option.type) {
                     var component = document.createElement(option.webcomponent);
+                    component.datavault = datavault;
+                    component.parent = me;
                     component.setCounter(this.elementcounter);
                     // Handle attributes
                     component.populateElements(element);
                     // Handle children
                     if (element.elements) {
-                        this.addChildren(element.elements, component.$children, this);
+                        component.populate(element.elements, datavault, component.$children);
                     }
                     contentLocation.appendChild(component);
                     this.elementcounter = component.getCounter();
                 }
             });
         });
-    }
-
-    static get observedAttributes() {
-        return ['value'];
-    }
-
-    attributeChangedCallback(name, oldValue, newValue) {
-        switch (name) {
-            case 'value':
-                if (this.value != newValue) {
-                    this.value = newValue;
-                }
-                break;
-        }
     }
 }
 

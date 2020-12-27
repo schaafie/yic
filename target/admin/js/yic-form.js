@@ -34,23 +34,60 @@ export default class YicForm extends YicSetBase {
         super();
         this.definition = { elements: [], action: "", name: "" };
         this.elementcounter = 0;
+        this.type = "form";
         this._shadowRoot = this.attachShadow({ 'mode': 'open' });
         this._shadowRoot.appendChild(template.content.cloneNode(true));
         this.$children = this._shadowRoot.querySelector('#yic-form');
         this.$title = this._shadowRoot.querySelector('h2');
+        this.xhr = new XMLHttpRequest();
+        this.xhr.open( 'POST', this.definition.action );
     }
 
-    setDefinition(definition) {
-        this.definition = definition;
-        this.populateForm();
+    setDataVault(dv) { 
+        this.datavault = dv; 
     }
+
+    setDefinition(definition) { this.definition = definition; }
 
     populateForm() {
         this.$title.innerHTML = this.definition.title;
-        this.populate( this.definition.elements, this.$children, this );
+        this.populate( this.definition.elements, this.datavault, this.$children );
         // Place submit button
         var button = document.createElement("yic-form-submit");
+        button.addEventListener('click', this.submitForm.bind(this));
         this.$children.appendChild(button);
+    }
+
+    propagateValue( id, val ) {
+        if ( id.startsWith( this.internalId ) ) {
+            var elementname = this.internalId.substring( id.length );
+            this.definition.elements.forEach( (element, index) => {
+                if (element.name == elementname) {
+                    element.value = val;
+                    this.definition.elements[index] = element;
+                }
+            });
+        }
+    }
+
+    submitForm() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", this.definition.action, true);
+        xhr.onreadystatechange = function () {
+            if(xhr.readyState === XMLHttpRequest.DONE) {
+                var status = xhr.status;
+                if (status === 0 || (status >= 200 && status < 400)) {
+                    this.handleRespons(xhr.responseText);
+                } else {
+                // Oh no! There has been an error with the request!
+                }
+            }
+        };
+        xhr.send(this.definition);
+    }
+
+    handleRespons(response) {
+
     }
 
     static get observedAttributes() { 

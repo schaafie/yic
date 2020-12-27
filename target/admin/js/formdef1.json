@@ -1,0 +1,100 @@
+{
+    "action": "/api/usermanagement/users",
+    "elements": [
+        {
+            "name": "first name",
+            "label": "Your first name",
+            "type": "text",
+            "validations": [], 
+            "required": "true",
+            "value": "Pieter"
+        },
+        {
+            "name": "last name",
+            "label": "Your last name",
+            "type": "text",
+            "validations": [],
+            "required": "true",
+            "value": "Schaafsma"
+        },
+        {
+            "name": "email",
+            "label": "Your email address",
+            "type": "email",
+            "validations": [],
+            "required": "true",
+            "value": "pieter@jort.net"
+        },
+        {
+            "name": "birthdate",
+            "label": "Your birthdate",
+            "type": "date",
+            "validations": [],
+            "required": "false",
+            "min": "1900-01-01",
+            "max": "today",
+            "value": "11-10-1969"
+        },
+        {
+            "title": "Friends",
+            "name": "friends",
+            "type": "rows",
+            "rowdef": { "type": "row", "name": "friend", "elements": [
+                { "name": "first name", "label": "First name", "type": "text", "validations": [],  "required": "true", "value": "" },
+                { "name": "last name", "label": "Last name", "type": "text", "validations": [], "required": "true", "value": "" } 
+            ]},
+            "elements": [
+                {
+                    "type": "row",
+                    "name": "friend",
+                    "rowid": 1,
+                    "elements": [
+                        {
+                            "name": "first name",
+                            "label": "Your first name",
+                            "type": "text",
+                            "validations": [], 
+                            "required": "true",
+                            "value": "Karen"
+                        },
+                        {
+                            "name": "last name",
+                            "label": "Your last name ",
+                            "type": "text",
+                            "validations": [],
+                            "required": "true",
+                            "value": "Leijnse"
+                        }
+                    ]
+                },
+                {
+                    "type": "row",
+                    "name": "friend",
+                    "rowid": 2,
+                    "elements": [
+                        {
+                            "name": "first name",
+                            "label": "Your first name",
+                            "type": "text",
+                            "validations": [], 
+                            "required": "true",
+                            "value": "Jort"
+                        },
+                        {
+                            "name": "last name",
+                            "label": "Your last name",
+                            "type": "text",
+                            "validations": [],
+                            "required": "true",
+                            "value": "Schaafsma"
+                        }
+                    ]
+                }
+            ]
+        }
+
+    ],
+    "layout":[],
+    "globalValidations": [],
+    "title": "Basic Form"
+}
