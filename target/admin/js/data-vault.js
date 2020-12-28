@@ -6,8 +6,10 @@ export default class dataVault {
     }
 
     getValue( path ) {
+        this.foundvalue = "";
         var pathelements = path.split("/");
-        return this.getDeepValue( pathelements.reverse(), this.data.elements );
+        this.getDeepValue( pathelements.reverse(), this.data.elements );
+        return this.foundvalue;
     }
 
     setValue( path, value ) {
@@ -104,12 +106,11 @@ export default class dataVault {
 
     getDeepValue( pathelements, data ) {
         var first = pathelements.pop();
-        var value = '';
         data.some(element => {
             if (element.hasOwnProperty("name")) {
                 if (element.name == first ) {
                     if (pathelements.length == 0) {
-                        value = element.value;
+                        this.foundvalue = element.value;
                         return true;
                     } else {
                         return this.getDeepValue( pathelements, element.value );
@@ -118,7 +119,7 @@ export default class dataVault {
             } else if (element.hasOwnProperty("setid")) {
                 if (element.setid == first ) {
                     if (pathelements.length == 0) {
-                        value = element.value;
+                        this.foundvalue = element.value;
                         return true;
                     } else {
                         return this.getDeepValue( pathelements, element.value);
@@ -126,7 +127,6 @@ export default class dataVault {
                 }
             }            
         });
-        return value;
     }
 
     setDeepValue( pathelements, data, value ) {
