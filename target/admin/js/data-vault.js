@@ -7,28 +7,45 @@ export default class dataVault {
 
     getValue( path ) {
         this.foundvalue = "";
+        this.found = false;
         var pathelements = path.split("/");
         this.getDeepValue( pathelements.reverse(), this.data.elements );
         return this.foundvalue;
     }
 
     setValue( path, value ) {
-        var pathelements = this.path.split("/");
-        return this.setDeepValue( pathelements.reverse(), this.data.elements, value );
+        var pathelements = path.split("/");
+        this.data.elements = this.setDeepValue( pathelements.reverse(), this.data.elements, value );
     }
 
     addSetItem(path) {
-        var pathelements = this.path.split("/");
-        this.addDeepSetItem( pathelements.reverse(), this.data.elements );
+        var pathelements = path.split("/");
+        this.data.elements = this.addDeepSetItem( pathelements.reverse(), this.data.elements );
+        return this.setid;
     }
 
     removeSetItem(path) {
         this.removeError = "";
-        var pathelements = this.path.split("/");
+        var pathelements = path.split("/");
         this.removeDeepSetItem( pathelements.reverse(), this.data.elements );
     }
 
-    removeDeepValue( pathelements, data ) {
+    hasElement(path) {
+        this.getValue( path );
+        return this.found;
+    }
+
+    getSetItems( path ) {
+        var result = this.getValue( path );
+        if (this.found && result.length>0  && result[0].setid) {
+            return result
+        } else {
+            return [];
+        }
+
+    }
+
+    removeDeepSetItem( pathelements, data ) {
         var first = pathelements.pop();
 
         data.forEach(element => {        
@@ -44,59 +61,57 @@ export default class dataVault {
                         element.value = newValue;
                         return element;
                     } else {
-                        element.value = this.removeDeepValue( pathelements, element );
+                        element.value = this.removeDeepSetItem( pathelements, element );
                         return element;
                     }
                 }
             } else if (element.hasOwnProperty("setid")) {
                 if (element.rowid == first ) {
-                    element.value = this.removeDeepValue( pathelements, element );
+                    element.value = this.removeDeepSetItem( pathelements, element );
                     return element;
                 }
             }            
         });
     }    
 
-    addDeepSetItem(pathelements) {
+    addDeepSetItem( pathelements, data, value ) {
         var first = pathelements.pop();
+        var result = [];
 
         data.forEach(element => {        
             if (element.hasOwnProperty("name")) {
                 if (element.name == first ) {
-                    if (pathelements == []) {
+                    if (pathelements.length == 0) {
                         if (element.type == "set" ) {
-                            this.setid = this.findmax(element.value, 0) + 1;
-                            element.value.push( { 
-                                setid:  this.setid,
-                                value: JSON.parse( element.elements.stringefy() )
-                            });
-                            return element;
+                            this.setid = this.findMax(element.value) + 1;
+                            element.value.push( JSON.parse( JSON.stringify({ setid:  this.setid, value: element.elements }) ) );
                         } else {
                             this.setid = 0;
-                            return element;
                         }
                     } else {
-                        element.value = this.addDeepSetItem( pathelements );
-                        return element;
+                        element.value = this.addDeepSetItem( pathelements, element.value, value );
                     }
                 }
+                result.push( element );                
             } else if (element.hasOwnProperty("setid")) {
-                if (element.rowid == first ) {
-                    if (pathelements == []) {
-                        this.setid = 0;
-                        return element;
+                if (element.setid == first ) {
+                    if (pathelements.length == 0) {
+                        element.value = value;
                     } else {
-                        element.value = this.addDeepSetItem( pathelements );
-                        return element;
+                        element.value = this.addDeepSetItem( pathelements, element.value, value );
                     }
                 }
-            }            
-        });        
+                result.push( element );
+            } else {
+                result.push( element );
+            }
+        });
+        return result;
     }
 
     findMax( elements ) {
         var max = 0;
-        elements.array.forEach(element => {
+        elements.forEach(element => {
             if (element.setid > max ) {
                 max = element.setid;
             }
@@ -111,6 +126,7 @@ export default class dataVault {
                 if (element.name == first ) {
                     if (pathelements.length == 0) {
                         this.foundvalue = element.value;
+                        this.found = true;
                         return true;
                     } else {
                         return this.getDeepValue( pathelements, element.value );
@@ -120,6 +136,7 @@ export default class dataVault {
                 if (element.setid == first ) {
                     if (pathelements.length == 0) {
                         this.foundvalue = element.value;
+                        this.found = true;
                         return true;
                     } else {
                         return this.getDeepValue( pathelements, element.value);
@@ -131,27 +148,31 @@ export default class dataVault {
 
     setDeepValue( pathelements, data, value ) {
         var first = pathelements.pop();
+        var result = [];
 
         data.forEach(element => {        
             if (element.hasOwnProperty("name")) {
                 if (element.name == first ) {
-                    if (pathelements == []) {
+                    if (pathelements.length == 0) {
                         element.value = value;
-                        return element;
                     } else {
-                        element.value = this.setValue( pathelements, element, value );
-                        return element;
+                        element.value = this.setDeepValue( pathelements, element.value, value );
                     }
                 }
+                result.push( element );                
             } else if (element.hasOwnProperty("setid")) {
-                if (element.rowid == first ) {
-                    if (pathelements == []) {
-                        return element.value;
+                if (element.setid == first ) {
+                    if (pathelements.length == 0) {
+                        element.value = value;
                     } else {
-                        return this.setValue( pathelements, element, value );
+                        element.value = this.setDeepValue( pathelements, element.value, value );
                     }
                 }
-            }            
+                result.push( element );
+            } else {
+                result.push( element );
+            }
         });
-    }
+        return result;
+   }
 }

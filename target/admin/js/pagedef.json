@@ -36,38 +36,13 @@
             { "datapath": "first", "label": "Your first name", "type": "text" },
             { "datapath": "last", "label": "Your last name", "type": "text" },
             { "datapath": "email", "label": "Your email address", "type": "email" },
-            { "datapath": "birthdate", "label": "Your birthdate", "type": "date",
-                "options": [ {"min": "1900-01-01"}, {"max": "today"} ],
-                "validations": []
-            },
-            {
-                "title": "Friends",
-                "datapath": "friends",
-                "type": "rows",
-                "rowdef": { "type": "row", "elements": [
+            { "datapath": "birthdate", "label": "Your birthdate", "type": "date", "options": [ {"min": "1900-01-01"}, {"max": "today"} ], "validations": [] },
+            { "datapath": "friends", "title": "Friends", "type": "rows", "rowdef": { 
+                "type": "row", "elements": [
                     {  "datapath": "friends/*/first", "label": "First name", "type": "text" },
                     {  "datapath": "friends/*/first", "label": "Last name", "type": "text" } 
-                ]},
-                "elements": [
-                    {
-                        "type": "row",
-                        "rowid": 1,
-                        "elements": [
-                            { "datapath": "friends/1/first", "label": "Your first name", "type": "text" },
-                            { "datapath": "friends/1/last", "label": "Your last name ", "type": "text" }
-                        ]
-                    },
-                    {
-                        "type": "row",
-                        "rowid": 2,
-                        "elements": [
-                            { "datapath": "friends/2/first", "label": "Your first name", "type": "text" },
-                            { "datapath": "friends/2/last", "label": "Your last name ", "type": "text" }
-                        ]
-                    }
-                ]
+                ]}
             }
-
         ],
         "globalValidations": [],
         "title": "Basic Form"

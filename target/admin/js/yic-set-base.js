@@ -34,46 +34,35 @@ export default class YicSetBase extends HTMLElement {
         this.definition = element;
     }
 
-    // setInternalId() {
-    //     if (this.type == "form") {
-    //         this.internalId = "form";
-    //     } else {
-    //         if (this.localName == "yic-form-row") {
-    //             this.internalId = this.parent.internalId + "_" + this.name + "." + this.rowid;  
-    //         } else {
-    //             this.internalId = this.parent.internalId + "_" + this.name;
-    //         }
-            
-    //     }
-    // }
-
-    propagateChange() {
-        
-    }
-
     // Handle elements attribute of element
     populate(elements, datavault, contentLocation) {
         this.datavault = datavault;
         var me = this;
         // this.setInternalId();
         elements.forEach(element => {
-            this.elementcounter++;
-            this.webcomponents.forEach(option => {
-                if (element.type == option.type) {
-                    var component = document.createElement(option.webcomponent);
-                    component.datavault = datavault;
-                    component.parent = me;
-                    component.setCounter(this.elementcounter);
-                    // Handle attributes
-                    component.populateElements(element);
-                    // Handle children
-                    if (element.elements) {
-                        component.populate(element.elements, datavault, component.$children);
+            if (this.dataVault.hasElement( element.datapath )) {
+                this.elementcounter++;
+                this.webcomponents.forEach(option => {
+                    if (element.type == option.type) {
+                        var component = document.createElement(option.webcomponent);
+                        component.datavault = datavault;
+                        component.parent = me;
+                        component.setCounter(this.elementcounter);
+                        // Handle attributes
+                        component.populateElements(element);
+                        // Handle children
+                        if (element.type == "rows") {
+                            var items = this.dataVault.getSetItems( element.datapath );
+                            
+                        }
+                        else if (element.elements) {
+                            component.populate(element.elements, datavault, component.$children);
+                        }
+                        contentLocation.appendChild(component);
+                        this.elementcounter = component.getCounter();
                     }
-                    contentLocation.appendChild(component);
-                    this.elementcounter = component.getCounter();
-                }
-            });
+                });    
+            }
         });
     }
 }

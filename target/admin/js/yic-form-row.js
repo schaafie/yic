@@ -44,33 +44,21 @@ export default class YicFormRow extends YicSetBase {
         this.$button.addEventListener('click', this.removeRow.bind(this));
     }
 
-    propagateValue( id, val ) {
-        if ( id.startsWith( this.internalId ) ) {
-            var elementname = this.internalId.substring( id.length );
-            this.definition.elements.forEach( (element, index) => {
-                if (element.name == elementname) {
-                    element.value = val;                    
-                    this.definition.elements[index] = element;
-                }
-            });
-        }
-        this.parent.propagateValue( this.internalId, this.definition );
-    }
-
     connectedCallback() {}
 
     removeRow() {
-        this.parent.removeRow( this.rowid );
+        this.dataVault.removeSetItem( this.datapath );
+        this.parent.update();
     }
 
     populateElements(element) {
         this.definition = element;
+        this.datapath = element.datapath;
         this.setAttribute('name', element.name);
-        this.setAttribute('rowid', element.rowid);
     }
 
     static get observedAttributes() { 
-        return ['name', 'rowid'];
+        return ['name'];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -78,11 +66,6 @@ export default class YicFormRow extends YicSetBase {
             case 'name':
                 if (oldValue != newValue) {
                     this.name = newValue;
-                }
-                break;
-            case 'rowid':
-                if (oldValue != newValue) {
-                    this.rowid = newValue;
                 }
                 break;
             }

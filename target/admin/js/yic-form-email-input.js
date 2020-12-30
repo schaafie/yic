@@ -47,18 +47,18 @@ export default class YicFormEmailInput extends YicSetBase {
     connectedCallback() {}
 
     handleValueChange( event ) {
-        this.definition.value = event.target.value;      
-        this.parent.propagateValue( this.internalId, this.definition );
+        this.setAttribute('value', event.target.value);
+        this.datavault.setValue( this.datapath, event.target.value );
     }
 
     populateElements(element) {
         this.definition = element;
+        this.datapath = element.datapath;
         this.setAttribute('name', element.name);
         this.setAttribute('count', this.elementcounter);
         this.setAttribute('label', element.label);
         this.setAttribute('value', element.value);
         this.setAttribute('required', element.required);
-        this.setInternalId();
     }
 
     static get observedAttributes() { 
