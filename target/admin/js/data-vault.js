@@ -42,7 +42,6 @@ export default class dataVault {
         } else {
             return [];
         }
-
     }
 
     removeDeepSetItem( pathelements, data ) {

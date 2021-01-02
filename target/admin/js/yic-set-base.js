@@ -40,7 +40,7 @@ export default class YicSetBase extends HTMLElement {
         var me = this;
         // this.setInternalId();
         elements.forEach(element => {
-            if (this.dataVault.hasElement( element.datapath )) {
+            if (this.datavault.hasElement( element.datapath )) {
                 this.elementcounter++;
                 this.webcomponents.forEach(option => {
                     if (element.type == option.type) {
@@ -52,8 +52,10 @@ export default class YicSetBase extends HTMLElement {
                         component.populateElements(element);
                         // Handle children
                         if (element.type == "rows") {
-                            var items = this.dataVault.getSetItems( element.datapath );
-                            
+                            var setItems = this.datavault.getSetItems( element.datapath );
+                            setItems.forEach( setItem => {
+                                component = JSON.parts( JSON.stringify( element.rowdef ) );
+                            })
                         }
                         else if (element.elements) {
                             component.populate(element.elements, datavault, component.$children);
