@@ -47,38 +47,7 @@ export default class YicFormRows extends YicSetBase {
         this.$addbutton.addEventListener('click', this.addRow.bind(this));
     }
 
-    propagateValue( id, val ) {
-        if ( id.startsWith( this.internalId ) ) {
-            var elementname = this.internalId.substring( id.length );
-            var list = elementname.split(".");
-            var rowid = list[1];
-
-            this.definition.elements.forEach( (element, index) => {
-                if (element.rowid == rowid) {
-                    this.definition.elements[index] = val;
-                }
-            });
-        }
-        this.parent.propagateValue( this.internalId, this.definition );
-    }
-
-    addRow() {
-        // Add row to the definition of the rows (copy rowdef to elements array)
-        var lastid = 0;
-        this.definition.elements.forEach(element => {
-            if (element.rowid > lastid) lastid = element.rowid;
-        });
-        var str = JSON.stringify(this.definition.rowdef);
-        var newrow = JSON.parse( str );
-        newrow.rowid = lastid + 1;
-        this.definition.elements.push( newrow );
-        this.parent.propagateValue( this.internalId, this.definition );
-
-        // Remove all rows that are there
-        this.$children.innerHTML = "";
-        // Repopulate the rows with the new definition of the rows
-        this.populate(this.definition.elements, this.$children);
-    }
+    addRow() { }
 
     removeRow(rowid) {
         var index = this.definition.elements.findIndex(element => element.rowid == rowid);
