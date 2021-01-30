@@ -61,7 +61,7 @@ export default class YicFormTextInput extends YicSetBase {
 
     handleValueChange( event ) {
         this.setAttribute('value', event.target.value);
-        this.datavault.setValue( this.datapath, event.target.value );
+        this.dataVault.setValue( this.datapath, event.target.value );
     }
 
     populateElements(element) {
@@ -71,7 +71,7 @@ export default class YicFormTextInput extends YicSetBase {
         this.setAttribute('count', this.elementcounter);
         this.setAttribute('label', element.label);
         this.setAttribute('required', element.required);
-        this.setAttribute('value', this.datavault.getValue( element.datapath ));
+        this.setAttribute('value', this.dataVault.getValue( element.datapath ));
     }
 
     static get observedAttributes() { 

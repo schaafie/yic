@@ -39,7 +39,4 @@ defmodule UserManagerWeb.UserController do
       send_resp(conn, :no_content, "")
     end
   end
-
-  def definition(conn, _params), do:  render(conn,"definition.json")
-
 end

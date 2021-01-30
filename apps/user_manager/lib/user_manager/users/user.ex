@@ -16,7 +16,7 @@ defmodule UserManager.Users.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:firstname, :lastname, :email, :login, :password])
-    |> validate_required([:firstname, :lastname, :email, :login, :password])
+    |> cast(attrs, [:login, :password, :email, :firstname, :lastname])
+    |> validate_required([:login, :password, :email, :firstname, :lastname])
   end
 end

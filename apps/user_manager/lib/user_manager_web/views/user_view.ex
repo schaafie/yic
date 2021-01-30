@@ -12,11 +12,11 @@ defmodule UserManagerWeb.UserView do
 
   def render("user.json", %{user: user}) do
     %{id: user.id,
-      firstname: user.firstname,
-      lastname: user.lastname,
-      email: user.email,
       login: user.login,
-      password: user.password}
+      password: user.password,
+      email: user.email,
+      firstname: user.firstname,
+      lastname: user.lastname}
   end
 
   def render("definition.json", _args) do
@@ -32,4 +32,5 @@ defmodule UserManagerWeb.UserView do
       globalValidations: [],
     }
   end
+
 end

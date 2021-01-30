@@ -38,9 +38,9 @@
             { "datapath": "email", "label": "Your email address", "type": "email" },
             { "datapath": "birthdate", "label": "Your birthdate", "type": "date", "options": [ {"min": "1900-01-01"}, {"max": "today"} ], "validations": [] },
             { "datapath": "friends", "title": "Friends", "type": "rows", "rowdef": { 
-                "type": "row", "elements": [
+                "datapath": "friends/*", "type": "row", "elements": [
                     {  "datapath": "friends/*/first", "label": "First name", "type": "text" },
-                    {  "datapath": "friends/*/first", "label": "Last name", "type": "text" } 
+                    {  "datapath": "friends/*/last", "label": "Last name", "type": "text" } 
                 ]}
             }
         ],

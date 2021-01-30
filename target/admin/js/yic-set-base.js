@@ -3,13 +3,14 @@ export default class YicSetBase extends HTMLElement {
     constructor() {
         super();
         this.definition = {};
-        this.datavault = {};
+        this.dataVault = {};
         this.parent = {};
         // this.internalId = "";
         // this.name = "";
         this.elementcounter = 0;
         this.webcomponents = [
             { type: "text", webcomponent: "yic-form-text-input" },
+            { type: "password", webcomponent: "yic-form-password-input" },
             { type: "email", webcomponent: "yic-form-email-input" },
             { type: "rows", webcomponent: "yic-form-rows" },
             { type: "row", webcomponent: "yic-form-row" },
@@ -36,26 +37,24 @@ export default class YicSetBase extends HTMLElement {
 
     // Handle elements attribute of element
     populate(elements, datavault, contentLocation) {
-        this.datavault = datavault;
+        this.dataVault = datavault;
         var me = this;
         // this.setInternalId();
         elements.forEach(element => {
-            if (this.datavault.hasElement( element.datapath )) {
+            if (this.dataVault.hasElement( element.datapath )) {
                 this.elementcounter++;
                 this.webcomponents.forEach(option => {
                     if (element.type == option.type) {
                         var component = document.createElement(option.webcomponent);
-                        component.datavault = datavault;
+                        component.dataVault = datavault;
                         component.parent = me;
                         component.setCounter(this.elementcounter);
                         // Handle attributes
                         component.populateElements(element);
                         // Handle children
                         if (element.type == "rows") {
-                            var setItems = this.datavault.getSetItems( element.datapath );
-                            setItems.forEach( setItem => {
-                                component = JSON.parts( JSON.stringify( element.rowdef ) );
-                            })
+                            elements = component.buildElementsFromSet(element);
+                            component.populate(elements, datavault, component.$children);
                         }
                         else if (element.elements) {
                             component.populate(element.elements, datavault, component.$children);

@@ -1,0 +1,35 @@
+{
+    "menu": {
+        "topMenu": [
+            { "url": "", "title": "Content" },
+            { "url": "", "title": "Flows" },
+            { "url": "", "title": "Forms" }
+        ],
+        "contextMenu": []
+    },
+    "data": {
+        "id": 1, "name": "userform", "version": "1.0", "author": "Pieter", "definition": ""
+    },
+    "datadef": {
+        "elements": [
+            { "name": "id", "type": "integer", "validations": [], "required": "true"},
+            { "name": "name", "type": "string", "validations": [], "required": "true"},
+            { "name": "version", "type": "string", "validations": [], "required": "true"},
+            { "name": "author", "type": "string", "validations": [], "required": "true"},
+            { "name": "definition", "type": "json", "validations": [], "required": "true"}
+        ]
+    },
+    "main" : {
+        "action": "/api/usermanagement/users",
+        "type": "detail",
+        "elements": [
+            { "datapath": "id", "type": "hidden" },
+            { "datapath": "name", "label": "Form name", "type": "text" },
+            { "datapath": "version", "label": "Version", "type": "text" },
+            { "datapath": "author", "label": "Author", "type": "text" },
+            { "datapath": "definition", "label": "Form Definition", "type": "formdefinition" }
+        ],
+        "globalValidations": [],
+        "title": "Form details"
+    }
+}

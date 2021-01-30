@@ -11,6 +11,8 @@ p { margin: 0; }
 
 p.second { margin-top: 20px; }
 
+a { color: #1f66e5; }
+
 label { 
     display: block; 
     margin-bottom: 5px; 
@@ -28,20 +30,31 @@ input[type="password"] {
     width: 100%;
 }
 
+input[type="submit"] {
+    font: 16px/1.6 Arial, sans-serif;
+    color: white;
+    background: cornflowerblue;
+    border: 1px solid #1f66e5;
+    border-radius: 4px;
+    padding: 10px 10px;
+    width: 100%;
+}
+
 </style>
 <p>
     <label></label>
-    <input name="" type="text"></input>
+    <input name="" type="password"></input>
 </p>
 `;
 
-export default class YicFormEmailInput extends YicSetBase {
+export default class YicFormPasswordInput extends YicSetBase {
         constructor() {
         super();
+        this.elementcounter = 0;
         this._shadowRoot = this.attachShadow({ 'mode': 'open' });
         this._shadowRoot.appendChild(template.content.cloneNode(true));
         this.$field = this._shadowRoot.querySelector('input');
-        this.$field.addEventListener('change', this.handleValueChange.bind(this));        
+        this.$field.addEventListener('change', this.handleValueChange.bind(this));
     }
 
     connectedCallback() {}
@@ -57,8 +70,8 @@ export default class YicFormEmailInput extends YicSetBase {
         this.setAttribute('name', element.name);
         this.setAttribute('count', this.elementcounter);
         this.setAttribute('label', element.label);
-        this.setAttribute('value', this.dataVault.getValue( element.datapath ));
         this.setAttribute('required', element.required);
+        this.setAttribute('value', this.dataVault.getValue( element.datapath ));
     }
 
     static get observedAttributes() { 
@@ -91,12 +104,12 @@ export default class YicFormEmailInput extends YicSetBase {
                 }
                 break;
             case 'value':
-                if ( this.$field.getAttribute('value') != newValue ) {
-                    this.$field.setAttribute('value', newValue);
+                if (this.value != newValue) {
+                    this.$field.setAttribute( 'value', newValue);
                 }
                 break;
         }
     }
 }
 
-window.customElements.define('yic-form-email-input', YicFormEmailInput);
+window.customElements.define('yic-form-password-input', YicFormPasswordInput);

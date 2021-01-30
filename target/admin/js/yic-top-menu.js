@@ -44,7 +44,7 @@ export default class YicTopMenu extends HTMLElement {
     setMenu(list) {
         list.forEach(item => {
             var link = document.createElement('a');
-            link.setAttribute( 'href', '#' );
+            link.setAttribute( 'href', item.url );
             link.innerHTML = item.title;
             this.$topmenu.appendChild( link );
         });

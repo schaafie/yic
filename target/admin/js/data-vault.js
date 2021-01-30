@@ -5,6 +5,14 @@ export default class dataVault {
         this.setid = 0;
     }
 
+    getElements( path ) {
+        this.foundElements = "";
+        this.found = false;
+        var pathelements = path.split("/");
+        this.getDeepElements( pathelements.reverse(), this.data.elements );
+        return this.foundvalue;
+    }
+
     getValue( path ) {
         this.foundvalue = "";
         this.found = false;
@@ -116,6 +124,25 @@ export default class dataVault {
             }
         });
         return max;
+    }
+
+    getDeepElements( pathelements, data ) {
+        this.found = false;
+        if (pathelements.length == 0) {
+            data.forEach(element => {
+                this.foundElements.push(element.name);
+            });
+            this.found = true;
+            return true;
+        } else {
+            var first = pathelements.pop();
+            data.forEach( element => {
+                if(element.name == first) {
+                    return this.getDeepElements( pathelements, element.elements );
+                }
+            })
+
+        }
     }
 
     getDeepValue( pathelements, data ) {

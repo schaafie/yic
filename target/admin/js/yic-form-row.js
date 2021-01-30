@@ -48,7 +48,7 @@ export default class YicFormRow extends YicSetBase {
 
     removeRow() {
         this.dataVault.removeSetItem( this.datapath );
-        this.parent.update();
+        this.parent.updateRows();
     }
 
     populateElements(element) {

@@ -47,19 +47,32 @@ export default class YicFormRows extends YicSetBase {
         this.$addbutton.addEventListener('click', this.addRow.bind(this));
     }
 
-    addRow() { }
+    addRow() { 
+        this.dataVault.addSetItem( this.definition.datapath );
+        this.updateRows();
+    }
 
-    removeRow(rowid) {
-        var index = this.definition.elements.findIndex(element => element.rowid == rowid);
-        this.definition.elements.splice( index, 1, );
-        this.parent.propagateValue( this.internalId, this.definition );
-        // Remove all rows that are there
+    updateRows() {
         this.$children.innerHTML = "";
         // Repopulate the rows with the new definition of the rows
-        this.populate(this.definition.elements, this.$children);
+        this.populate(this.buildElementsFromSet(this.definition), this.dataVault, this.$children);
     }
 
     connectedCallback() {}
+
+    buildElementsFromSet( element ) {
+        var elements = [];
+        var setItems = this.dataVault.getSetItems( element.datapath );
+        setItems.forEach( setItem => {
+            var str_item = JSON.stringify( element.rowdef );
+            var search   = `"datapath":"${element.datapath}/*`;
+            var replace  = `"datapath":"${element.datapath}/${setItem.setid}`;
+            var str_new = str_item.replaceAll( search, replace );
+            
+            elements.push( JSON.parse( str_new ) );
+        });
+        return elements;
+    }
 
     populateElements(element) {
         this.definition = element;

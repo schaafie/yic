@@ -3,11 +3,11 @@ defmodule UserManager.Repo.Migrations.CreateUsers do
 
   def change do
     create table(:users) do
-      add :firstname, :string
-      add :lastname, :string
-      add :email, :string
       add :login, :string
       add :password, :string
+      add :email, :string
+      add :firstname, :string
+      add :lastname, :string
 
       timestamps()
     end
