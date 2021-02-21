@@ -37,6 +37,9 @@ mix phx.new asset_manager --no-html --no-brunch
 mix phx.new site_manager --no-html --no-brunch
 
 mix phx.new publication_manager --no-html --no-brunch
+mix phx.gen.json Tasks Task tasks 
+mix phx.gen.json Targets Target targets name:string location:string type:string
+mix phx.gen.json Publications Publication publications target:integer path:string version:string definition:string start:utc_datetime end:utc_datetime
 
 mix phx.new form_manager --no-html --no-brunch
 mix phx.gen.json Forms Form forms name:string version:string author:string definition:string

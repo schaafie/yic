@@ -1,6 +1,7 @@
 export default class dataVault {
-    constructor(datadef) {
-        this.data = datadef;
+    constructor(data, datadef) {
+        this.data = data;
+        this.defintiion = datadef;
         this.removeError = "";
         this.setid = 0;
     }
@@ -9,7 +10,7 @@ export default class dataVault {
         this.foundElements = "";
         this.found = false;
         var pathelements = path.split("/");
-        this.getDeepElements( pathelements.reverse(), this.data.elements );
+        this.getDeepElements( pathelements.reverse(), this.data );
         return this.foundvalue;
     }
 
@@ -17,25 +18,25 @@ export default class dataVault {
         this.foundvalue = "";
         this.found = false;
         var pathelements = path.split("/");
-        this.getDeepValue( pathelements.reverse(), this.data.elements );
+        this.getDeepValue( pathelements.reverse(), this.data );
         return this.foundvalue;
     }
 
     setValue( path, value ) {
         var pathelements = path.split("/");
-        this.data.elements = this.setDeepValue( pathelements.reverse(), this.data.elements, value );
+        this.data.elements = this.setDeepValue( pathelements.reverse(), this.data, value );
     }
 
     addSetItem(path) {
         var pathelements = path.split("/");
-        this.data.elements = this.addDeepSetItem( pathelements.reverse(), this.data.elements );
+        this.data.elements = this.addDeepSetItem( pathelements.reverse(), this.data );
         return this.setid;
     }
 
     removeSetItem(path) {
         this.removeError = "";
         var pathelements = path.split("/");
-        this.removeDeepSetItem( pathelements.reverse(), this.data.elements );
+        this.removeDeepSetItem( pathelements.reverse(), this.data );
     }
 
     hasElement(path) {
@@ -146,6 +147,18 @@ export default class dataVault {
     }
 
     getDeepValue( pathelements, data ) {
+        var first = pathelements.pop();
+        if (data[first]) {
+            if (pathelements.length==0) {
+                this.foundvalue = data[first];
+                this.found = true;
+            } else {
+                return this.getDeepValue( pathelements, data[first] );
+            }
+        }
+    }
+
+    getDeepValueOld( pathelements, data ) {
         var first = pathelements.pop();
         data.some(element => {
             if (element.hasOwnProperty("name")) {

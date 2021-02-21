@@ -1,4 +1,6 @@
 import YicSetBase from './yic-set-base.js';
+import dataVault from './data-vault.js';
+
 
 const template = document.createElement('template');
 template.innerHTML = `<style>
@@ -43,11 +45,13 @@ export default class YicForm extends YicSetBase {
         this.xhr.open( 'POST', this.definition.action );
     }
 
-    setDataVault(dv) { 
-        this.datavault = dv; 
+    setDataVault(data, dataDef) { 
+        this.datavault = new dataVault( data, dataDef ); 
     }
 
-    setDefinition(definition) { this.definition = definition; }
+    setDefinition(definition) { 
+        this.definition = definition; 
+    }
 
     populateForm() {
         this.$title.innerHTML = this.definition.title;

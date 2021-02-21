@@ -1,14 +1,15 @@
 {
     "menu": {
         "topMenu": [
-            { "url": "", "title": "Content" },
-            { "url": "", "title": "Flows" },
-            { "url": "", "title": "Forms" }
+            { "url": "/admin/users", "title": "Users" },
+            { "url": "/admin/forms", "title": "Forms" },
+            { "url": "/#", "title": "Content" },
+            { "url": "/#", "title": "Flows" }
         ],
         "contextMenu": []
     },
     "data": {
-        "id": 1, "name": "userform", "version": "1.0", "author": "Pieter", "definition": ""
+        "id": "1", "name": "userform", "version": "1.0", "author": "Pieter", "definition": ""
     },
     "datadef": {
         "elements": [

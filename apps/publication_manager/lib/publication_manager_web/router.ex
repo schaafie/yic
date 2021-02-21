@@ -7,5 +7,9 @@ defmodule PublicationManagerWeb.Router do
 
   scope "/api", PublicationManagerWeb do
     pipe_through :api
+
+    get "/publications/byname", PublicationController, :getbyname
+    resources "/publications", PublicationController, except: [:new, :edit]
+
   end
 end

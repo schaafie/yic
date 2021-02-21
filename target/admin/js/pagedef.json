@@ -1,0 +1,20 @@
+{
+    "menu": {
+        "topMenu": [
+            { "url": "/admin/users", "title": "Users" },
+            { "url": "/admin/forms", "title": "Forms" },
+            { "url": "/#", "title": "Content" },
+            { "url": "/admin/flows", "title": "Flows" }
+        ],
+        "contextMenu": []
+    },
+    "data": {},
+    "datadef": {},
+    "main" : {
+        "action": "",
+        "type": "content",
+        "elements": [],
+        "globalValidations": [],
+        "title": ""
+    }
+}

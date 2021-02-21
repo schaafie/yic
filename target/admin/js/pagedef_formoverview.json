@@ -1,9 +1,10 @@
 {
     "menu": {
         "topMenu": [
-            { "url": "", "title": "Content" },
-            { "url": "", "title": "Flows" },
-            { "url": "", "title": "Forms" }
+            { "url": "/admin/users", "title": "Users" },
+            { "url": "/admin/forms", "title": "Forms" },
+            { "url": "/#", "title": "Content" },
+            { "url": "/admin/flows", "title": "Flows" }    
         ],
         "contextMenu": []
     },
@@ -15,19 +16,21 @@
             { "name": "version", "type": "string", "validations": [], "required": "true"},
             { "name": "author", "type": "string", "validations": [], "required": "true"},
             { "name": "definition", "type": "json", "validations": [], "required": "true"}
-        ], 
+        ],
         "def": [ "id", "name", "version", "author", "definition" ]
     },
     "main" : {
         "type": "overview",
         "action": "/api/usermanagement/users",
         "elements": [
-            { "datapath": "id", "type": "hidden" },
+            { "datapath": "id", "label": "Id", "type": "integer" },
             { "datapath": "name", "label": "Form name", "type": "text" },
             { "datapath": "version", "label": "Version", "type": "text" },
             { "datapath": "author", "label": "Author", "type": "text" },
-            { "type": "button", "label": "delete", "action": "./{id}", "method": "DELETE" }
-            { "type": "button", "label": "edit", "action": "./{id}", "method": "GET" }
+            { "type": "actions", "label": "Action", "items": [
+                { "type": "button", "label": "delete", "action": "./{id}", "method": "DELETE" },
+                { "type": "button", "label": "edit", "action": "./{id}", "method": "GET" }
+            ]}
         ],
         "globalValidations": [],
         "title": "Form details"

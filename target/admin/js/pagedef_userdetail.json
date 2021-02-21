@@ -1,16 +1,15 @@
 {
     "menu": {
         "topMenu": [
-            { "url": "./users", "title": "Users" },
-            { "url": "./forms", "title": "Forms" },
-            { "url": "./#", "title": "Content" },
-            { "url": "./#", "title": "Flows" }
+            { "url": "/admin/users", "title": "Users" },
+            { "url": "/admin/forms", "title": "Forms" },
+            { "url": "/#", "title": "Content" },
+            { "url": "/#", "title": "Flows" }
         ],
         "contextMenu": []
     },
-
     "data": {
-        "id": 1, "firstname": "Pieter", "lastname": "Schaafsma", "email": "pieter.schaafsma@casema.nl", "login": "Pieter", "password": "Pieter"
+        "id": "1", "firstname": "Pieter", "lastname": "Schaafsma", "email": "pieter.schaafsma@casema.nl", "login": "Pieter", "password": "Pieter"
     },
     "datadef": {
         "elements": [
@@ -24,7 +23,7 @@
         ]
     },
     "main" : {
-        "action": "/api/usermanagement/users",
+        "action": "/api/usermanagement/users/@id",
         "type": "detail",
         "elements": [
             { "datapath": "id", "type": "hidden" },

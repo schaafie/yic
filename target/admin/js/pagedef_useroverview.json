@@ -1,9 +1,10 @@
 {
     "menu": {
         "topMenu": [
-            { "url": "", "title": "Content" },
-            { "url": "", "title": "Flows" },
-            { "url": "", "title": "Forms" }
+            { "url": "/admin/users", "title": "Users" },
+            { "url": "/admin/forms", "title": "Forms" },
+            { "url": "/#", "title": "Content" },
+            { "url": "/#", "title": "Flows" }
         ],
         "contextMenu": []
     },
@@ -27,13 +28,14 @@
         "type": "overview",
         "action": "/api/usermanagement/users",
         "elements": [
-            { "datapath": "id", "type": "hidden" },
+            { "datapath": "id", "label": "Id", "type": "integer" },
             { "datapath": "firstname", "label": "First name", "type": "text" },
             { "datapath": "lastname", "label": "Last name", "type": "text" },
-            { "datapath": "email", "label": "Email address", "type": "email" },
             { "datapath": "login", "label": "Login", "type": "text" },
-            { "type": "button", "label": "delete", "action": "./{id}", "method": "DELETE" }
-            { "type": "button", "label": "edit", "action": "./{id}", "method": "GET" }
+            { "type": "actions", "label": "Action", "items": [
+                { "type": "button", "label": "delete", "action": "./{id}", "method": "DELETE" },
+                { "type": "button", "label": "edit", "action": "./{id}", "method": "GET" }
+            ]}
         ],
         "globalValidations": [],
         "title": "User details"
