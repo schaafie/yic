@@ -4,12 +4,12 @@ defmodule PublicationManager.Publications.Publication do
 
 
   schema "publications" do
-    field :definition, :string
-    field :end, :utc_datetime
-    field :path, :string
-    field :start, :utc_datetime
     field :target, :integer
+    field :path, :string
     field :version, :string
+    field :definition, :map, default: %{}
+    field :end, :utc_datetime
+    field :start, :utc_datetime
 
     timestamps()
   end
@@ -18,6 +18,6 @@ defmodule PublicationManager.Publications.Publication do
   def changeset(publication, attrs) do
     publication
     |> cast(attrs, [:target, :path, :version, :definition, :start, :end])
-    |> validate_required([:target, :path, :version, :definition, :start, :end])
+    |> validate_required([:target, :path, :version, :definition])
   end
 end

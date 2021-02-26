@@ -27,7 +27,9 @@ defmodule PublicationManagerWeb.PublicationController do
 
   def getbyname(conn, %{"name" => name}) do
     publication = Publications.get_publication_by_name!(name)
-    render(conn, "show.json", publication: publication)
+    # IO.inspect publication
+    # Poison.decode!(publication)
+    render(conn, "show.json", publication: publication )
   end
 
   def update(conn, %{"id" => id, "publication" => publication_params}) do

@@ -53,7 +53,8 @@ defmodule ApiWeb.Mixfile do
       {:gettext, "~> 0.11"},
       {:api, in_umbrella: true},
       {:cowboy, "~> 1.0"},
-      {:plug_cowboy, "~> 1.0"}
+      {:plug_cowboy, "~> 1.0"},
+      {:cors_plug, "~> 1.5"}
     ]
   end
 

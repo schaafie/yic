@@ -1,68 +1,69 @@
 export default class pageContent {
     constructor() {
+        fetch( this.buildPath() ).then( response => {
+            return response.json();
+        }).then( data => {
+            var def = data.data.definition;
+            this.setMenu( def.menu );
+            this.setContent( def.main, def.data, def.datadef);
+        });
+    }
+
+    buildPath() {
         var loc = window.location.search;
         var path = "";
         if (loc.length > 0) {
             loc = loc.substr(1);
             loc.split('&').forEach( part => {
                 var parts = part.split('=');
-                if (parts[0]=="path") { path = parts[1]; }
+                if (parts[0]=="path") { 
+                    path = parts[1]; 
+                    var pathElements = path.split('/');
+                    if (pathElements.length <= 2) {
+                        path = "name=" + path;
+                    } else {
+                        var lastElement = pathElements.pop();
+                        if (!isNaN(parseInt(lastElement))) {
+                            pathElements.push('@id');
+                            path = "name=" + pathElements.join('/') + "&id=" + lastElement;
+                        } else {
+                            path = "name=" + path;
+                        }
+                    }
+                }
             });
         }
-        path = "http://http://localhost:4000/publisher/publications/byName/" + path;
-
-        console.log( path);
-
-        fetch( path ).then( response => {
-            return response.json();
-        }).then( data => {
-            this.menuDef = data.menu;
-            this.setMenu();
-            this.mainDef = data.main;
-            this.data = data.data;
-            this.dataDef = data.datadef;
-            this.setContent();
-        });
+        return "http://yic.local.host:4000/publisher/publications/byname?" + path;
     }
 
-    getApiCall() {
-        return (path == "/admin/users/") ? "//yic.local.host/admin/js/pagedef_useroverview.json"
-            : (path == "/admin/users/1/") ? "//yic.local.host/admin/js/pagedef_userdetail.json"
-            : (path == "/admin/forms/") ? "//yic.local.host/admin/js/pagedef_formoverview.json"
-            : (path == "/admin/forms/1/") ? "//yic.local.host/admin/js/pagedef_formdetail.json"
-            : (path == "/admin/flows/") ? "//yic.local.host/admin/js/pagedef_formoverview.json"
-            : "//yic.local.host/admin/js/pagedef.json";    
-    }
-
-    setMenu() {
-        document.querySelector("yic-top-menu").setMenu( this.menuDef.topMenu );        
-        if (this.menuDef.contextMenu.length == 0) {
+    setMenu(menuDef) {
+        document.querySelector("yic-top-menu").setMenu( menuDef.topMenu );        
+        if (menuDef.contextMenu.length == 0) {
             document.querySelector("#content").classList.remove("extended");
             document.querySelector("#content").classList.add("collapsed");
         } else {
-            document.querySelector("yic-side-menu").setMenu( this.menuDef.contextMenu );
+            document.querySelector("yic-side-menu").setMenu( menuDef.contextMenu );
             document.querySelector("#content").classList.remove("collapsed");
             document.querySelector("#content").classList.add("extended");
         }
     }
 
-    setContent() {
-        switch(this.mainDef.type) {
+    setContent(main, data, datadef) {
+        switch(main.type) {
             case "overview":
                 var overview = document.createElement("yic-overview");
-                overview.setDataRows( this.data );
-                overview.setDefinition( this.mainDef );
+                overview.setDataRows( data );
+                overview.setDefinition( main );
                 overview.populate();        
                 document.querySelector("#main-content").appendChild(overview);
                 break;
             case "detail":
                 var form = document.createElement("yic-form");
-                form.setDataVault( this.data, this.dataDef );
-                form.setDefinition( this.mainDef );
+                form.setDataVault( data, datadef );
+                form.setDefinition( main );
                 form.populateForm();        
                 document.querySelector("#main-content").appendChild(form);
                 break;
         }
     }
-
 } 

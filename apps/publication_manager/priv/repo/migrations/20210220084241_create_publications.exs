@@ -6,7 +6,7 @@ defmodule PublicationManager.Repo.Migrations.CreatePublications do
       add :target, :integer
       add :path, :string
       add :version, :string
-      add :definition, :string
+      add :definition, :jsonb
       add :start, :utc_datetime
       add :end, :utc_datetime
 
