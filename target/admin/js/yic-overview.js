@@ -17,7 +17,7 @@ h2 {
 .container {
     margin: 0px 50px 50px;
     padding: 20px 50px;
-    max-width:600px;
+    max-width:1200px;
 }
 
 table {
@@ -68,9 +68,11 @@ export default class YicOverview extends HTMLElement {
     
     constructor() {
         super();
+        this.pageElement = {};
         this.definition = { elements: [], action: "", name: "" };
         this.type = "overview";
         this.columns = [];
+        this.formActions = [];
         this._shadowRoot = this.attachShadow({ 'mode': 'open' });
         this._shadowRoot.appendChild(template.content.cloneNode(true));
         this.$children = this._shadowRoot.querySelector('#yic-overview');
@@ -81,12 +83,12 @@ export default class YicOverview extends HTMLElement {
 
     connectedCallback() {}
 
-    setDataRows(dr) {  
-        this.dataRows = dr; 
-    }
+    setData(data) { this.dataRows = data; }
+    setDataDef(datadef) { this.dataDef = datadef; }
     
-    setDefinition(definition) { 
-        this.definition = definition; 
+    setDefinition(pageElement) { 
+        this.pageElement = pageElement;
+        this.definition = pageElement.definition; 
     }
 
     populate() {
@@ -97,24 +99,52 @@ export default class YicOverview extends HTMLElement {
             this.$body.appendChild(docrow);
         })
     }
+
+    handleCall( id ) {
+        if (this.formActions[id].type == "FORM") {
+            var action = new String( this.formActions[id].action.url );
+            var url = action.replace( /@id/i, this.formActions[id].id );
+            window.location.href = url;
+        } else {
+            
+        }
+   
+    }
+
     populateRow(docrow, row) {
         this.columns.forEach( column => {
             var rowcol = document.createElement('td');
             switch( column.type ) {
                 case "actions":
                     column.items.forEach( item => {
-                        var link = document.createElement("a");
-                        switch(item.method) {
-                            case "DELETE":
-                                link.addEventListener("click", ()=>{ this.deleteItem(row.id); });
-                                link.innerHTML = "Del";
-                                break;
-                            case "GET":
-                                link.addEventListener("click", ()=>{ this.editItem(row.id); });
-                                link.innerHTML = "Edit";
-                                break;
-                        }                        
-                        rowcol.appendChild(link);
+                        var button = document.createElement("yic-form-action");
+                        button.setAttribute("label", item.label);
+                        if (item.object == "FORM") {
+                            this.definition.formactions.forEach( formaction => {
+                                if (formaction.id == item.action) {
+                                    var handlerObject   = {};
+                                    handlerObject.action= formaction.action;
+                                    handlerObject.id    = row.id;
+                                    handlerObject.type  = item.object;
+                                    // Add object to action stack and save the entry position (thus -1 because push results in length of array)
+                                    var objectId        = this.formActions.push( handlerObject ) - 1;
+                                    button.addEventListener( 'click', () => { this.handleCall( objectId ); } );
+                                }
+                            });
+                        } else if (item.object == "DATA") {
+                            this.dataDef.actions.forEach( formaction => {
+                                if (formaction.id == item.action) {
+                                    var handlerObject   = {};
+                                    handlerObject.action= formaction.action;
+                                    handlerObject.id    = row.id;
+                                    handlerObject.type  = item.object;
+                                    // Add object to action stack and save the entry position (thus -1 because push results in length of array)
+                                    var objectId        = this.formActions.push( handlerObject ) - 1;
+                                    button.addEventListener( 'click', () => { this.handleCall( objectId ); } );
+                                }
+                            });
+                        }
+                        rowcol.appendChild(button);
                     });
                     break;
                 default:

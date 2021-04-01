@@ -2,6 +2,7 @@ export default class dataVault {
     constructor(data, datadef) {
         this.data = data;
         this.defintiion = datadef;
+        this.actions = []
         this.removeError = "";
         this.setid = 0;
     }
