@@ -20,6 +20,9 @@ Goto apps folder
 mix phx.new user_manager --no-html --no-brunch
 mix phx.gen.json Users User users firstname:string lastname:string email:string login:string password:string
 
+mix phx.new data_manager --no-html --no-brunch
+
+
 mix phx.new version_manager --no-html --no-brunch
 
 mix phx.new ia_manager --no-html --no-brunch
@@ -43,6 +46,7 @@ mix phx.gen.json Publications Publication publications target:integer path:strin
 
 mix phx.new form_manager --no-html --no-brunch
 mix phx.gen.json Forms Form forms name:string version:string author:string definition:string
+mix phx.gen.json Forms Datasource datasources name:string comment:string version:string definition:map actions:array
 
 mix phx.new wf_manager --no-html --no-brunch
 

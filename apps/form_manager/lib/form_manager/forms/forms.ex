@@ -101,4 +101,100 @@ defmodule FormManager.Forms do
   def change_form(%Form{} = form) do
     Form.changeset(form, %{})
   end
+
+  alias FormManager.Forms.Datasource
+
+  @doc """
+  Returns the list of datasources.
+
+  ## Examples
+
+      iex> list_datasources()
+      [%Datasource{}, ...]
+
+  """
+  def list_datasources do
+    Repo.all(Datasource)
+  end
+
+  @doc """
+  Gets a single datasource.
+
+  Raises `Ecto.NoResultsError` if the Datasource does not exist.
+
+  ## Examples
+
+      iex> get_datasource!(123)
+      %Datasource{}
+
+      iex> get_datasource!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_datasource!(id), do: Repo.get!(Datasource, id)
+
+  @doc """
+  Creates a datasource.
+
+  ## Examples
+
+      iex> create_datasource(%{field: value})
+      {:ok, %Datasource{}}
+
+      iex> create_datasource(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_datasource(attrs \\ %{}) do
+    %Datasource{}
+    |> Datasource.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a datasource.
+
+  ## Examples
+
+      iex> update_datasource(datasource, %{field: new_value})
+      {:ok, %Datasource{}}
+
+      iex> update_datasource(datasource, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_datasource(%Datasource{} = datasource, attrs) do
+    datasource
+    |> Datasource.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a Datasource.
+
+  ## Examples
+
+      iex> delete_datasource(datasource)
+      {:ok, %Datasource{}}
+
+      iex> delete_datasource(datasource)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_datasource(%Datasource{} = datasource) do
+    Repo.delete(datasource)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking datasource changes.
+
+  ## Examples
+
+      iex> change_datasource(datasource)
+      %Ecto.Changeset{source: %Datasource{}}
+
+  """
+  def change_datasource(%Datasource{} = datasource) do
+    Datasource.changeset(datasource, %{})
+  end
 end

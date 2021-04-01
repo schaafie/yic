@@ -38,6 +38,7 @@ config :phoenix, :stacktrace_depth, 20
 
 # Configure your database
 config :api_manager, ApiManager.Repo,
+  show_sensitive_data_on_connection_error: true,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "postgres",

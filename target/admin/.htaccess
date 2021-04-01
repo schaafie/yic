@@ -17,5 +17,5 @@
 	RewriteCond %{REQUEST_FILENAME} !-d
 	RewriteCond %{QUERY_STRING} ^(.*)$
 	RewriteCond %{REQUEST_URI} ^(.*)$
-	RewriteRule ^(.*)$ http://yic.local.host/admin/index.html?path=%1 [R=302,L]
+	RewriteRule ^(.*)$ http://localhost:8080/admin/index.html?path=%1 [R=302,L]
 </IfModule>

@@ -18,16 +18,4 @@ defmodule FormManagerWeb.FormView do
       definition: form.definition}
   end
 
-  def render("definition.json", _args ) do
-    %{ elements: [
-        %{ name: "id", type: "integer", validations: [], required: "true" },
-        %{ name: "name", type: "string", validations: [], required: "true" },
-        %{ name: "version", type: "string", validations: [], required: "true" },
-        %{ name: "author", type: "string", validations: [], required: "true" },
-        %{ name: "definition", type: "formdefinition", validations: [], required: "true" } ],
-      globalValidations: [],
-      restapi: ""
-    }
-    
-  end
 end

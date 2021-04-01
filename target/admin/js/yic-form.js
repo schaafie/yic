@@ -34,6 +34,7 @@ export default class YicForm extends YicSetBase {
     
     constructor() {
         super();
+        this.pageElement = {};
         this.definition = { elements: [], action: "", name: "" };
         this.elementcounter = 0;
         this.type = "form";
@@ -49,8 +50,9 @@ export default class YicForm extends YicSetBase {
         this.datavault = new dataVault( data, dataDef ); 
     }
 
-    setDefinition(definition) { 
-        this.definition = definition; 
+    setDefinition(pageElement) { 
+        this.pageElement = pageElement;
+        this.definition = pageElement.definition; 
     }
 
     populateForm() {

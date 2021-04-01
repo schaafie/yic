@@ -5,7 +5,7 @@ export default class pageContent {
         }).then( data => {
             var def = data.data.definition;
             this.setMenu( def.menu );
-            this.setContent( def.main, def.data, def.datadef);
+            this.setContent( def.main.pageelement, def.main.data, def.main.datadef);
         });
     }
 
@@ -33,7 +33,7 @@ export default class pageContent {
                 }
             });
         }
-        return "http://yic.local.host:4000/publisher/publications/byname?" + path;
+        return "http://localhost:4000/publisher/publications/byname?" + path;
     }
 
     setMenu(menuDef) {
@@ -48,19 +48,20 @@ export default class pageContent {
         }
     }
 
-    setContent(main, data, datadef) {
-        switch(main.type) {
+    setContent(pageelement, data, datadef) {
+        switch(pageelement.definition.type) {
             case "overview":
                 var overview = document.createElement("yic-overview");
-                overview.setDataRows( data );
-                overview.setDefinition( main );
+                overview.setData( data );
+                overview.setDataDef( datadef );
+                overview.setDefinition( pageelement );
                 overview.populate();        
                 document.querySelector("#main-content").appendChild(overview);
                 break;
             case "detail":
                 var form = document.createElement("yic-form");
                 form.setDataVault( data, datadef );
-                form.setDefinition( main );
+                form.setDefinition( pageelement );
                 form.populateForm();        
                 document.querySelector("#main-content").appendChild(form);
                 break;

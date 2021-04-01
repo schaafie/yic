@@ -19,18 +19,4 @@ defmodule UserManagerWeb.UserView do
       lastname: user.lastname}
   end
 
-  def render("definition.json", _args) do
-    %{
-      elements: [
-        %{ name: "id", type: "integer", validations: [], required: "true" },
-        %{ name: "firstname", type: "text", validations: [], required: "true" },
-        %{ name: "lastname", type: "text", validations: [], required: "true" },
-        %{ name: "email", type: "email", validations: [], required: "true" },
-        %{ name: "login", type: "text", validations: [], required: "true" },
-        %{ name: "password", type: "text", validations: [], required: "true" },
-      ],
-      globalValidations: [],
-    }
-  end
-
 end

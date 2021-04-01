@@ -68,4 +68,72 @@ defmodule FormManager.FormsTest do
       assert %Ecto.Changeset{} = Forms.change_form(form)
     end
   end
+
+  describe "datasources" do
+    alias FormManager.Forms.Datasource
+
+    @valid_attrs %{actions: %{}, comment: "some comment", definition: %{}, name: "some name", version: "some version"}
+    @update_attrs %{actions: %{}, comment: "some updated comment", definition: %{}, name: "some updated name", version: "some updated version"}
+    @invalid_attrs %{actions: nil, comment: nil, definition: nil, name: nil, version: nil}
+
+    def datasource_fixture(attrs \\ %{}) do
+      {:ok, datasource} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Forms.create_datasource()
+
+      datasource
+    end
+
+    test "list_datasources/0 returns all datasources" do
+      datasource = datasource_fixture()
+      assert Forms.list_datasources() == [datasource]
+    end
+
+    test "get_datasource!/1 returns the datasource with given id" do
+      datasource = datasource_fixture()
+      assert Forms.get_datasource!(datasource.id) == datasource
+    end
+
+    test "create_datasource/1 with valid data creates a datasource" do
+      assert {:ok, %Datasource{} = datasource} = Forms.create_datasource(@valid_attrs)
+      assert datasource.actions == %{}
+      assert datasource.comment == "some comment"
+      assert datasource.definition == %{}
+      assert datasource.name == "some name"
+      assert datasource.version == "some version"
+    end
+
+    test "create_datasource/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Forms.create_datasource(@invalid_attrs)
+    end
+
+    test "update_datasource/2 with valid data updates the datasource" do
+      datasource = datasource_fixture()
+      assert {:ok, datasource} = Forms.update_datasource(datasource, @update_attrs)
+      assert %Datasource{} = datasource
+      assert datasource.actions == %{}
+      assert datasource.comment == "some updated comment"
+      assert datasource.definition == %{}
+      assert datasource.name == "some updated name"
+      assert datasource.version == "some updated version"
+    end
+
+    test "update_datasource/2 with invalid data returns error changeset" do
+      datasource = datasource_fixture()
+      assert {:error, %Ecto.Changeset{}} = Forms.update_datasource(datasource, @invalid_attrs)
+      assert datasource == Forms.get_datasource!(datasource.id)
+    end
+
+    test "delete_datasource/1 deletes the datasource" do
+      datasource = datasource_fixture()
+      assert {:ok, %Datasource{}} = Forms.delete_datasource(datasource)
+      assert_raise Ecto.NoResultsError, fn -> Forms.get_datasource!(datasource.id) end
+    end
+
+    test "change_datasource/1 returns a datasource changeset" do
+      datasource = datasource_fixture()
+      assert %Ecto.Changeset{} = Forms.change_datasource(datasource)
+    end
+  end
 end

@@ -6,8 +6,6 @@ defmodule FormManagerWeb.FormController do
 
   action_fallback FormManagerWeb.FallbackController
 
-  def definition(conn, _params), do: render(conn, "definition.json")
-
   def index(conn, _params) do
     forms = Forms.list_forms()
     render(conn, "index.json", forms: forms)

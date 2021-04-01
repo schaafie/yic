@@ -6,6 +6,11 @@ defmodule PublicationManager.Repo do
   DATABASE_URL environment variable.
   """
   def init(_, opts) do
-    {:ok, Keyword.put(opts, :url, System.get_env("DATABASE_URL"))}
+    {:ok, opts 
+    |> Keyword.put( :url, System.get_env("DATABASE_URL"))
+    |> Keyword.put( :username, System.get_env("PGUSER"))
+    |> Keyword.put( :password, System.get_env("PGPASSWORD"))
+    |> Keyword.put( :hostname, System.get_env("PGHOST"))
+    |> Keyword.put( :port, System.get_env("PGPORT") |> String.to_integer) }
   end
 end
