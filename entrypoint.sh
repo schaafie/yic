@@ -4,8 +4,7 @@
 
 # Docker entrypoint script.
 # Wait until Postgres is ready
-while ! pg_isready -q -h $PGHOST -p $PGPORT -U $PGUSER
-do
+while ! pg_isready -q -h $PGHOST -p $PGPORT -U $PGUSER; do
   echo "$(date) - waiting for database to start"
   sleep 2
 done
@@ -24,7 +23,7 @@ for APP in $(ls -d *); do
   COUNT=$(find . -name repo.ex | wc -l)
   # If has a repo and database is not created, build the new database
   # NOTE: Environment variables starting with PG are crucial for correct connection
-  if [[ $COUNT = 1 ]] && [[ -z `psql -Atqc "\\list $DBNAME"` ]]; then
+  if [[ $COUNT = 1 ]] && [[ -z $(psql -Atqc "\list $DBNAME") ]]; then
     echo ">>>> Database $DBNAME does not exist. Creating..."
     mix ecto.create
     mix ecto.migrate
