@@ -28,11 +28,11 @@ Repo.insert! %Datasource{
           %{ name: "definition", type: "formdefinition", validations: [], required: "true" } ],
         globalValidations: [],
         restapi: "" },
-    actions: [  %{ id: "GETALL", name: "Get all forms", action: %{ method: "GET", url: "http://localhost:4000/form/forms" } },
-                %{ id: "GET", name: "Get a form by id", action: %{ method: "GET", url: "http://localhost:4000/form/forms/@id" } },
-                %{ id: "DELETE", name: "Delete a form", action: %{ method: "DELETE", url: "http://localhost:4000/form/forms/@id" } },
-                %{ id: "CREATE", name: "Create a form", action: %{ method: "POST", url: "http://localhost:4000/form/forms" } },
-                %{ id: "UPDATE", name: "Update a form", action: %{ method: "POST", url: "http://localhost:4000/form/forms/@id" } } ]   
+    actions: [  %{ id: "GETALL", name: "Get all forms", action: %{ method: "GET", url: "http://localhost:8080/api/form/forms", parms: []  } },
+                %{ id: "GET", name: "Get a form by id", action: %{ method: "GET", url: "http://localhost:8080/api/form/forms/@id", parms: [%{url_item: "@id", data_item: "id"}] } },
+                %{ id: "DELETE", name: "Delete a form", action: %{ method: "DELETE", url: "http://localhost:8080/api/form/forms/@id", parms: [%{url_item: "@id", data_item: "id"}] } },
+                %{ id: "CREATE", name: "Create a form", action: %{ method: "POST", url: "http://localhost:8080/api/form/forms", parms: []  } },
+                %{ id: "UPDATE", name: "Update a form", action: %{ method: "POST", url: "http://localhost:8080/api/form/forms/@id", parms: [%{url_item: "@id", data_item: "id"}] } } ]   
 }
 
 Repo.insert! %Datasource{
@@ -49,11 +49,11 @@ Repo.insert! %Datasource{
             %{ name: "actions", type: "array", validations: [], required: "true" } ],
         globalValidations: [],
         restapi: "" },
-    actions: [  %{ id: "GETALL", name: "Get all forms", action: %{ method: "GET", url: "http://localhost:4000/form/datasources" } },
-                %{ id: "GET", name: "Get a form by id", action: %{ method: "GET", url: "http://localhost:4000/form/datasources/@id" } },
-                %{ id: "DELETE", name: "Delete a form", action: %{ method: "DELETE", url: "http://localhost:4000/form/datasources/@id" } },
-                %{ id: "CREATE", name: "Create a form", action: %{ method: "POST", url: "http://localhost:4000/form/datasources" } },
-                %{ id: "UPDATE", name: "Update a form", action: %{ method: "POST", url: "http://localhost:4000/form/datasources/@id" } } ]
+    actions: [  %{ id: "GETALL", name: "Get all forms", action: %{ method: "GET", url: "http://localhost:8080/api/form/datasources", parms: [] } },
+                %{ id: "GET", name: "Get a form by id", action: %{ method: "GET", url: "http://localhost:8080/api/form/datasources/@id", parms: [ %{url_item: "@id", data_item: "id"}] } },
+                %{ id: "DELETE", name: "Delete a form", action: %{ method: "DELETE", url: "http://localhost:8080/api/form/datasources/@id", parms: [ %{url_item: "@id", data_item: "id"}] } },
+                %{ id: "CREATE", name: "Create a form", action: %{ method: "POST", url: "http://localhost:8080/api/form/datasources", parms: [] } },
+                %{ id: "UPDATE", name: "Update a form", action: %{ method: "POST", url: "http://localhost:8080/api/form/datasources/@id", parms: [ %{url_item: "@id", data_item: "id"}] } } ]
 }
 
 Repo.insert! %Datasource{
@@ -68,14 +68,16 @@ Repo.insert! %Datasource{
             %{ name: "lastname", type: "text", validations: [], required: "true" },            
             %{ name: "email", type: "email", validations: [], required: "true" },            
             %{ name: "login", type: "text", validations: [], required: "true" },
-            %{ name: "password", type: "text", validations: [], required: "true" } ],
+            %{ name: "password", type: "text", validations: [], required: "true" } 
+        ],
         globalValidations: [],
-        restapi: "" },
-    actions: [  %{ id: "GETALL", name: "Get all", action: %{ method: "GET", url: "http://localhost:4000/user/users" } },
-                %{ id: "GET", name: "Get by id", action: %{ method: "GET", url: "http://localhost:4000/user/users/@id" } },
-                %{ id: "DELETE", name: "Delete", action: %{ method: "DELETE", url: "http://localhost:4000/user/users/@id" } },
-                %{ id: "CREATE", name: "Create", action: %{ method: "POST", url: "http://localhost:4000/user/users" } },
-                %{ id: "UPDATE", name: "Update", action: %{ method: "POST", url: "http://localhost:4000/user/users/@id" } } ]
+        restapi: ""
+    },
+    actions: [  %{ id: "GETALL", name: "Get all", action: %{ method: "GET", url: "http://localhost:8080/api/user/users" }, parms: [] },
+                %{ id: "GET", name: "Get by id", action: %{ method: "GET", url: "http://localhost:8080/api/user/users/@id" }, parms: [ %{url_item: "@id", data_item: "id"} ] },
+                %{ id: "DELETE", name: "Delete", action: %{ method: "DELETE", url: "http://localhost:8080/api/user/users/@id" }, parms: [ %{url_item: "@id", data_item: "id"} ] },
+                %{ id: "CREATE", name: "Create", action: %{ method: "POST", url: "http://localhost:8080/api/user/users" }, parms: [] },
+                %{ id: "UPDATE", name: "Update", action: %{ method: "POST", url: "http://localhost:8080/api/user/users/@id" }, parms: [ %{url_item: "@id", data_item: "id"}] } ]
 }
 
 Repo.insert! %Form{
@@ -87,7 +89,9 @@ Repo.insert! %Form{
         type: "overview",
         title: "Form overview", 
         globalValidations: [],
-        addaction: %{action: "ADD", object: "FORM", type: "button", label: "new"},
+        actions: [ 
+            %{ id: "add", object: "FORM", action: "ADD", type: "button", label: "new"} 
+        ],
         elements: [
             %{ type: "integer", datapath: "id", label: "Id" }, 
             %{ type: "text", datapath: "name", label: "Form name" }, 
@@ -95,10 +99,13 @@ Repo.insert! %Form{
             %{ type: "text", datapath: "author", label: "Author" }, 
             %{ type: "actions", label: "Action", items: [
                 %{ action: "DELETE", object: "DATA", parm: "id", type: "button", label: "delete" },
-                %{ action: "EDIT", object: "FORM", parm: "id", type: "button", label: "edit" } ] } ], 
+                %{ action: "EDIT", object: "FORM", parm: "id", type: "button", label: "edit" } 
+            ] } 
+        ], 
         formactions: [ 
-            %{ id: "EDIT", name: "Edit form", action: %{ method: "GET", url: "http://localhost:8080/admin/forms/@id" } },
-            %{ id: "ADD", name: "Add form", action: %{ method: "GET", url: "http://localhost:8080//admin/forms/0" } } ]
+            %{ id: "EDIT", name: "Edit form", action: %{ method: "GET", url: "http://localhost:8080/admin/forms/@id", parms: [ %{url_item: "@id", data_item: "id"}] } },
+            %{ id: "ADD", name: "Add form", action: %{ method: "GET", url: "http://localhost:8080//admin/forms/0", parms: [] } } 
+        ]
     }
 }
 
@@ -111,9 +118,11 @@ Repo.insert! %Form{
         title: "Form details", 
         type: "detail",
         globalValidations: [], 
-        createaction: %{ action: "CREATE", object: "DATA", parm: "id", type: "button", label: "Save"},
-        updateaction: %{ action: "UPDATE", object: "DATA", parm: "id", type: "button", label: "Save"},
-        backaction: %{ action: "CANCEL", object: "FORM", type: "button", label: "Back"},
+        actions: [
+            %{ id: "create", object: "DATA", action: "CREATE", parm: "id", type: "button", label: "Save"},
+            %{ id: "update", object: "DATA", action: "UPDATE", parm: "id", type: "button", label: "Save"},
+            %{ id: "back",   object: "FORM", action: "CANCEL", type: "button", label: "Back"}
+        ],
         elements: [
             %{ type: "hidden", datapath: "id"}, 
             %{ type: "text", datapath: "name", label: "Form name"}, 
@@ -121,7 +130,9 @@ Repo.insert! %Form{
             %{ type: "text", datapath: "author", label: "Author"}, 
             %{ type: "formdefinition", datapath: "definition", label: "Form Definition"}
         ],
-        formactions: [ %{ id: "CANCEL", name: "Edit form", action: %{ action: "GET", url: "http://localhost:8080/admin/forms" } } ]
+        formactions: [ 
+            %{ id: "CANCEL", name: "Edit form", action: %{ action: "GET", url: "http://localhost:8080/admin/forms", parms: [] } } 
+        ]
     }
 }
 
@@ -134,7 +145,9 @@ Repo.insert! %Form{
         title: "User overview", 
         type: "overview",
         globalValidations: [], 
-        addaction: %{action: "ADD", object: "FORM", type: "button", label: "new"},
+        actions: [ 
+            %{ id: "add", action: "ADD", object: "FORM", type: "button", label: "new"} 
+        ],
         elements: [
             %{ type: "integer", datapath: "id", label: "Id" }, 
             %{ type: "text", datapath: "firstname", label: "First name" }, 
@@ -142,10 +155,13 @@ Repo.insert! %Form{
             %{ type: "text", datapath: "login", label: "Login" }, 
             %{ type: "actions", label: "Action", items: [
                 %{ action: "DELETE", object: "DATA", parm: "id", type: "button", label: "delete" },
-                %{ action: "EDIT", object: "FORM", parm: "id", type: "button", label: "edit" } ] } ], 
+                %{ action: "EDIT", object: "FORM", parm: "id", type: "button", label: "edit" } 
+            ] } 
+        ], 
         formactions: [ 
-            %{ id: "EDIT", name: "Edit form", action: %{ action: "GET", url: "http://localhost:8080/admin/users/@id" } },
-            %{ id: "ADD", name: "Add form", action: %{ action: "GET", url: "http://localhost:8080//admin/users/0" } } ]
+            %{ id: "EDIT", name: "Edit form", action: %{ action: "GET", url: "http://localhost:8080/admin/users/@id", parms: [ %{url_item: "@id", data_item: "id"} ] } },
+            %{ id: "ADD", name: "Add form", action: %{ action: "GET", url: "http://localhost:8080//admin/users/0", parms: [] } } 
+        ]
     }
 }
 
@@ -157,17 +173,22 @@ Repo.insert! %Form{
     definition: %{ 
         type: "detail",
         title: "User details", 
-        globalValidations: [], 
-        createaction: %{ action: "CREATE", object: "DATA", parm: "id", type: "button", label: "Save"},
-        saveaction: %{ action: "UPDATE", object: "DATA", parm: "id", type: "button", label: "Save"},
-        backaction: %{ action: "CANCEL", object: "FORM", type: "button", label: "Back"},
+        globalValidations: [],
+        actions: [
+            %{ id: "create", action: "CREATE", object: "DATA", parm: "id", type: "button", label: "Save"},
+            %{ id: "save", action: "UPDATE", object: "DATA", parm: "id", type: "button", label: "Save"},
+            %{ id: "back", action: "CANCEL", object: "FORM", type: "button", label: "Back"}
+        ],
         elements: [
             %{ type: "hidden", datapath: "id"}, 
             %{ type: "text", datapath: "firstname", label: "First name"}, 
             %{ type: "text", datapath: "lastname", label: "Last name"}, 
             %{ type: "text", datapath: "email", label: "Email"}, 
             %{ type: "text", datapath: "login", label: "Login"},
-            %{ type: "text", datapath: "Password", label: "password"} ],
-        formactions: [  %{ id: "CANCEL", name: "Cancel user edit", action: %{ action: "GET", url: "http://localhost:8080/admin/users" } } ]
+            %{ type: "text", datapath: "Password", label: "password"} 
+        ],
+        formactions: [
+            %{ id: "CANCEL", name: "Cancel user edit", action: %{ action: "GET", url: "http://localhost:8080/admin/users", parms: [] } } 
+        ]
     }
 }

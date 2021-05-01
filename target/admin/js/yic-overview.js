@@ -1,4 +1,5 @@
 import YicSetBase from './yic-set-base.js';
+import dataVault from './data-vault.js';
 
 const template = document.createElement('template');
 template.innerHTML = `<style>
@@ -8,10 +9,10 @@ template.innerHTML = `<style>
 }
 
 h2 {
-    padding: 20px 50px;
     margin: 50px 50px 0px;
+    padding: 20px 50px;
+    max-width:1200px;
     border-bottom: 2px solid #ccc;
-    max-width:400px;
 }
 
 .container {
@@ -83,8 +84,9 @@ export default class YicOverview extends HTMLElement {
 
     connectedCallback() {}
 
-    setData(data) { this.dataRows = data; }
-    setDataDef(datadef) { this.dataDef = datadef; }
+    setDataVault( data, datadef ) {
+        this.datavault = new dataVault( data, datadef ); 
+    }
     
     setDefinition(pageElement) { 
         this.pageElement = pageElement;
@@ -93,76 +95,82 @@ export default class YicOverview extends HTMLElement {
 
     populate() {
         this.populateHeader();
-        this.dataRows.forEach(row => {
+        var numRows = this.datavault.rowCount();
+        for (var i=0;i<numRows;i++) {
             var docrow = document.createElement('tr');
-            this.populateRow(docrow, row);
+            this.populateRow(docrow, i);
             this.$body.appendChild(docrow);
-        })
+        }
     }
 
     handleCall( id ) {
         if (this.formActions[id].type == "FORM") {
             var action = new String( this.formActions[id].action.url );
-            var url = action.replace( /@id/i, this.formActions[id].id );
+            var url = action.replace( /@id/i, this.formActions[id].element.value );
             window.location.href = url;
         } else {
             
         }
-   
     }
 
-    populateRow(docrow, row) {
+    populateRow(docrow, rowindex) {
         this.columns.forEach( column => {
             var rowcol = document.createElement('td');
             switch( column.type ) {
                 case "actions":
                     column.items.forEach( item => {
-                        var button = document.createElement("yic-form-action");
-                        button.setAttribute("label", item.label);
-                        if (item.object == "FORM") {
-                            this.definition.formactions.forEach( formaction => {
-                                if (formaction.id == item.action) {
-                                    var handlerObject   = {};
-                                    handlerObject.action= formaction.action;
-                                    handlerObject.id    = row.id;
-                                    handlerObject.type  = item.object;
-                                    // Add object to action stack and save the entry position (thus -1 because push results in length of array)
-                                    var objectId        = this.formActions.push( handlerObject ) - 1;
-                                    button.addEventListener( 'click', () => { this.handleCall( objectId ); } );
-                                }
-                            });
-                        } else if (item.object == "DATA") {
-                            this.dataDef.actions.forEach( formaction => {
-                                if (formaction.id == item.action) {
-                                    var handlerObject   = {};
-                                    handlerObject.action= formaction.action;
-                                    handlerObject.id    = row.id;
-                                    handlerObject.type  = item.object;
-                                    // Add object to action stack and save the entry position (thus -1 because push results in length of array)
-                                    var objectId        = this.formActions.push( handlerObject ) - 1;
-                                    button.addEventListener( 'click', () => { this.handleCall( objectId ); } );
-                                }
-                            });
-                        }
-                        rowcol.appendChild(button);
+                        rowcol.appendChild(this.createActionButton( item, rowindex ));
                     });
                     break;
                 default:
-                    if ( row[column.datapath] ) {
-                        rowcol.innerHTML = row[column.datapath];
-                    }
+                    var element = this.datavault.getSetElement( rowindex, column.datapath );
+                    rowcol.innerHTML = element.value;
                     break;
             }
             docrow.appendChild(rowcol);
         })
     }
 
-    deleteItem(id) {
-        console.log("Delete "+ id);
-        
+    createActionButton( item, rowindex ) {
+        // Create action
+        var actionId    = this.CreateFormAction( item, rowindex );
+        // Create Button
+        var button      = document.createElement("yic-form-action");
+        button.setAttribute("label", item.label);
+        // Add action to button
+        button.addEventListener( 'click', () => { 
+            this.handleCall( actionId ); 
+        });
+        return button;
     }
-    editItem(id) {
-        console.log("Edit "+ id);
+
+    CreateFormAction( item, rowindex ) {
+        var actionId;
+
+        if (item.object == "FORM") {
+            this.definition.formactions.forEach( formaction => {
+                if (formaction.id == item.action) {
+                    var handlerObject   = {};
+                    handlerObject.action    = formaction.action;
+                    handlerObject.element   = this.datavault.getSetElement( rowindex, "id" );
+                    handlerObject.type      = item.object;
+                    // Add object to action stack and save the entry position (thus -1 because push results in length of array)
+                    actionId = this.formActions.push( handlerObject ) - 1;
+                }
+            });
+        } else if (item.object == "DATA") {
+            this.datavault.actions.forEach( formaction => {
+                if (formaction.id == item.action) {
+                    var handlerObject   = {};
+                    handlerObject.action    = formaction.action;
+                    handlerObject.element   = this.datavault.getSetElement( rowindex, "id" );
+                    handlerObject.type      = item.object;
+                    // Add object to action stack and save the entry position (thus -1 because push results in length of array)
+                    actionId = this.formActions.push( handlerObject ) - 1;
+                }
+            });
+        }
+        return actionId;
     }
 
     populateHeader() {

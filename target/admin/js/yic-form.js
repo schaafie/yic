@@ -42,8 +42,6 @@ export default class YicForm extends YicSetBase {
         this._shadowRoot.appendChild(template.content.cloneNode(true));
         this.$children = this._shadowRoot.querySelector('#yic-form');
         this.$title = this._shadowRoot.querySelector('h2');
-        this.xhr = new XMLHttpRequest();
-        this.xhr.open( 'POST', this.definition.action );
     }
 
     setDataVault(data, dataDef) { 
@@ -53,6 +51,7 @@ export default class YicForm extends YicSetBase {
     setDefinition(pageElement) { 
         this.pageElement = pageElement;
         this.definition = pageElement.definition; 
+        this.formActions = pageElement.definition.formactions; 
     }
 
     populateForm() {
@@ -77,23 +76,15 @@ export default class YicForm extends YicSetBase {
     }
 
     submitForm() {
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", this.definition.action, true);
-        xhr.onreadystatechange = function () {
-            if(xhr.readyState === XMLHttpRequest.DONE) {
-                var status = xhr.status;
-                if (status === 0 || (status >= 200 && status < 400)) {
-                    this.handleRespons(xhr.responseText);
-                } else {
-                // Oh no! There has been an error with the request!
-                }
-            }
-        };
-        xhr.send(this.definition);
+        this.datavault.save( this.handleError.bind(this), this.handleSucces.bind(this) );
     }
 
-    handleRespons(response) {
+    handleError( txt ) {
+        console.log( "Error: " + txt );
+    }
 
+    handleSucces() {
+        console.log( "Succes: " + txt );
     }
 
     static get observedAttributes() { 

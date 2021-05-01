@@ -57,8 +57,9 @@ export default class YicFormEmailInput extends YicSetBase {
         this.setAttribute('name', element.name);
         this.setAttribute('count', this.elementcounter);
         this.setAttribute('label', element.label);
-        this.setAttribute('value', this.dataVault.getValue( element.datapath ));
         this.setAttribute('required', element.required);
+        var val = this.dataVault.getValue( element.datapath );
+        if (val !==undefined)  this.setAttribute('value', val);
     }
 
     static get observedAttributes() { 

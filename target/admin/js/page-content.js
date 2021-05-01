@@ -52,8 +52,7 @@ export default class pageContent {
         switch(pageelement.definition.type) {
             case "overview":
                 var overview = document.createElement("yic-overview");
-                overview.setData( data );
-                overview.setDataDef( datadef );
+                overview.setDataVault( data, datadef );
                 overview.setDefinition( pageelement );
                 overview.populate();        
                 document.querySelector("#main-content").appendChild(overview);

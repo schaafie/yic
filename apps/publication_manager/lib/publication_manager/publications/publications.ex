@@ -78,8 +78,13 @@ defmodule PublicationManager.Publications do
   end
 
   def get_data path, id do
-    datapath = "http://localhost:4000" <> String.replace_trailing(path, "@id", id)
-    call_api datapath
+    case id do
+      0 ->
+        %{}
+      _ ->
+        datapath = "http://localhost:4000" <> String.replace_trailing(path, "@id", id)
+        call_api datapath
+    end
   end
 
   def get_data_def path do

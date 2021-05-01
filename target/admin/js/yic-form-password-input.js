@@ -71,7 +71,8 @@ export default class YicFormPasswordInput extends YicSetBase {
         this.setAttribute('count', this.elementcounter);
         this.setAttribute('label', element.label);
         this.setAttribute('required', element.required);
-        this.setAttribute('value', this.dataVault.getValue( element.datapath ));
+        var val = this.dataVault.getValue( element.datapath );
+        if (val !==undefined)  this.setAttribute('value', val);
     }
 
     static get observedAttributes() { 
