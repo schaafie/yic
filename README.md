@@ -32,15 +32,18 @@ mix phx.gen.json Iam Action actions name:string comment:string system_id:referen
 
 mix phx.gen.html Iam Allow allows user_id:references:users role_id:references:roles group_id:references:groups action_id:references:actions --web Html.Iam
 mix phx.gen.json Iam Allow allows user_id:references:users role_id:references:roles group_id:references:groups action_id:references:actions --web Api.Iam --no-context
+
+mix phx.gen.html Iam Denie denies user_id:references:users role_id:references:roles group_id:references:groups action_id:references:actions --web Html.Iam
+mix phx.gen.json Iam Denie denies user_id:references:users role_id:references:roles group_id:references:groups action_id:references:actions --web Api.Iam --no-context
 ```
 
 2. Form Manager
 ```
 mix phx.gen.html Forms Form forms name:string comment:string version:string author:references:users definition:string --web Html.Forms
-mix phx.gen.json Forms Form forms name:string comment:string version:string author:references:users definition:string --web Html.Forms --no-context
+mix phx.gen.json Forms Form forms name:string comment:string version:string author:references:users definition:string --web Api.Forms --no-context
 
-mix phx.gen.html Forms Datasource datasources name:string comment:string version:string definition:string actions:array --web Html.Forms
-mix phx.gen.json Forms Datasource datasources name:string comment:string version:string definition:string actions:array --web Html.Forms --no-context
+mix phx.gen.html Forms Datasource datasources name:string comment:string version:string definition:string actions:array:string --web Html.Forms
+mix phx.gen.json Forms Datasource datasources name:string comment:string version:string definition:string actions:array:string --web Api.Forms --no-context
 ```
 
 3. Publication Manager
@@ -57,10 +60,17 @@ mix phx.gen.json Publications Publication publications target:references:pubtarg
 
 
 TODO:
+
 4. api
+
 5. asset
+
 6. content
+
 7. data
+
 8. site
+
 9. versioning
+
 10. workflow
