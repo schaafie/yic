@@ -1,0 +1,34 @@
+<h1>Listing Datasources</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Comment</th>
+      <th>Version</th>
+      <th>Definition</th>
+      <th>Actions</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for datasource <- @datasources do %>
+    <tr>
+      <td><%= datasource.name %></td>
+      <td><%= datasource.comment %></td>
+      <td><%= datasource.version %></td>
+      <td><%= datasource.definition %></td>
+      <td><%= datasource.actions %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.html_forms_datasource_path(@conn, :show, datasource) %></span>
+        <span><%= link "Edit", to: Routes.html_forms_datasource_path(@conn, :edit, datasource) %></span>
+        <span><%= link "Delete", to: Routes.html_forms_datasource_path(@conn, :delete, datasource), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Datasource", to: Routes.html_forms_datasource_path(@conn, :new) %></span>

@@ -1,0 +1,28 @@
+<h1>Listing Roles</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for roles <- @roles do %>
+    <tr>
+      <td><%= roles.name %></td>
+      <td><%= roles.description %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.html_iam_roles_path(@conn, :show, roles) %></span>
+        <span><%= link "Edit", to: Routes.html_iam_roles_path(@conn, :edit, roles) %></span>
+        <span><%= link "Delete", to: Routes.html_iam_roles_path(@conn, :delete, roles), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Roles", to: Routes.html_iam_roles_path(@conn, :new) %></span>

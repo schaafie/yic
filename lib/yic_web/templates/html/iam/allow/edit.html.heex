@@ -1,0 +1,5 @@
+<h1>Edit Allow</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.html_iam_allow_path(@conn, :update, @allow)) %>
+
+<span><%= link "Back", to: Routes.html_iam_allow_path(@conn, :index) %></span>

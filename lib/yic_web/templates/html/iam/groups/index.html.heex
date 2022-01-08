@@ -1,0 +1,28 @@
+<h1>Listing Groups</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Comment</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for groups <- @groups do %>
+    <tr>
+      <td><%= groups.name %></td>
+      <td><%= groups.comment %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.html_iam_groups_path(@conn, :show, groups) %></span>
+        <span><%= link "Edit", to: Routes.html_iam_groups_path(@conn, :edit, groups) %></span>
+        <span><%= link "Delete", to: Routes.html_iam_groups_path(@conn, :delete, groups), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Groups", to: Routes.html_iam_groups_path(@conn, :new) %></span>

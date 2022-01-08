@@ -1,0 +1,5 @@
+<h1>Edit Datasource</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.html_forms_datasource_path(@conn, :update, @datasource)) %>
+
+<span><%= link "Back", to: Routes.html_forms_datasource_path(@conn, :index) %></span>

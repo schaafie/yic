@@ -1,0 +1,33 @@
+<h1>Show Users</h1>
+
+<ul>
+
+  <li>
+    <strong>Firstname:</strong>
+    <%= @users.firstname %>
+  </li>
+
+  <li>
+    <strong>Lastname:</strong>
+    <%= @users.lastname %>
+  </li>
+
+  <li>
+    <strong>Email:</strong>
+    <%= @users.email %>
+  </li>
+
+  <li>
+    <strong>Login:</strong>
+    <%= @users.login %>
+  </li>
+
+  <li>
+    <strong>Password:</strong>
+    <%= @users.password %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.html_iam_users_path(@conn, :edit, @users) %></span> |
+<span><%= link "Back", to: Routes.html_iam_users_path(@conn, :index) %></span>

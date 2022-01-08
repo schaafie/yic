@@ -1,0 +1,23 @@
+<h1>Show System</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @system.name %>
+  </li>
+
+  <li>
+    <strong>Comment:</strong>
+    <%= @system.comment %>
+  </li>
+
+  <li>
+    <strong>Host:</strong>
+    <%= @system.host %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.html_iam_system_path(@conn, :edit, @system) %></span> |
+<span><%= link "Back", to: Routes.html_iam_system_path(@conn, :index) %></span>

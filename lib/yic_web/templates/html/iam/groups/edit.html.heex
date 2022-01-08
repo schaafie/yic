@@ -1,0 +1,5 @@
+<h1>Edit Groups</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.html_iam_groups_path(@conn, :update, @groups)) %>
+
+<span><%= link "Back", to: Routes.html_iam_groups_path(@conn, :index) %></span>

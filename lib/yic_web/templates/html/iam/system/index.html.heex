@@ -1,0 +1,30 @@
+<h1>Listing Systems</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Comment</th>
+      <th>Host</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for system <- @systems do %>
+    <tr>
+      <td><%= system.name %></td>
+      <td><%= system.comment %></td>
+      <td><%= system.host %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.html_iam_system_path(@conn, :show, system) %></span>
+        <span><%= link "Edit", to: Routes.html_iam_system_path(@conn, :edit, system) %></span>
+        <span><%= link "Delete", to: Routes.html_iam_system_path(@conn, :delete, system), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New System", to: Routes.html_iam_system_path(@conn, :new) %></span>

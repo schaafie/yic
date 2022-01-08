@@ -1,0 +1,24 @@
+<h1>Listing Allows</h1>
+
+<table>
+  <thead>
+    <tr>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for allow <- @allows do %>
+    <tr>
+
+      <td>
+        <span><%= link "Show", to: Routes.html_iam_allow_path(@conn, :show, allow) %></span>
+        <span><%= link "Edit", to: Routes.html_iam_allow_path(@conn, :edit, allow) %></span>
+        <span><%= link "Delete", to: Routes.html_iam_allow_path(@conn, :delete, allow), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Allow", to: Routes.html_iam_allow_path(@conn, :new) %></span>

@@ -1,0 +1,24 @@
+<h1>Listing Denies</h1>
+
+<table>
+  <thead>
+    <tr>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for denie <- @denies do %>
+    <tr>
+
+      <td>
+        <span><%= link "Show", to: Routes.html_iam_denie_path(@conn, :show, denie) %></span>
+        <span><%= link "Edit", to: Routes.html_iam_denie_path(@conn, :edit, denie) %></span>
+        <span><%= link "Delete", to: Routes.html_iam_denie_path(@conn, :delete, denie), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Denie", to: Routes.html_iam_denie_path(@conn, :new) %></span>

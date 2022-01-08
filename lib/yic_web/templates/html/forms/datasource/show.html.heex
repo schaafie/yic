@@ -1,0 +1,33 @@
+<h1>Show Datasource</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @datasource.name %>
+  </li>
+
+  <li>
+    <strong>Comment:</strong>
+    <%= @datasource.comment %>
+  </li>
+
+  <li>
+    <strong>Version:</strong>
+    <%= @datasource.version %>
+  </li>
+
+  <li>
+    <strong>Definition:</strong>
+    <%= @datasource.definition %>
+  </li>
+
+  <li>
+    <strong>Actions:</strong>
+    <%= @datasource.actions %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.html_forms_datasource_path(@conn, :edit, @datasource) %></span> |
+<span><%= link "Back", to: Routes.html_forms_datasource_path(@conn, :index) %></span>

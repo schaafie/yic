@@ -1,0 +1,23 @@
+<h1>Show Action</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @action.name %>
+  </li>
+
+  <li>
+    <strong>Comment:</strong>
+    <%= @action.comment %>
+  </li>
+
+  <li>
+    <strong>Url:</strong>
+    <%= @action.url %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.html_iam_action_path(@conn, :edit, @action) %></span> |
+<span><%= link "Back", to: Routes.html_iam_action_path(@conn, :index) %></span>

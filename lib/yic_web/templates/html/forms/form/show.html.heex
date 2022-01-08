@@ -1,0 +1,28 @@
+<h1>Show Form</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @form.name %>
+  </li>
+
+  <li>
+    <strong>Comment:</strong>
+    <%= @form.comment %>
+  </li>
+
+  <li>
+    <strong>Version:</strong>
+    <%= @form.version %>
+  </li>
+
+  <li>
+    <strong>Definition:</strong>
+    <%= @form.definition %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.html_forms_form_path(@conn, :edit, @form) %></span> |
+<span><%= link "Back", to: Routes.html_forms_form_path(@conn, :index) %></span>

@@ -16,14 +16,47 @@ defmodule YicWeb.Router do
 
   scope "/", YicWeb do
     pipe_through :browser
-
     get "/", PageController, :index
   end
 
+  scope "/html/iam", YicWeb.Html.Iam, as: :html_iam do
+    pipe_through :browser
+
+    resources "/users", UsersController
+    resources "/roles", RolesController
+    resources "/groups", GroupsController
+    resources "/systems", SystemController
+    resources "/actions", ActionController
+    resources "/allows", AllowController
+    resources "/denies", DenieController
+  end
+
+  scope "/html/forms", YicWeb.Html.Forms, as: :html_forms do
+    pipe_through :browser
+    
+    resources "/forms", FormController
+    resources "/datasources", DatasourceController
+  end
+
   # Other scopes may use custom stacks.
-  # scope "/api", YicWeb do
-  #   pipe_through :api
-  # end
+  scope "/api/iam", YicWeb.Api.Iam, as: :api_iam do
+    pipe_through :api
+
+    resources "/users", UsersController
+    resources "/roles", RolesController
+    resources "/groups", GroupsController
+    resources "/systems", SystemController
+    resources "/actions", ActionController
+    resources "/allows", AllowController
+    resources "/denies", DenieController
+  end
+
+  scope "/api/forms", YicWeb.Api.Forms, as: :api_forms do 
+    pipe_through :api                                     
+                                                       
+    resources "/forms", FormController
+    resources "/datasources", DatasourceController                    
+  end                                                     
 
   # Enables LiveDashboard only for development
   #
