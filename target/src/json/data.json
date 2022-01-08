@@ -1,0 +1,17 @@
+{
+    "voornaam": "Pieter",
+    "achternaam": "Schaafsma",
+    "Geboortedatum": "11-10-1969",
+    "geslacht": "man",
+    "partner": {
+        "voornaam": "Karen",
+        "achternaam": "Leijnse",
+        "Geboortedatum": "08-10-1972", 
+        "geslacht": "vrouw"
+    },
+    "kinderen": [
+        { "voornaam": "Jort", "achternaam": "Schaafsma", "geboortedatum": "18-11-2001", "geslacht": "man" },
+        { "voornaam": "Tije", "achternaam": "Schaafsma", "geboortedatum": "21-07-2003", "geslacht": "vrouw" },
+        { "voornaam": "Tjebbe", "achternaam": "Schaafsma", "geboortedatum": "20-05-2006", "geslacht": "man" }
+    ]
+}
