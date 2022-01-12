@@ -17,16 +17,6 @@
     <%= @users.email %>
   </li>
 
-  <li>
-    <strong>Login:</strong>
-    <%= @users.login %>
-  </li>
-
-  <li>
-    <strong>Password:</strong>
-    <%= @users.password %>
-  </li>
-
 </ul>
 
 <span><%= link "Edit", to: Routes.html_iam_users_path(@conn, :edit, @users) %></span> |

@@ -8,18 +8,14 @@ defmodule YicWeb.Api.Iam.UsersControllerTest do
   @create_attrs %{
     email: "some email",
     firstname: "some firstname",
-    lastname: "some lastname",
-    login: "some login",
-    password: "some password"
+    lastname: "some lastname"
   }
   @update_attrs %{
     email: "some updated email",
     firstname: "some updated firstname",
-    lastname: "some updated lastname",
-    login: "some updated login",
-    password: "some updated password"
+    lastname: "some updated lastname"
   }
-  @invalid_attrs %{email: nil, firstname: nil, lastname: nil, login: nil, password: nil}
+  @invalid_attrs %{email: nil, firstname: nil, lastname: nil}
 
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
@@ -43,9 +39,7 @@ defmodule YicWeb.Api.Iam.UsersControllerTest do
                "id" => ^id,
                "email" => "some email",
                "firstname" => "some firstname",
-               "lastname" => "some lastname",
-               "login" => "some login",
-               "password" => "some password"
+               "lastname" => "some lastname"
              } = json_response(conn, 200)["data"]
     end
 
@@ -68,9 +62,7 @@ defmodule YicWeb.Api.Iam.UsersControllerTest do
                "id" => ^id,
                "email" => "some updated email",
                "firstname" => "some updated firstname",
-               "lastname" => "some updated lastname",
-               "login" => "some updated login",
-               "password" => "some updated password"
+               "lastname" => "some updated lastname"
              } = json_response(conn, 200)["data"]
     end
 

@@ -22,7 +22,7 @@ config :yic, YicWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "AHoT00Af4H3ICFqVBQGZ3d7fV1fDMhrcC+z+zW2gk/mJ5yiFL+Jvdpap40KDhuXz",
+  secret_key_base: "mHSKzvBEGnm6W5M5aqUmUtiQBJUI8MJryzlugyZnTASK2ZFRxS0icVikS84gefwg",
   watchers: [
     # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}

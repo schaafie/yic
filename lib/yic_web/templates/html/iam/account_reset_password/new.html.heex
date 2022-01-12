@@ -1,0 +1,17 @@
+<h1>Forgot your password?</h1>
+
+<.form let={f} for={:account} action={Routes.html_iam_account_reset_password_path(@conn, :create)}>
+  <%= label f, :login %>
+  <%= text_input f, :login, required: true %>
+
+  <%= label f, :email %>
+  <%= email_input f, :email, required: true %>
+
+  <div>
+    <%= submit "Send instructions to reset password" %>
+  </div>
+</.form>
+
+<p>
+  <%= link "Log in", to: Routes.html_iam_account_session_path(@conn, :new) %>
+</p>

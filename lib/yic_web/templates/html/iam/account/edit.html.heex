@@ -1,0 +1,5 @@
+<h1>Edit Action</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.html_iam_account_path(@conn, :update, @account)) %>
+
+<span><%= link "Back", to: Routes.html_iam_account_path(@conn, :index) %></span>

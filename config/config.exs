@@ -15,7 +15,16 @@ config :yic, YicWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [view: YicWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: Yic.PubSub,
-  live_view: [signing_salt: "fl3AFNyx"]
+  live_view: [signing_salt: "NXH/GGEc"]
+
+config :yic, Yic.Guardian,
+    issuer: "yic",
+    secret_key: "lpsypNuD68xkKbwbmtsXBpwHEca+++a6BjlOu+Vj2CTlBeIi6H3Qd+yQ7+XCwLX7",
+    ttl: {3, :days}
+
+ config :yic, YicWeb.AuthAccessPipeline,
+    module: Yic.Guardian,
+    error_handler: YicWeb.AuthErrorHandler
 
 # Configures the mailer
 #

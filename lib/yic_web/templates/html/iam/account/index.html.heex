@@ -1,0 +1,29 @@
+<h1>Listing Accounts</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>login</th>
+      <th>confirmation</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for account <- @accounts do %>
+    <tr>
+      <td><%= account.user_id %></td>
+      <td><%= account.login %></td>
+      <td><%= account.confirmed_at %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.html_iam_account_path(@conn, :show, account) %></span>
+        <span><%= link "Edit", to: Routes.html_iam_account_path(@conn, :edit, account) %></span>
+        <span><%= link "Delete", to: Routes.html_iam_account_path(@conn, :delete, account), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New account", to: Routes.html_iam_account_path(@conn, :new) %></span>

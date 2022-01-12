@@ -1,5 +1,8 @@
 import Config
 
+# Only in tests, remove the complexity from the password hashing algorithm
+config :pbkdf2_elixir, :rounds, 1
+
 # Configure your database
 #
 # The MIX_TEST_PARTITION environment variable can be used
@@ -17,7 +20,7 @@ config :yic, Yic.Repo,
 # you can enable the server option below.
 config :yic, YicWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
-  secret_key_base: "G8DO823GBpPncmSjMVLrE8dAWHBSp0fsNDTL7nZ0Wvw6BVtxRTvU1twFg/W7YvdN",
+  secret_key_base: "yuUG7SEERprlC7xjaPHshEHKVZZVfI76TzjxH8TUbJqVKF3vGUlpRTPfFiK6b7+f",
   server: false
 
 # In test we don't send emails.

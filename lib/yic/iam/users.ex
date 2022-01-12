@@ -6,8 +6,6 @@ defmodule Yic.Iam.Users do
     field :email, :string
     field :firstname, :string
     field :lastname, :string
-    field :login, :string
-    field :password, :string
 
     timestamps()
   end
@@ -15,7 +13,7 @@ defmodule Yic.Iam.Users do
   @doc false
   def changeset(users, attrs) do
     users
-    |> cast(attrs, [:firstname, :lastname, :email, :login, :password])
-    |> validate_required([:firstname, :lastname, :email, :login, :password])
+    |> cast(attrs, [:firstname, :lastname, :email])
+    |> validate_required([:firstname, :lastname, :email])
   end
 end

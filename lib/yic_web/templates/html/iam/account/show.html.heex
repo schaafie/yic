@@ -1,0 +1,23 @@
+<h1>Show account</h1>
+
+<ul>
+
+  <li>
+    <strong>User:</strong>
+    <%= @account.user_id %>
+  </li>
+
+  <li>
+    <strong>Login:</strong>
+    <%= @account.login %>
+  </li>
+
+  <li>
+    <strong>Confirmed:</strong>
+    <%= @account.confirmed_at %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.html_iam_account_path(@conn, :edit, @account) %></span> |
+<span><%= link "Back", to: Routes.html_iam_account_path(@conn, :index) %></span>

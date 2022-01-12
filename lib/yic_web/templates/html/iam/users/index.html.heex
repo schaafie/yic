@@ -6,8 +6,6 @@
       <th>Firstname</th>
       <th>Lastname</th>
       <th>Email</th>
-      <th>Login</th>
-      <th>Password</th>
 
       <th></th>
     </tr>
@@ -18,8 +16,6 @@
       <td><%= users.firstname %></td>
       <td><%= users.lastname %></td>
       <td><%= users.email %></td>
-      <td><%= users.login %></td>
-      <td><%= users.password %></td>
 
       <td>
         <span><%= link "Show", to: Routes.html_iam_users_path(@conn, :show, users) %></span>

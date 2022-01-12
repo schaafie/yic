@@ -3,9 +3,9 @@ defmodule YicWeb.Html.Iam.UsersControllerTest do
 
   import Yic.IamFixtures
 
-  @create_attrs %{email: "some email", firstname: "some firstname", lastname: "some lastname", login: "some login", password: "some password"}
-  @update_attrs %{email: "some updated email", firstname: "some updated firstname", lastname: "some updated lastname", login: "some updated login", password: "some updated password"}
-  @invalid_attrs %{email: nil, firstname: nil, lastname: nil, login: nil, password: nil}
+  @create_attrs %{email: "some email", firstname: "some firstname", lastname: "some lastname"}
+  @update_attrs %{email: "some updated email", firstname: "some updated firstname", lastname: "some updated lastname"}
+  @invalid_attrs %{email: nil, firstname: nil, lastname: nil}
 
   describe "index" do
     test "lists all users", %{conn: conn} do

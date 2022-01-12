@@ -1,6 +1,8 @@
 defmodule YicWeb.Router do
   use YicWeb, :router
 
+  import YicWeb.Html.Iam.AccountAuth
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -8,10 +10,20 @@ defmodule YicWeb.Router do
     plug :put_root_layout, {YicWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :fetch_current_account
   end
 
   pipeline :api do
     plug :accepts, ["json"]
+  end
+
+  pipeline :api_authenticated do
+    plug YicWeb.AuthAccessPipeline
+  end
+
+  scope "/api", YicWeb.Api.Iam, as: :api_iam do
+    pipe_through :api
+    post "/sign_in", SessionController, :create
   end
 
   scope "/", YicWeb do
@@ -19,28 +31,9 @@ defmodule YicWeb.Router do
     get "/", PageController, :index
   end
 
-  scope "/html/iam", YicWeb.Html.Iam, as: :html_iam do
-    pipe_through :browser
-
-    resources "/users", UsersController
-    resources "/roles", RolesController
-    resources "/groups", GroupsController
-    resources "/systems", SystemController
-    resources "/actions", ActionController
-    resources "/allows", AllowController
-    resources "/denies", DenieController
-  end
-
-  scope "/html/forms", YicWeb.Html.Forms, as: :html_forms do
-    pipe_through :browser
-    
-    resources "/forms", FormController
-    resources "/datasources", DatasourceController
-  end
-
   # Other scopes may use custom stacks.
   scope "/api/iam", YicWeb.Api.Iam, as: :api_iam do
-    pipe_through :api
+    pipe_through :api_authenticated
 
     resources "/users", UsersController
     resources "/roles", RolesController
@@ -52,11 +45,18 @@ defmodule YicWeb.Router do
   end
 
   scope "/api/forms", YicWeb.Api.Forms, as: :api_forms do 
-    pipe_through :api                                     
+    pipe_through :api_authenticated                                     
                                                        
     resources "/forms", FormController
     resources "/datasources", DatasourceController                    
   end                                                     
+
+
+
+  # Other scopes may use custom stacks.
+  # scope "/api", YicWeb do
+  #   pipe_through :api
+  # end
 
   # Enables LiveDashboard only for development
   #
@@ -85,4 +85,54 @@ defmodule YicWeb.Router do
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
   end
+
+  ## Authentication routes
+
+  scope "/html/iam", YicWeb.Html.Iam, as: :html_iam do
+    pipe_through [:browser, :redirect_if_account_is_authenticated]
+
+    get "/accounts/register", AccountRegistrationController, :new
+    post "/accounts/register", AccountRegistrationController, :create
+    get "/accounts/log_in", AccountSessionController, :new
+    post "/accounts/log_in", AccountSessionController, :create
+    get "/accounts/reset_password", AccountResetPasswordController, :new
+    post "/accounts/reset_password", AccountResetPasswordController, :create
+    get "/accounts/reset_password/:token", AccountResetPasswordController, :edit
+    put "/accounts/reset_password/:token", AccountResetPasswordController, :update
+  end
+
+  scope "/html/iam", YicWeb.Html.Iam, as: :html_iam do
+    pipe_through [:browser, :require_authenticated_account]
+
+    get "/accounts/settings", AccountSettingsController, :edit
+    put "/accounts/settings", AccountSettingsController, :update
+    get "/accounts/settings/confirm_email/:token", AccountSettingsController, :confirm_email
+    resources "/users", UsersController
+    resources "/accounts", AccountController
+    resources "/roles", RolesController
+    resources "/groups", GroupsController
+    resources "/systems", SystemController
+    resources "/actions", ActionController
+    resources "/allows", AllowController
+    resources "/denies", DenieController
+  end
+
+  scope "/html/forms", YicWeb.Html.Forms, as: :html_forms do
+    pipe_through [:browser, :require_authenticated_account]
+    
+    resources "/forms", FormController
+    resources "/datasources", DatasourceController
+  end
+
+  scope "/html/iam", YicWeb.Html.Iam, as: :html_iam do
+    pipe_through [:browser]
+
+    delete "/accounts/log_out", AccountSessionController, :delete
+    get "/accounts/confirm", AccountConfirmationController, :new
+    post "/accounts/confirm", AccountConfirmationController, :create
+    get "/accounts/confirm/:token", AccountConfirmationController, :edit
+    post "/accounts/confirm/:token", AccountConfirmationController, :update
+  end
+
+
 end

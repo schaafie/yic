@@ -15,9 +15,7 @@ defmodule YicWeb.Api.Iam.UsersView do
       id: users.id,
       firstname: users.firstname,
       lastname: users.lastname,
-      email: users.email,
-      login: users.login,
-      password: users.password
+      email: users.email
     }
   end
 end

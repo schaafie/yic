@@ -4,7 +4,7 @@ defmodule Yic.Iam.Allow do
 
   schema "allows" do
 
-    field :user_id, :id
+    field :account_id, :id
     field :role_id, :id
     field :group_id, :id
     field :action_id, :id
