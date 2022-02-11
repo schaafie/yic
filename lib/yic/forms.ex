@@ -8,6 +8,8 @@ defmodule Yic.Forms do
 
   alias Yic.Forms.Form
 
+  def get_datadef(), do: Form.datadef()
+
   @doc """
   Returns the list of forms.
 

@@ -1,0 +1,33 @@
+<h1>Show Api</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @api.name %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @api.description %>
+  </li>
+
+  <li>
+    <strong>Version:</strong>
+    <%= @api.version %>
+  </li>
+
+  <li>
+    <strong>Request:</strong>
+    <%= @api.request %>
+  </li>
+
+  <li>
+    <strong>Definition:</strong>
+    <%= @api.definition %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.html_apis_api_path(@conn, :edit, @api) %></span> |
+<span><%= link "Back", to: Routes.html_apis_api_path(@conn, :index) %></span>

@@ -15,9 +15,10 @@ defmodule Yic.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Yic.PubSub},
       # Start the Endpoint (http/https)
-      YicWeb.Endpoint
+      YicWeb.Endpoint,
       # Start a worker by calling: Yic.Worker.start_link(arg)
       # {Yic.Worker, arg}
+      Yic.Apis.TokenRegistry
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

@@ -81,7 +81,7 @@ defmodule YicWeb.Html.Iam.AccountAuth do
     conn
     |> renew_session()
     |> delete_resp_cookie(@remember_me_cookie)
-    |> redirect(to: "/")
+    |> redirect(to: "/html/iam/accounts")
   end
 
   @doc """
@@ -106,6 +106,14 @@ defmodule YicWeb.Html.Iam.AccountAuth do
         {nil, conn}
       end
     end
+  end
+
+  @doc """
+  Fetch user info linked to JWT .
+  """
+  def fetch_current_account_api(conn, _opts) do
+    account = conn.private.guardian_default_resource
+    assign(conn, :current_account, account)
   end
 
   @doc """

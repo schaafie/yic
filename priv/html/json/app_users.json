@@ -1,0 +1,8 @@
+{
+    "name": "User Management",
+    "base_api": "http://localhost:4000/api",
+    "actions": [
+        {"label": "overview", "formtype": "overview", "api": "/users" }
+    ]
+
+}

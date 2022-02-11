@@ -1,0 +1,5 @@
+<h1>Edit Api</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.html_apis_api_path(@conn, :update, @api)) %>
+
+<span><%= link "Back", to: Routes.html_apis_api_path(@conn, :index) %></span>

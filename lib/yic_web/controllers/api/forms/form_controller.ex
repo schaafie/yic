@@ -40,4 +40,10 @@ defmodule YicWeb.Api.Forms.FormController do
       send_resp(conn, :no_content, "")
     end
   end
+
+  def datadef( conn, _params) do
+    formdef = Forms.get_datadef()
+    respons = Poison.encode!(formdef)
+    send_resp(conn, 200, respons)
+  end
 end

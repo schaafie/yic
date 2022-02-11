@@ -1,0 +1,34 @@
+<h1>Listing Apis</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Version</th>
+      <th>Request</th>
+      <th>Definition</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for api <- @apis do %>
+    <tr>
+      <td><%= api.name %></td>
+      <td><%= api.description %></td>
+      <td><%= api.version %></td>
+      <td><%= api.request %></td>
+      <td><%= api.definition %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.html_apis_api_path(@conn, :show, api) %></span>
+        <span><%= link "Edit", to: Routes.html_apis_api_path(@conn, :edit, api) %></span>
+        <span><%= link "Delete", to: Routes.html_apis_api_path(@conn, :delete, api), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Api", to: Routes.html_apis_api_path(@conn, :new) %></span>

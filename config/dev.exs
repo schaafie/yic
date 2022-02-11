@@ -56,7 +56,7 @@ config :yic, YicWeb.Endpoint,
 config :yic, YicWeb.Endpoint,
   live_reload: [
     patterns: [
-      ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
+      ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg|ttf)$",
       ~r"priv/gettext/.*(po)$",
       ~r"lib/yic_web/(live|views)/.*(ex)$",
       ~r"lib/yic_web/templates/.*(eex)$"

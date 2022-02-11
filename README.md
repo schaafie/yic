@@ -64,10 +64,13 @@ mix phx.gen.html Publications Publication publications target:references:pubtarg
 mix phx.gen.json Publications Publication publications target:references:pubtargets path:string version:string definition:string start:utc_datetime end:utc_datetime --web Api.Publications --no-context
 ```
 
+4. Publication Manager
+```
+mix phx.gen.html Apis Api apis name:string description:string version:string request:string definition:string --web Html.Apis
+mix phx.gen.json Apis Api apis name:string description:string version:string request:string definition:string --web Api.Apis --no-context
+```
 
 TODO:
-
-4. api
 
 5. asset
 

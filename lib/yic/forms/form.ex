@@ -18,4 +18,14 @@ defmodule Yic.Forms.Form do
     |> cast(attrs, [:name, :comment, :version, :definition])
     |> validate_required([:name, :comment, :version, :definition])
   end
+
+  def datadef() do
+    %{ fields: [
+      %{ comment: "string", required: true},
+      %{ definition: "string", required: true},
+      %{ name: "string", required: true},
+      %{ version: "string", required: true},
+      %{ author: "id"}
+    ]}
+  end
 end

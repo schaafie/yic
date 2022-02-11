@@ -86,6 +86,7 @@ defmodule YicWeb do
 
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View
+      import YicWeb.InputHelpers
 
       import YicWeb.ErrorHelpers
       import YicWeb.Gettext

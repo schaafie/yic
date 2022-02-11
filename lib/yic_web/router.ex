@@ -18,8 +18,16 @@ defmodule YicWeb.Router do
   end
 
   pipeline :api_authenticated do
+    plug :accepts, ["json"]
     plug YicWeb.AuthAccessPipeline
+    plug :fetch_current_account_api
   end
+
+  pipeline :static do
+    plug Plug.Static, 
+      at: "/", 
+      from: { :yic, "priv/html" }
+  end  
 
   scope "/api", YicWeb.Api.Iam, as: :api_iam do
     pipe_through :api
@@ -47,16 +55,24 @@ defmodule YicWeb.Router do
   scope "/api/forms", YicWeb.Api.Forms, as: :api_forms do 
     pipe_through :api_authenticated                                     
                                                        
+    get "/forms/datadef", FormController, :datadef
     resources "/forms", FormController
     resources "/datasources", DatasourceController                    
   end                                                     
 
+  scope "/api/apis", YicWeb.Api.Apis, as: :api_apis do
+    pipe_through :api_authenticated                                     
 
+    resources "/apis", ApiController
+  end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", YicWeb do
-  #   pipe_through :api
-  # end
+  # API Handler through api manager
+  #
+  scope "/api", YicWeb.Api.Apis, as: :api_apis do
+    pipe_through :api_authenticated
+    get "/*path", ApiController, :handle
+    post "/*path", ApiController, :handle
+  end
 
   # Enables LiveDashboard only for development
   #
@@ -102,6 +118,16 @@ defmodule YicWeb.Router do
   end
 
   scope "/html/iam", YicWeb.Html.Iam, as: :html_iam do
+    pipe_through [:browser]
+
+    delete "/accounts/log_out", AccountSessionController, :delete
+    get "/accounts/confirm", AccountConfirmationController, :new
+    post "/accounts/confirm", AccountConfirmationController, :create
+    get "/accounts/confirm/:token", AccountConfirmationController, :edit
+    post "/accounts/confirm/:token", AccountConfirmationController, :update
+  end
+
+  scope "/html/iam", YicWeb.Html.Iam, as: :html_iam do
     pipe_through [:browser, :require_authenticated_account]
 
     get "/accounts/settings", AccountSettingsController, :edit
@@ -124,15 +150,14 @@ defmodule YicWeb.Router do
     resources "/datasources", DatasourceController
   end
 
-  scope "/html/iam", YicWeb.Html.Iam, as: :html_iam do
-    pipe_through [:browser]
-
-    delete "/accounts/log_out", AccountSessionController, :delete
-    get "/accounts/confirm", AccountConfirmationController, :new
-    post "/accounts/confirm", AccountConfirmationController, :create
-    get "/accounts/confirm/:token", AccountConfirmationController, :edit
-    post "/accounts/confirm/:token", AccountConfirmationController, :update
+  scope "/html/apis", YicWeb.Html.Apis, as: :html_apis do
+    pipe_through [:browser, :require_authenticated_account]
+    resources "/apis", ApiController
   end
 
+  scope "/", YicWeb do
+    pipe_through :static
+    get "/*path", PageController, :notfound
+  end
 
 end
