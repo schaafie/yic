@@ -1,0 +1,44 @@
+{
+    "datadef": { "dataroot": "data_types.name" },
+        "data_types": [
+           {
+                "name": "component", 
+                "type": "component", 
+                "elements": [
+                    { "name": "component_element", "type": "data_types.name", "required": true }
+                ],
+                "validations": [] 
+            },
+            { 
+                "name": "array", 
+                "type": "array", 
+                "allowed_elements": [ ]     
+             },
+            { 
+               "name": "number", 
+               "type": "integer", 
+               "validation": { "format": "" , "min": 0, "max": 10 }
+            },
+            { 
+                "name": "decimal", 
+                "type": "decimal", 
+                "validation": { "min": 0, "max": 10, "precision": 2 }
+             },
+            { 
+               "name": "string", 
+               "type": "string", 
+               "validation": { "format": "", "min_length": 0, "max_length": 10 }
+            },
+            { 
+                "name": "definition", 
+                "type": "string", 
+                "validation": [ { "format": "json", "formatdef": "data_types.name" }] 
+             },
+            { 
+               "name": "boolean", 
+               "type": "boolean", 
+               "default": true 
+            }
+        ]
+    }
+}

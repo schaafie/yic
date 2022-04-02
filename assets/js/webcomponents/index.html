@@ -1,0 +1,47 @@
+<html>
+    <head>
+    </head>
+    <body>
+
+
+    </body>
+    <script type="module">
+        import dataModel from "./data-model.js";
+
+        var object = {id:1, name:"dummy", versions: [ 
+            {version: 1, definition:{name:"tempate1",type:"detail",form:"<div></div>"} },
+            {version: 2, definition:{name:"tempate5",type:"overview",form:"<ul></ul>"} } 
+        ]};
+
+        var object2 = [ 
+            {version: 1, definition:{name:"tempate1",type:"detail",form:"<div></div>"} },
+            {version: 2, definition:{name:"tempate5",type:"overview",form:"<ul></ul>"} } 
+        ];
+
+
+        var model1 = new dataModel(object, {});
+        console.log(JSON.stringify(model1.model));
+        console.log(JSON.stringify(model1.getJson()));
+        var model2 = new dataModel(object2, {});
+        console.log(JSON.stringify(model2.model));
+        console.log(JSON.stringify(model2.getJson()));
+
+        var t_obj = { name:"root",type:"object", items:[
+            {name:"id", type:"number", value:1},
+            {name:"name", type:"string", value:"dummy"},
+            {name: "version", type: "array", items: [
+                { name:"row_1", type:"object", items: [
+                    {name:"name", type:"string", value: "template1"},
+                    {name:"type", type:"string", value: "detail"},
+                    {name:"form", type:"string", value: "<div></div>"}
+                ]},
+                { name:"row_2", type:"object", items: [
+                    {name:"name", type:"string", value: "template2"},
+                    {name:"type", type:"string", value: "overview"},
+                    {name:"form", type:"string", value: "<ul></ul>"}
+
+                ]}
+            ]}
+        ]};
+    </script>
+</html>

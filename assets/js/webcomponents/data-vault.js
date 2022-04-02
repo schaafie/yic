@@ -108,8 +108,6 @@ export default class dataVault {
         return foundValue;
     }    
 
-
-
     setValue( path, value, origin="" ) {
         if ( path.indexOf("/") == -1 ) {
             this.data.forEach( (item, index) => {
