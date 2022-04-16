@@ -20,12 +20,19 @@ defmodule Yic.Forms.Form do
   end
 
   def datadef() do
-    %{ fields: [
-      %{ comment: "string", required: true},
-      %{ definition: "string", required: true},
-      %{ name: "string", required: true},
-      %{ version: "string", required: true},
-      %{ author: "id"}
+    %{ root: "form", datatypes: [
+      %{ name: "form", basetype: "map", type: "form", fields: [
+        %{ field: "comment", required: true}, 
+        %{ field: "definition", required: true}, 
+        %{ field: "name", required: true}, 
+        %{ field: "version", required: true}, 
+        %{ field: "author", required: true}
+      ]},
+      %{ name: "comment", basetype: "string"},
+      %{ name: "definition", basetype:  "string", type: "map"},
+      %{ name: "name", basetype: "string"},
+      %{ name: "version", basetype: "string"},
+      %{ name: "author", basetype: "id"}
     ]}
   end
 end

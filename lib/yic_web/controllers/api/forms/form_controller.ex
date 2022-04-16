@@ -25,6 +25,11 @@ defmodule YicWeb.Api.Forms.FormController do
     render(conn, "show.json", form: form)
   end
 
+  def show(conn, %{"name" => name}) do
+    form = Forms.get_form_by_name!(name)
+    render(conn, "show.json", form: form)
+  end
+
   def update(conn, %{"id" => id, "form" => form_params}) do
     form = Forms.get_form!(id)
 

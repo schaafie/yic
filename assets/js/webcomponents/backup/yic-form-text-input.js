@@ -1,3 +1,5 @@
+import YicSetBase from './yic-set-base.js';
+
 const template = document.createElement('template');
 template.innerHTML = `<style>
 :host {
@@ -54,10 +56,10 @@ input[type="submit"] {
 </p>
 `;
 
-export default class YicFormTextInput extends HTMLElement {
-    
-    constructor() {
+export default class YicFormTextInput extends YicSetBase {
+        constructor() {
         super();
+        this.elementcounter = 0;
         this._shadowRoot = this.attachShadow({ 'mode': 'open' });
         this._shadowRoot.appendChild(template.content.cloneNode(true));
         this.$field = this._shadowRoot.querySelector('input');
@@ -69,9 +71,22 @@ export default class YicFormTextInput extends HTMLElement {
 
     handleValueChange( event ) {
         this.setAttribute('value', event.target.value);
+        this.dataModel.setValue( this.datapath, event.target.value );
+    }
+
+    populateElements(element) {
+        this.definition = element;
+        this.datapath = element.datapath;
+        this.setAttribute('name', element.name);
+        this.setAttribute('count', this.elementcounter);
+        this.setAttribute('label', element.label);
+        this.setAttribute('required', element.required);
+        var val = this.dataModel.getValue( element.datapath );
+        if (val !==undefined)  this.setAttribute('value', val);
     }
 
     updateErrors( path ) {
+        var errors = this.dataModel.getErrors(path);
         this.$errors.innerHTML = "";
         errors.forEach( error => {
             var errSpan = document.createElement('div');

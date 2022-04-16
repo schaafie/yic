@@ -26,17 +26,54 @@ h2 {
 </div>
 `;
 
-export default class YicForm extends HTMLElement {
+export default class YicForm extends YicSetBase {
     
     constructor() {
         super();
+        this.pageElement = {};
+        this.definition = { elements: [], action: "", name: "" };
+        this.elementcounter = 0;
+        this.type = "form";
         this._shadowRoot = this.attachShadow({ 'mode': 'open' });
         this._shadowRoot.appendChild(template.content.cloneNode(true));
         this.$children = this._shadowRoot.querySelector('#yic-form');
         this.$title = this._shadowRoot.querySelector('h2');
     }
 
-    connectedCallback() {}
+    setdataModel(data, dataDef) { 
+        this.dataModel = new dataModel( data, dataDef ); 
+    }
+
+    setDefinition(pageElement) { 
+        this.pageElement = pageElement;
+        this.definition = pageElement.definition; 
+        this.formActions = pageElement.definition.formactions; 
+    }
+
+    populateForm() {
+        this.$title.innerHTML = this.definition.title;
+        this.populate( this.definition.elements, this.dataModel, this.$children );
+        // Place submit button
+        var button = document.createElement("yic-form-submit");
+        button.addEventListener('click', this.submitForm.bind(this));
+        this.$children.appendChild(button);
+    }
+
+    propagateValue( id, val ) {
+        if ( id.startsWith( this.internalId ) ) {
+            var elementname = this.internalId.substring( id.length );
+            this.definition.elements.forEach( (element, index) => {
+                if (element.name == elementname) {
+                    element.value = val;
+                    this.definition.elements[index] = element;
+                }
+            });
+        }
+    }
+
+    submitForm() {
+        this.dataModel.save( this.handleError.bind(this), this.handleSucces.bind(this) );
+    }
 
     handleError( txt ) {
         console.log( "Error: " + txt );

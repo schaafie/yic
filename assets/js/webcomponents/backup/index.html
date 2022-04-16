@@ -2,8 +2,7 @@
     <head>
     </head>
     <body>
-
-
+        TEST
     </body>
     <script type="module">
         import dataModel from "./data-model.js";
@@ -14,14 +13,19 @@
         ]};
 
         var object2 = [ 
-            {version: 1, definition:{name:"tempate1",type:"detail",form:"<div></div>"} },
-            {version: 2, definition:{name:"tempate5",type:"overview",form:"<ul></ul>"} } 
+            {versions: 1, definition:{name:"tempate1",type:"detail",form:"<div></div>"} },
+            {versions: 2, definition:{name:"tempate5",type:"overview",form:"<ul></ul>"} } 
         ];
 
-
         var model1 = new dataModel(object, {});
+        console.log(model1.getValue('versions.row_1.definition'));
+        console.log(model1.getValue('versions'));
+        console.log(model1.getValue('versions.row_1.definition.form'));
+        model1.setValue('versions.row_1.definition.form', '<test></test>');
+        console.log(model1.getValue('versions.row_1.definition.form'));
         console.log(JSON.stringify(model1.model));
         console.log(JSON.stringify(model1.getJson()));
+
         var model2 = new dataModel(object2, {});
         console.log(JSON.stringify(model2.model));
         console.log(JSON.stringify(model2.getJson()));

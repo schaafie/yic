@@ -26,24 +26,30 @@ import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 
+import YicDatamodel from "./yic-datamodel.js";
+import YicAuth from "./yic-auth.js";
+import YicController from './yic-controller.js';
 // Import webcomponents
-import YicSetBase from './webcomponents/yic-set-base.js';
-import YicAuth from './webcomponents/yic-auth.js';
+import CodejarEditor from './webcomponents/codejar-editor.js';
+import YicView from './webcomponents/yic-view.js';
 import YicTopMenu from './webcomponents/yic-top-menu.js';
 import YicSideMenu from './webcomponents/yic-side-menu.js';
-import YicForm from './webcomponents/yic-form.js';
 import YicOVerview from './webcomponents/yic-overview.js';
-import YicFormSubmit from './webcomponents/yic-form-submit.js';
-import YicFormButton from './webcomponents/yic-form-action.js';
+import YicForm from './webcomponents/yic-form.js';
+import YicFormAction from './webcomponents/yic-form-action.js';
 import YicFormTextInput from './webcomponents/yic-form-text-input.js';
-import YicFormEmailInput from './webcomponents/yic-form-email-input.js';
 import YicFormPasswordInput from './webcomponents/yic-form-password-input.js';
-import YicFormRows from './webcomponents/yic-form-rows.js';
-import YicFormRow from './webcomponents/yic-form-row.js';
-import YicFormDefinition from './webcomponents/yic-form-definition.js';
-import YicAppNav from './webcomponents/yic-app-nav.js';
-import YicAppPage from './webcomponents/yic-app-page.js';
-import CodejarEditor from './webcomponents/codejar-editor.js';
+
+// import YicSetBase from './webcomponents/yic-set-base.js';
+// import YicAppPage from './webcomponents/yic-app-page.js';
+// import YicAppNav from './webcomponents/yic-app-nav.js';
+// import YicAuth from './webcomponents/yic-auth.js';
+// import YicDatamodel from './yic-datamodel.js';
+// import YicFormSubmit from './webcomponents/yic-form-submit.js';
+// import YicFormEmailInput from './webcomponents/yic-form-email-input.js';
+// import YicFormRows from './webcomponents/yic-form-rows.js';
+// import YicFormRow from './webcomponents/yic-form-row.js';
+// import YicFormDefinition from './webcomponents/yic-form-definition.js';
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket("/live", Socket, {params: {_csrf_token: csrfToken}})
@@ -60,4 +66,4 @@ liveSocket.connect()
 // >> liveSocket.enableDebug()
 // >> liveSocket.enableLatencySim(1000)  // enabled for duration of browser session
 // >> liveSocket.disableLatencySim()
-window.liveSocket = liveSocket
+window.liveSocket = liveSocket    

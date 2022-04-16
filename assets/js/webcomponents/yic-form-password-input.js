@@ -1,5 +1,3 @@
-import YicSetBase from './yic-set-base.js';
-
 const template = document.createElement('template');
 template.innerHTML = `<style>
 :host {
@@ -49,10 +47,9 @@ input[type="submit"] {
 </p>
 `;
 
-export default class YicFormPasswordInput extends YicSetBase {
-        constructor() {
+export default class YicFormPasswordInput extends HTMLElement {
+    constructor() {
         super();
-        this.elementcounter = 0;
         this._shadowRoot = this.attachShadow({ 'mode': 'open' });
         this._shadowRoot.appendChild(template.content.cloneNode(true));
         this.$field = this._shadowRoot.querySelector('input');
@@ -63,18 +60,6 @@ export default class YicFormPasswordInput extends YicSetBase {
 
     handleValueChange( event ) {
         this.setAttribute('value', event.target.value);
-        this.dataVault.setValue( this.datapath, event.target.value );
-    }
-
-    populateElements(element) {
-        this.definition = element;
-        this.datapath = element.datapath;
-        this.setAttribute('name', element.name);
-        this.setAttribute('count', this.elementcounter);
-        this.setAttribute('label', element.label);
-        this.setAttribute('required', element.required);
-        var val = this.dataVault.getValue( element.datapath );
-        if (val !==undefined)  this.setAttribute('value', val);
     }
 
     static get observedAttributes() { 

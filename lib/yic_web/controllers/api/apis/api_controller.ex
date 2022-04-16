@@ -55,7 +55,7 @@ defmodule YicWeb.Api.Apis.ApiController do
 
   defp handle(def) do
     {:ok, def_map} = Poison.decode(def)
-    tasks = Enum.map( def_map["actions"], fn(task) -> 
+    tasks = Enum.map( def_map["actions"], fn(task) ->
       url = task["url"]
       method = task["method"]
       token = task["token"]

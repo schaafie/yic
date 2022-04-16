@@ -48,7 +48,7 @@ export default class YicFormEmailInput extends YicSetBase {
 
     handleValueChange( event ) {
         this.setAttribute('value', event.target.value);
-        this.dataVault.setValue( this.datapath, event.target.value );
+        this.dataModel.setValue( this.datapath, event.target.value );
     }
 
     populateElements(element) {
@@ -58,7 +58,7 @@ export default class YicFormEmailInput extends YicSetBase {
         this.setAttribute('count', this.elementcounter);
         this.setAttribute('label', element.label);
         this.setAttribute('required', element.required);
-        var val = this.dataVault.getValue( element.datapath );
+        var val = this.dataModel.getValue( element.datapath );
         if (val !==undefined)  this.setAttribute('value', val);
     }
 

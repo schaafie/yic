@@ -3,7 +3,7 @@ export default class YicSetBase extends HTMLElement {
     constructor() {
         super();
         this.definition = {};
-        this.dataVault = {};
+        this.dataModel = {};
         this.parent = {};
         // this.internalId = "";
         // this.name = "";
@@ -36,19 +36,19 @@ export default class YicSetBase extends HTMLElement {
     }
 
     // Handle elements attribute of element
-    populate(elements, datavault, contentLocation) {
-        this.dataVault = datavault;
+    populate(elements, dataModel, contentLocation) {
+        this.dataModel = dataModel;
         var me = this;
         // this.setInternalId();
         elements.forEach(element => {
-            if (this.dataVault.hasElement( element.datapath )) {
+            if (this.dataModel.hasElement( element.datapath )) {
                 this.elementcounter++;
                 this.webcomponents.forEach(option => {
                     if (element.type == option.type) {
                         var component = document.createElement(option.webcomponent);
-                        component.dataVault = datavault;
+                        component.dataModel = dataModel;
                         component.datapath = element.datapath;
-                        datavault.register( component, element.datapath );
+                        dataModel.register( component, element.datapath );
                         component.addEventListener( 'dataChanged', (event) => {
                             component.handleDataChange(event.detail);
                         });
@@ -63,10 +63,10 @@ export default class YicSetBase extends HTMLElement {
                         // Handle children
                         if (element.type == "rows") {
                             elements = component.buildElementsFromSet(element);
-                            component.populate(elements, datavault, component.$children);
+                            component.populate(elements, dataModel, component.$children);
                         }
                         else if (element.elements) {
-                            component.populate(element.elements, datavault, component.$children);
+                            component.populate(element.elements, dataModel, component.$children);
                         }
                         contentLocation.appendChild(component);
                         this.elementcounter = component.getCounter();

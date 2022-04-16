@@ -1,3 +1,5 @@
+import YicSetBase from './yic-set-base.js';
+
 const template = document.createElement('template');
 template.innerHTML = `<style>
 :host {
@@ -15,12 +17,6 @@ label {
     display: block; 
     margin-bottom: 10px;
     font-size: 16pt;
-}
-
-.error {
-    display: block; 
-    color: red;
-    font-style: italic;
 }
 
 input[type="text"],
@@ -49,37 +45,36 @@ input[type="submit"] {
 </style>
 <p>
     <label></label>
-    <input name="" type="text"></input>
-    <div class="errors"></div>
+    <input name="" type="password"></input>
 </p>
 `;
 
-export default class YicFormTextInput extends HTMLElement {
-    
-    constructor() {
+export default class YicFormPasswordInput extends YicSetBase {
+        constructor() {
         super();
+        this.elementcounter = 0;
         this._shadowRoot = this.attachShadow({ 'mode': 'open' });
         this._shadowRoot.appendChild(template.content.cloneNode(true));
         this.$field = this._shadowRoot.querySelector('input');
         this.$field.addEventListener('change', this.handleValueChange.bind(this));
-        this.$errors = this._shadowRoot.querySelector('.errors');
     }
 
     connectedCallback() {}
 
     handleValueChange( event ) {
         this.setAttribute('value', event.target.value);
+        this.dataVault.setValue( this.datapath, event.target.value );
     }
 
-    updateErrors( path ) {
-        this.$errors.innerHTML = "";
-        errors.forEach( error => {
-            var errSpan = document.createElement('div');
-            errSpan.className = 'error';
-            errSpan.innerHTML = error;
-            this.$errors.appendChild(errSpan);
-        });
-        
+    populateElements(element) {
+        this.definition = element;
+        this.datapath = element.datapath;
+        this.setAttribute('name', element.name);
+        this.setAttribute('count', this.elementcounter);
+        this.setAttribute('label', element.label);
+        this.setAttribute('required', element.required);
+        var val = this.dataVault.getValue( element.datapath );
+        if (val !==undefined)  this.setAttribute('value', val);
     }
 
     static get observedAttributes() { 
@@ -120,4 +115,4 @@ export default class YicFormTextInput extends HTMLElement {
     }
 }
 
-window.customElements.define('yic-form-text-input', YicFormTextInput);
+window.customElements.define('yic-form-password-input', YicFormPasswordInput);

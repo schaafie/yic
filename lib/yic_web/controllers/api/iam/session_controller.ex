@@ -14,8 +14,7 @@ defmodule YicWeb.Api.Iam.SessionController do
     def create(conn, %{"login" => login, "password" => password}) do
       case Iam.get_account_by_login_and_password(login, password) do 
         %Account{} = account ->
-          {:ok, jwt, _full_claims} = Guardian.encode_and_sign(account, %{})
-  
+          {:ok, jwt, _full_claims} = Guardian.encode_and_sign(account, %{}, ttl: {1, :hour})
           conn
           |> render("create.json", account: account, jwt: jwt)
   

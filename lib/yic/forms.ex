@@ -38,6 +38,7 @@ defmodule Yic.Forms do
 
   """
   def get_form!(id), do: Repo.get!(Form, id)
+  def get_form_by_name!(name), do: Repo.get_by!(Form, name: name)
 
   @doc """
   Creates a form.

@@ -29,7 +29,9 @@ export default class YicFormAction extends HTMLElement {
         this.$button = this._shadowRoot.querySelector('button');
     }
 
-    connectedCallback() {}
+    connectedCallback() {
+
+    }
 
     static get observedAttributes() { 
         return ['label', 'name'];
