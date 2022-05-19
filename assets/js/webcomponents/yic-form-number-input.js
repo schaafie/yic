@@ -54,7 +54,7 @@ input[type="submit"] {
 </p>
 `;
 
-export default class YicFormTextInput extends HTMLElement {
+export default class YicFormNumberInput extends HTMLElement {
     
     constructor() {
         super();
@@ -121,4 +121,4 @@ export default class YicFormTextInput extends HTMLElement {
     }
 }
 
-window.customElements.define('yic-form-text-input', YicFormTextInput);
+window.customElements.define('yic-form-number-input', YicFormNumberInput);

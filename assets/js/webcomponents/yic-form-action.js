@@ -7,17 +7,24 @@ template.innerHTML = `<style>
 
 button {
     font: 16pt Arial, sans-serif;
-    color: white;
-    background: cornflowerblue;
     border: 1px solid #1f66e5;
     border-radius: 4px;
-    padding: 10px 10px;
+    padding: 10px 40px;
     margin-top: 15px;
+}
+
+button.default {
     width: 100%;
+    color: white;
+    background: cornflowerblue;
+}
+
+button.half {
+    width: 49%;
 }
 
 </style>
-<button>BUTTON</button>
+<button class="default">BUTTON</button>
 `;
 
 export default class YicFormAction extends HTMLElement {
@@ -29,7 +36,14 @@ export default class YicFormAction extends HTMLElement {
         this.$button = this._shadowRoot.querySelector('button');
     }
 
-    connectedCallback() {}
+    connectedCallback() {
+
+    }
+
+    setSizeHalf() {
+        this.$button.classList.remove('default');
+        this.$button.classList.add('half');
+    }
 
     static get observedAttributes() { 
         return ['label', 'name'];

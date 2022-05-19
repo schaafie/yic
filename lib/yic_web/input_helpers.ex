@@ -20,10 +20,7 @@ defmodule YicWeb.InputHelpers do
       # wc = :erlang.list_to_bitstring(String.to_charlist("yic-json-editor"))
       # tag wc, tag_opts
 
-
-      # content_tag "code-flask-editor", value, tag_opts
       content_tag "codejar-editor", value, tag_opts
-
     end
 
   end

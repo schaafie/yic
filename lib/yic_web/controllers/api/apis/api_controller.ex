@@ -46,14 +46,20 @@ defmodule YicWeb.Api.Apis.ApiController do
   def handle(conn, %{"path" => path}) do
     case Apis.match_call( path ) do
       {:ok, definition} ->
-        data = handle(definition)
+        data = handler(definition)
         render(conn, "respons.json", data: data )
       :nok ->
-        render(conn, "respons.json", data: [])
+        case Apis.match_call_id( path ) do
+          {:ok, definition, value} ->
+            data = handler(definition, value)
+            render(conn, "respons.json", data: data )
+          :nok ->
+            render(conn, "respons.json", data: [])
+        end
     end
   end
 
-  defp handle(def) do
+  defp handler(def) do
     {:ok, def_map} = Poison.decode(def)
     tasks = Enum.map( def_map["actions"], fn(task) ->
       url = task["url"]
@@ -62,11 +68,23 @@ defmodule YicWeb.Api.Apis.ApiController do
       output = task["output"]
       Task.async( System, :call, [method, url, token, output ] )
     end )
-
     results = Task.await_many(tasks)
-
     define_respons results, def_map["output"]
   end
+
+  defp handler(def, value) do
+    {:ok, def_map} = Poison.decode(def)
+    tasks = Enum.map( def_map["actions"], fn(task) ->
+      url = String.replace( task["url"], ":id", value )
+      method = task["method"]
+      token = task["token"]
+      output = task["output"]
+      Task.async( System, :call, [method, url, token, output ] )
+    end )
+    results = Task.await_many(tasks)
+    define_respons results, def_map["output"]
+  end
+
 
   def define_respons( [], output ) do
     output

@@ -1,15 +1,17 @@
 import {CodeJar} from 'codejar';
-import Prism from 'prismjs';
 import {withLineNumbers} from 'codejar/linenumbers';
+import Prism from 'prismjs';
 import 'prismjs/components/prism-json';
 
 export default class CodejarEditor extends HTMLElement {
 
     constructor() {
         super();
-        this.innerHTML = '<div id="editor" class="language-json"></div>';
-        this.$editor = this.querySelector('#editor');
-        this.editor = new CodeJar(this.$editor, withLineNumbers(Prism.highlightElement)); 
+        this.innerHTML = '<div id="editor" class="language-json" language="json"></div>';
+        this.editor = new CodeJar(this.querySelector('#editor'), withLineNumbers(Prism.highlightElement)); 
+        this.editor.onUpdate( code => {
+            this.dispatchEvent(new CustomEvent('change',{ detail: {value: code}, bubbles: false })); 
+        });
         // keep reference to <form> for cleanup
         this._form = null;
         this._handleFormData = this._handleFormData.bind(this);        

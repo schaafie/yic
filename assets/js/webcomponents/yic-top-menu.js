@@ -27,7 +27,7 @@ li {
     color: white;
     font: 14pt arial, sans-serif;
     border-radius: 4px;
-    cursor: grab;
+    cursor: pointer;
 }
 
 li.right {

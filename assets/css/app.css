@@ -3,6 +3,7 @@
 /* Import yic specific */
 @import "./yic.css";
 @import "../node_modules/prismjs/themes/prism.min.css";
+@import "https://fonts.googleapis.com/icon?family=Material+Icons+Outlined";
 
 /* Alerts and form errors used by phx.new */
 .alert {

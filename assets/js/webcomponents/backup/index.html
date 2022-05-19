@@ -5,7 +5,7 @@
         TEST
     </body>
     <script type="module">
-        import dataModel from "./data-model.js";
+        import YicDatamodel from "./yic-datamodel.js";
 
         var object = {id:1, name:"dummy", versions: [ 
             {version: 1, definition:{name:"tempate1",type:"detail",form:"<div></div>"} },
@@ -17,7 +17,7 @@
             {versions: 2, definition:{name:"tempate5",type:"overview",form:"<ul></ul>"} } 
         ];
 
-        var model1 = new dataModel(object, {});
+        var model1 = new YicDatamodel(object, {});
         console.log(model1.getValue('versions.row_1.definition'));
         console.log(model1.getValue('versions'));
         console.log(model1.getValue('versions.row_1.definition.form'));
@@ -26,7 +26,11 @@
         console.log(JSON.stringify(model1.model));
         console.log(JSON.stringify(model1.getJson()));
 
-        var model2 = new dataModel(object2, {});
+
+        var model2 = new YicDatamodel(object2, {});
+        console.log(model2.getValue());
+        console.log(model2.getValue("row_0.versions"));
+
         console.log(JSON.stringify(model2.model));
         console.log(JSON.stringify(model2.getJson()));
 

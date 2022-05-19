@@ -4,7 +4,7 @@ import YicController from '../yic-controller.js';
 
 const appPageTemplate = `<div class="container">
     <yic-top-menu></yic-top-menu>
-    <div id="app-page">App Selected</div>
+    <div id="app-page"></div>
 </div>`;
 
 const errorPageTemplate = `<div class="container">
@@ -71,26 +71,25 @@ export default class YicView extends HTMLElement {
             case "app":
                 this.innerHTML = appPageTemplate;
                 this.querySelector("yic-top-menu").setMenu( opts.topmenu );
-                this.setContent( opts.form, opts.data, opts.def );
+                this.setContent( opts.form, opts.datamodel );
                 break;
         }
     }
 
-    setContent(formdef, data, datadef) {
-        switch(formdef.definition.type) {
+    setContent(formdef, datamodel ) {
+        let definition = JSON.parse( formdef.definition );
+        switch(definition.type) {
             case "overview":
-                var overview = document.createElement("yic-overview");
-                overview.setDataModel( data, datadef );
-                overview.setDefinition( formdef );
-                overview.populate();        
-                document.querySelector("#main-content").appendChild(overview);
+                let overview = document.createElement("yic-overview");
+                overview.init(this.app, datamodel, definition );
+                overview.populate();
+                document.querySelector("#app-page").appendChild(overview);
                 break;
             case "detail":
-                var form = document.createElement("yic-form");
-                form.setDataModel( data, datadef );
-                form.setDefinition( formdef );
-                form.populateForm();        
-                document.querySelector("#main-content").appendChild(form);
+                let form = document.createElement("yic-form");
+                form.init(this.app, datamodel, definition );
+                form.populate();
+                document.querySelector("#app-page").appendChild(form);
                 break;
         }
     }    

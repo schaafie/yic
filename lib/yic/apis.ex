@@ -107,13 +107,26 @@ defmodule Yic.Apis do
 
   """
   def match_call( path ) do
-    str_path = Enum.join(path, "/")
-    try do 
-      result = Repo.get_by!( Api, request: str_path ) 
+    try do
+      str_path = Enum.join(path, "/")
+      result = Repo.get_by!( Api, request: str_path )
       {:ok, result.definition }
     rescue
-       Ecto.NoResultsError ->
-        :nok
+      Ecto.NoResultsError ->
+        :nok  
+    end
+  end
+
+  def match_call_id( path ) do
+    try do
+        value = List.last(path)
+        {_end, str_path} = List.pop_at(path,-1)
+        atr_path_with_key = Enum.join(str_path ++ [":id"], "/")
+        result = Repo.get_by!( Api, request: atr_path_with_key )
+        {:ok, result.definition, value}
+    rescue
+      Ecto.NoResultsError ->
+        :nok  
     end    
   end
 

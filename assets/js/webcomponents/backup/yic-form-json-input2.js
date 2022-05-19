@@ -1,5 +1,6 @@
 const template = document.createElement('template');
-template.innerHTML = `<style>
+template.innerHTML = `
+<style>
 :host {
     color: #333333;
     font: 16px Arial, sans-serif;
@@ -8,8 +9,6 @@ template.innerHTML = `<style>
 p { margin: 0; }
 
 p.second { margin-top: 20px; }
-
-a { color: #1f66e5; }
 
 label { 
     display: block; 
@@ -23,52 +22,30 @@ label {
     font-style: italic;
 }
 
-input[type="text"],
-input[type="password"] {
-    background-color: #eaeaea;
-    border: 1px solid grey;
-    border-radius: 4px;
-    box-sizing: border-box;
-    color: inherit;
-    font: inherit;
-    padding: 10px 10px;
-    width: 100%;
-    margin-bottom: 15px;
-}
-
-input[type="submit"] {
-    font: 16px/1.6 Arial, sans-serif;
-    color: white;
-    background: cornflowerblue;
-    border: 1px solid #1f66e5;
-    border-radius: 4px;
-    padding: 10px 10px;
-    width: 100%;
-}
-
 </style>
 <p>
     <label></label>
-    <input name="" type="text"></input>
+    <codejar-editor language="json" class="language-json"></codejar-editor>
     <div class="errors"></div>
-</p>
+    </p>
 `;
 
-export default class YicFormTextInput extends HTMLElement {
+export default class YicFormJsonInput extends HTMLElement {
     
     constructor() {
         super();
         this._shadowRoot = this.attachShadow({ 'mode': 'open' });
         this._shadowRoot.appendChild(template.content.cloneNode(true));
-        this.$field = this._shadowRoot.querySelector('input');
-        this.$field.addEventListener('change', this.handleValueChange.bind(this));
+        this.$field = this._shadowRoot.querySelector('codejar-editor');
         this.$errors = this._shadowRoot.querySelector('.errors');
+        this.$label = this._shadowRoot.querySelector('label');
+        this.$field.addEventListener('change', this.handleValueChange.bind(this));
     }
 
     connectedCallback() {}
 
     handleValueChange( event ) {
-        this.setAttribute('value', event.target.value);
+        this.setAttribute('value', event.detail.value);
     }
 
     updateErrors( path ) {
@@ -95,8 +72,8 @@ export default class YicFormTextInput extends HTMLElement {
                 }
                 break;
             case 'label':
-                if (this._shadowRoot.querySelector('label').innerHTML != newValue) {
-                    this._shadowRoot.querySelector('label').innerHTML = newValue;
+                if (this.$label.innerHTML != newValue) {
+                    this.$label.innerHTML = newValue;
                 }
                 break;
             case 'count':
@@ -121,4 +98,4 @@ export default class YicFormTextInput extends HTMLElement {
     }
 }
 
-window.customElements.define('yic-form-text-input', YicFormTextInput);
+window.customElements.define('yic-form-json-input', YicFormJsonInput);

@@ -38,6 +38,8 @@ import YicOVerview from './webcomponents/yic-overview.js';
 import YicForm from './webcomponents/yic-form.js';
 import YicFormAction from './webcomponents/yic-form-action.js';
 import YicFormTextInput from './webcomponents/yic-form-text-input.js';
+import YicFormJsonInput from './webcomponents/yic-form-json-input.js';
+import YicFormNumberInput from './webcomponents/yic-form-number-input.js';
 import YicFormPasswordInput from './webcomponents/yic-form-password-input.js';
 
 // import YicSetBase from './webcomponents/yic-set-base.js';

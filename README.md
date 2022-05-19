@@ -9,7 +9,7 @@ Thus it is not enough to start the server. You need to add basic credentials as 
 
 ```
 $ iex -S mix phx.server
-$ Yic.Apis.TokenRegistry.addsystem
+iex(1)> Yic.Apis.TokenRegistry.addsystem
 ```
 
 Open browser and go to:

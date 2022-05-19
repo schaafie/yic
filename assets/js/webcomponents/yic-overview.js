@@ -47,7 +47,12 @@ tbody tr:last-of-type {
     border-bottom: 2px solid #009879;
 }
 
+.actionbutton {
+    cursor: pointer;
+}
+
 </style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined">
 <h2></h2>
 <div class="container">
     <div id="yic-overview"></div>
@@ -59,6 +64,7 @@ tbody tr:last-of-type {
         <tfoot>
         </tfoot>
     </table>
+    <button id="addbutton" class="actionbutton"><i class="material-icons-outlined">add</i>&nbsp;New</button>
 </div>
 `;
 
@@ -72,10 +78,85 @@ export default class YicOverview extends HTMLElement {
         this.$title = this._shadowRoot.querySelector('h2');
         this.$header = this._shadowRoot.querySelector('thead');
         this.$body = this._shadowRoot.querySelector('tbody');
+        this._shadowRoot.querySelector('#addbutton').addEventListener('click',()=>this.addItem());
     }
 
     connectedCallback() {}
     
+    init( app, datamodel, definition ) {
+        this.app = app;
+        this.datamodel = datamodel;
+        this.definition = definition;
+        this.$title.innerHTML = definition.title; 
+    }
+
+    populate() {
+        let elementlist = [];
+        let pk = "";
+        this.definition.elements.forEach(element => {
+            if (element.pk) { pk = element.datapath; }
+
+            if (element.type !== "hidden") {
+                let tableHeader = document.createElement("th");
+                tableHeader.innerHTML = element.label;
+                this.$header.appendChild( tableHeader );    
+                elementlist.push(element.datapath);
+            }
+        });
+
+        let tableHeader = document.createElement("th");
+        tableHeader.innerHTML = "Actions";
+        this.$header.appendChild( tableHeader );    
+
+        let rownum = 0;
+        let rownums = this.datamodel.getValue().length;
+        for(rownum;rownum<rownums;rownum++) {
+            let tablerow = document.createElement('tr');
+            elementlist.forEach(item => {
+                let column = document.createElement('td');
+                let path = `row_${rownum}.${item}`;
+                column.innerHTML = this.datamodel.getValue(path);
+                tablerow.appendChild( column );
+            });
+            let column = document.createElement('td');
+
+            let keypath = `row_${rownum}.${pk}`;
+            let del_icon = document.createElement('i');
+            del_icon.classList.add("material-icons-outlined");
+            del_icon.classList.add("actionbutton");
+            del_icon.innerHTML = "delete";
+            del_icon.addEventListener('click', () => { this.deleteItem(keypath); });
+            column.appendChild(del_icon);
+            column.appendChild(document.createTextNode('\u00A0'));
+            
+            let edit_icon = document.createElement('i');
+            edit_icon.classList.add("material-icons-outlined");
+            edit_icon.classList.add("actionbutton");
+            edit_icon.innerHTML = "create";
+            edit_icon.addEventListener('click', () => { this.editItem(keypath); });
+            column.appendChild(edit_icon);
+
+            tablerow.appendChild( column );
+            this.$body.appendChild(tablerow);
+        }
+    }
+
+    addItem() {
+
+    }
+
+    editItem( path ) {
+        let pk = this.datamodel.getValue(path);
+        let action = this.definition.action;
+        let cmd= `${action}/${pk}`;
+        this.app.doCommand( cmd );
+    }
+    
+    deleteItem( path ) { 
+        let pk = this.datamodel.getValue(path);
+        this.datamodel.deleteItem(pk);
+    }
+
 
     static get observedAttributes() { 
         return ['value'];

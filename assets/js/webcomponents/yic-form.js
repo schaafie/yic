@@ -15,7 +15,6 @@ h2 {
 .container {
     margin: 0px 50px 50px;
     padding: 20px 50px;
-    max-width:400px;
 }
 
 </style>
@@ -38,17 +37,78 @@ export default class YicForm extends HTMLElement {
 
     connectedCallback() {}
 
-    handleError( txt ) {
-        console.log( "Error: " + txt );
-        var errObject = JSON.parse( txt );
-
-        Object.entries(errObject.errors).forEach(([field, errors]) => {
-            this.dataModel.setErrors(field, errors);
-        });
+    init( app, datamodel, definition ) {
+        this.app = app;
+        this.datamodel = datamodel;
+        this.definition = definition;
+        this.$title.innerHTML = definition.title; 
     }
 
-    handleSucces( txt ) {
-        console.log( "Succes: " + txt );
+    populate() {
+        this.definition.elements.forEach(element => {
+            switch(element.type) {
+                case "hidden":
+                    this.addHidden(element);
+                    break;
+                case "text":
+                    //this.addText(element);
+                    this.addInput('yic-form-text-input', element)
+                    break;
+                case "json":
+                    // this.addJson(element);
+                    this.addInput('yic-form-json-input', element)
+                    break;
+                case "number":
+                    // this.addNumber(element);
+                    this.addInput('yic-form-number-input', element)
+                    break;
+            }
+        });
+
+        // Add action buttons
+        let div = document.createElement('div');
+        let cancel = document.createElement('yic-form-action');
+        cancel.setAttribute( 'label', 'Cancel');
+        cancel.setSizeHalf();
+        let save = document.createElement('yic-form-action');
+        save.setAttribute( 'label', 'Save');
+        save.setSizeHalf();
+        div.appendChild(cancel);
+        div.appendChild(save);
+
+        this.$children.appendChild(div);
+    }
+
+    addHidden(element) {
+        let div = document.createElement('input');
+        div.type = "hidden";
+        div.value = element.value;
+        this.$children.appendChild(div);
+    }
+
+    addInput(inputelement, element){
+        let div = document.createElement('div');
+        let input = document.createElement(inputelement);
+        if (element.label) input.setAttribute('label', element.label);
+        if (element.name) input.setAttribute('name', element.name);
+        if (this.datamodel.getValue(element.datapath)) input.setAttribute('value', this.datamodel.getValue(element.datapath));
+        // Add a listener to respond to input changes and notify the datamodel
+        input.addEventListener('change', (ev) =>{
+            let value = ev.detail.value;
+            console.log(value);
+            this.datamodel.setValue(element.datapath, value);
+        })
+        // Register the input with the datamodel
+        // This is helpfull if value in datamodel is changed by other agents
+        this.datamodel.registerListener( element.datapath, input );
+        // Add a callback function to respond to changes in the datamodel
+        input.onChange = (datapath, value) => {
+            if (input.getAttribute('value') != value) {
+                input.setAttribute('value', value);
+            }
+        };
+        div.appendChild(input);
+        this.$children.appendChild(div);
     }
 
     static get observedAttributes() { 
