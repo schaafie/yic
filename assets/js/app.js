@@ -25,7 +25,7 @@ import "phoenix_html"
 import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
-
+import YicConf from "./yic-conf";
 import YicDatamodel from "./yic-datamodel.js";
 import YicAuth from "./yic-auth.js";
 import YicController from './yic-controller.js';

@@ -30,13 +30,27 @@ defmodule YicWeb.Api.Forms.FormController do
     render(conn, "show.json", form: form)
   end
 
-  def update(conn, %{"id" => id, "form" => form_params}) do
-    form = Forms.get_form!(id)
+  def update(conn, form_params) do
 
-    with {:ok, %Form{} = form} <- Forms.update_form(form, form_params) do
-      render(conn, "show.json", form: form)
+    form = Forms.get_form!(form_params["id"])
+    case Forms.update_form(form, form_params) do
+      {:ok, form} ->
+        render(conn, "show.json", form: form)
+      {:error, %Ecto.Changeset{} = changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render("error.json", changeset: changeset)
     end
   end
+  
+  # def update(conn, form_params) do
+
+  #   form = Forms.get_form!(form_params[":id"])
+
+  #   with {:ok, %Form{} = form} <- Forms.update_form(form, form_params) do
+  #     render(conn, "show.json", form: form)
+  #   end
+  # end
 
   def delete(conn, %{"id" => id}) do
     form = Forms.get_form!(id)

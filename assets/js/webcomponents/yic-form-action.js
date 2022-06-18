@@ -11,6 +11,7 @@ button {
     border-radius: 4px;
     padding: 10px 40px;
     margin-top: 15px;
+    cursor: pointer;
 }
 
 button.default {

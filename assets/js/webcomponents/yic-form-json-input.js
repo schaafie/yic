@@ -53,6 +53,7 @@ export default class YicFormJsonInput extends HTMLElement {
           });
         this.$errors = this._shadowRoot.querySelector('.errors');
         this.$label = this._shadowRoot.querySelector('label');
+        this.errors = [];
     }
 
     connectedCallback() {}
@@ -61,9 +62,9 @@ export default class YicFormJsonInput extends HTMLElement {
         this.setAttribute('value', event.detail.value);
     }
 
-    updateErrors( path ) {
+    refreshErrors() {
         this.$errors.innerHTML = "";
-        errors.forEach( error => {
+        this.errors.forEach( error => {
             var errSpan = document.createElement('div');
             errSpan.className = 'error';
             errSpan.innerHTML = error;

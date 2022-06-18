@@ -38,7 +38,7 @@ export default class YicView extends HTMLElement {
 
     connectedCallback() {
         this.auth = new YicAuth();
-        this.model = new YicDatamodel();
+        this.model = new YicDatamodel( this.auth );
         this.app = new YicController( this.model, this.auth );
 
         if (!this.auth.isLoggedIn()) {
@@ -77,17 +77,16 @@ export default class YicView extends HTMLElement {
     }
 
     setContent(formdef, datamodel ) {
-        let definition = JSON.parse( formdef.definition );
-        switch(definition.type) {
+        switch(formdef.type) {
             case "overview":
                 let overview = document.createElement("yic-overview");
-                overview.init(this.app, datamodel, definition );
+                overview.init(this.app, datamodel, formdef );
                 overview.populate();
                 document.querySelector("#app-page").appendChild(overview);
                 break;
             case "detail":
                 let form = document.createElement("yic-form");
-                form.init(this.app, datamodel, definition );
+                form.init(this.app, datamodel, formdef );
                 form.populate();
                 document.querySelector("#app-page").appendChild(form);
                 break;

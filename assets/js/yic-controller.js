@@ -1,4 +1,5 @@
 import YicDatamodel from "./yic-datamodel";
+import YicConf from "./yic-conf";
 
 export default class YicController {
 
@@ -39,7 +40,7 @@ export default class YicController {
     }
 
     doCommand( jsonCmd ) { 
-        fetch( `http://localhost:4000/api/${jsonCmd}`, this.getCallOptions() )
+        fetch( YicConf.baseUrl()+jsonCmd, this.getCallOptions() )
             .then( this.handleErrors )
             .then( response => {
                 return response.json();
@@ -47,9 +48,10 @@ export default class YicController {
                 if (!json.data) {
                     this.view.showPage( "error", { msg: "This app request failed to deliver proper data.", topmenu: this.apps} );
                 } else {
-                    this.model = new YicDatamodel(json.data.data,json.datadef);
                     let formdef = json.formdef.data;
-                    this.view.showPage( "app", { form:formdef, datamodel: this.model, topmenu: this.apps});
+                    let definition = JSON.parse( formdef.definition );
+                    this.model.setData(json.data.data,json.datadef, definition.action);
+                    this.view.showPage( "app", { form:definition, datamodel: this.model, topmenu: this.apps});
                 }
             }).catch( error => {
                 console.log(error);

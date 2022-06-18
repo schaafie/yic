@@ -4,6 +4,14 @@ export default class YicDataDef {
         this.datadef = datadef; 
     }
 
+    findDef( name ) {
+        let result = undefined;
+        this.datadef.datatypes.forEach( datatype => {
+            if (datatype.name == name) result = datatype;
+        });
+        return result;
+    }
+
     getNode(parentname, nodename) {
         let result = undefined;
         let parent_def = (parentname=="")?this.findDef(this.datadef.root):this.findDef(parentname);
@@ -44,12 +52,4 @@ export default class YicDataDef {
         return result;
     }
     
-    findDef( name ) {
-        let result = undefined;
-        this.datadef.datatypes.forEach( datatype => {
-            if (datatype.name == name) result = datatype;
-        });
-        return result;
-    }
-
 }

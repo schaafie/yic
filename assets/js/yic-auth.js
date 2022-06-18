@@ -29,7 +29,7 @@ export default class YicAuth {
         let data = { login: uname, password: upassword }
         this.uname = uname;
 
-        xhr.open('POST', 'http://localhost:4000/api/sign_in', true);
+        xhr.open('POST', YicConf.baseUrl()+'sign_in', true);
         // MUST HAVE! JSON content-type
         xhr.setRequestHeader('Content-Type', 'application/json');        
         // Define followup actions. 

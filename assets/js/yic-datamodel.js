@@ -2,10 +2,72 @@ import YicDataDef from "./yic-datadef";
 
 export default class YicDatamodel {
 
-    constructor(data, datadef) {
-        this.model = this.json2model("root",data);
-        this.datadef = new YicDataDef(datadef); 
+    constructor( auth ) {
+        this.auth = auth;
         this.registrations = [];
+    }
+
+    setData(data, datadef, action) {
+        this.datadef = new YicDataDef(datadef);
+        this.model = this.json2model("root",data);
+        this.action = action;
+    }
+
+    save() {
+
+        let actionparts = [];
+
+        this.action.split('/').forEach( (actionpart) => {
+            if (actionpart.startsWith(":")) {
+                let name = actionpart.slice(1);
+                let value =  this.getValue( name );
+                if (value !== undefined) {
+                    actionparts.push( value );
+                } else {
+                    actionparts.push( "undef" );
+                }
+            } else {
+                actionparts.push(actionpart);
+            }
+        })
+        let action = YicConf.baseUrl() + actionparts.join('/');
+        console.log(action);
+        fetch( action, {
+            method: 'PATCH',
+            body: JSON.stringify(this.model2json(this.model)),
+            headers: { 
+                'Authorization': `Bearer ${this.auth.getToken()}`, 
+                'Content-Type': 'application/json' }
+        })
+        .then( this.handleErrors )
+        .then( response => {
+            return response.json();
+        }).then( json => {
+            if (json.errors) {
+                for (let obj in json.errors) {
+                    this.setErrors( obj, json.errors[obj]);
+                }
+            } 
+            if (json.data) {
+                console.log(json.data);
+            }
+        }).catch( error => {
+            console.log(error);
+        });
+    }
+        
+    handleErrors(response) {
+        let err = false;
+        if (!response.ok) {
+            switch (response.status) {
+                case 422:
+                    let err = true;
+                    break;
+                default:
+                    throw Error(response.statusText);
+            }
+        }
+        return response;
     }
 
     getJson() { 
@@ -54,11 +116,13 @@ export default class YicDatamodel {
     setError( path, error ) {
         let element = this.findElement( this.model, path.split('.'), false);
         element.errors.push( error );
+        element.listeners.forEach( (listener) => { listener.onError( path, value ); });
     }
 
     setErrors( path, errors ) {
         let element = this.findElement( this.model, path.split('.'), false);
         element.errors = errors;
+        element.listeners.forEach( (listener) => { listener.onError( path, errors ); });
     }
 
     // -----------------------------------
@@ -114,6 +178,10 @@ export default class YicDatamodel {
                         array.items.push( this.json2model( `row_${index}` , item ));
                     });
                     return array;
+                } else if (data ===null) {
+                    let node = this.datadef.findDef(name);
+                    let type = node.basetype;
+                    return {name: name, type: type, errors:[], listeners:[], items:[] };
                 } else {
                     var object = {name: name, type:"object", errors:[], listeners:[], items:[] };
                     for (const [key, item] of Object.entries(data)) {
@@ -141,7 +209,7 @@ export default class YicDatamodel {
                 model.items.forEach((item, index)=>{
                     object[item.name]=this.model2json(item);
                 });
-                return object;
+                return object;    
                 break;
             case "array":
                 var array = [];
@@ -151,9 +219,14 @@ export default class YicDatamodel {
                 return array;        
                 break;
             case "string":
-            case "number":
-            case "boolean":
                 return model.value;
+                break;
+            case "id":
+            case "number":
+                return parseInt(model.value);
+                break;
+            case "boolean":
+                return Boolean(model.value);
                 break;
         }
     }

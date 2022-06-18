@@ -1,6 +1,7 @@
 defmodule Yic.Forms.Form do
   use Ecto.Schema
   import Ecto.Changeset
+  import Yic.Validate
 
   schema "forms" do
     field :comment, :string
@@ -15,8 +16,9 @@ defmodule Yic.Forms.Form do
   @doc false
   def changeset(form, attrs) do
     form
-    |> cast(attrs, [:name, :comment, :version, :definition])
+    |> cast(attrs, [:name, :comment, :version, :definition, :author])
     |> validate_required([:name, :comment, :version, :definition])
+    |> validate_changes_against_datadef( datadef() )
   end
 
   def datadef() do
@@ -28,11 +30,11 @@ defmodule Yic.Forms.Form do
         %{ field: "version", required: true}, 
         %{ field: "author", required: true}
       ]},
-      %{ name: "comment", basetype: "string"},
-      %{ name: "definition", basetype:  "string", type: "map"},
-      %{ name: "name", basetype: "string"},
-      %{ name: "version", basetype: "string"},
-      %{ name: "author", basetype: "id"}
+      %{ name: "comment", basetype: "string", validations: []},
+      %{ name: "definition", basetype: "string", type: "map", validations: []},
+      %{ name: "name", basetype: "string", validations: []},
+      %{ name: "version", basetype: "string", validations: [%{ type: "format", rule: "^(?! )((?!  )(?! $)[a-zA-Z ]){3,50}$"}] },
+      %{ name: "author", basetype: "id", validations: []}
     ]}
   end
 end

@@ -69,10 +69,16 @@ export default class YicForm extends HTMLElement {
         let div = document.createElement('div');
         let cancel = document.createElement('yic-form-action');
         cancel.setAttribute( 'label', 'Cancel');
+        cancel.addEventListener('click', (ev)=>{
+            console.log('cancel');
+        });
         cancel.setSizeHalf();
         let save = document.createElement('yic-form-action');
         save.setAttribute( 'label', 'Save');
         save.setSizeHalf();
+        save.addEventListener('click', (ev)=>{
+            this.datamodel.save();
+        });
         div.appendChild(cancel);
         div.appendChild(save);
 
@@ -107,6 +113,10 @@ export default class YicForm extends HTMLElement {
                 input.setAttribute('value', value);
             }
         };
+        input.onError = (datapath, errors) => {
+            input.errors = errors;
+            input.refreshErrors();
+        }
         div.appendChild(input);
         this.$children.appendChild(div);
     }

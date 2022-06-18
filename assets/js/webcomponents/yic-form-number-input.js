@@ -21,6 +21,7 @@ label {
     display: block; 
     color: red;
     font-style: italic;
+    margin-bottom: 15px;
 }
 
 input[type="text"],
@@ -63,6 +64,7 @@ export default class YicFormNumberInput extends HTMLElement {
         this.$field = this._shadowRoot.querySelector('input');
         this.$field.addEventListener('change', this.handleValueChange.bind(this));
         this.$errors = this._shadowRoot.querySelector('.errors');
+        this.errors = [];
     }
 
     connectedCallback() {}
@@ -71,15 +73,14 @@ export default class YicFormNumberInput extends HTMLElement {
         this.setAttribute('value', event.target.value);
     }
 
-    updateErrors( path ) {
+    refreshErrors() {
         this.$errors.innerHTML = "";
-        errors.forEach( error => {
+        this.errors.forEach( error => {
             var errSpan = document.createElement('div');
             errSpan.className = 'error';
             errSpan.innerHTML = error;
             this.$errors.appendChild(errSpan);
-        });
-        
+        });   
     }
 
     static get observedAttributes() { 
@@ -117,7 +118,7 @@ export default class YicFormNumberInput extends HTMLElement {
                     this.dispatchEvent(new CustomEvent('change',{ detail: {value: newValue}, bubbles: false }));
                 }
                 break;
-        }
+            }
     }
 }
 
