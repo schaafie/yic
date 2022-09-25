@@ -26,7 +26,14 @@ defmodule YicWeb.Api.Forms.FormView do
   end
 
   def translate_errors(changeset) do
-    Ecto.Changeset.traverse_errors(changeset, &translate_error/1)
+    Ecto.Changeset.traverse_errors(changeset, &error2map/1)
+  end
+
+  def error2map error do
+    {msg, opts} = error
+    #TODO Convert options to format that Jason can handle
+    
+    %{ message: msg, options: Enum.into( opts, %{} ) }
   end
 
 end

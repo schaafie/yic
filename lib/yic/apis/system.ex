@@ -4,6 +4,8 @@ defmodule Yic.Apis.System do
 
     def call( method, url, result ), do: call(method, url, [], result)
 
+    def call( result, 0 ), do: {:ok, %{key: result, value: %{ data: %{}}}} 
+    
     def call( method, url, token, result ) do
         IO.puts "calling #{url} using #{method} with #{token}"
 
@@ -14,7 +16,6 @@ defmodule Yic.Apis.System do
                     "get" ->
                         case HTTPoison.request( method, url, [], headers, [] ) do
                             {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-                                IO.inspect body
                                 bodymap = Poison.decode!(body)
 
                                 {:ok, %{key: result, value: bodymap}}

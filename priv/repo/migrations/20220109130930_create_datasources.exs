@@ -6,7 +6,7 @@ defmodule Yic.Repo.Migrations.CreateDatasources do
       add :name, :string
       add :comment, :string
       add :version, :string
-      add :definition, :string
+      add :definition, :map
       add :actions, {:array, :string}
 
       timestamps()

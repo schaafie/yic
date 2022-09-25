@@ -11,8 +11,9 @@ defmodule YicWeb.Api.Iam.UsersController do
     render(conn, "index.json", users: users)
   end
 
-  def create(conn, %{"users" => users_params}) do
-    with {:ok, %Users{} = users} <- Iam.create_users(users_params) do
+  # def create(conn, %{"users" => users_params}) do
+  def create(conn, users_params) do
+      with {:ok, %Users{} = users} <- Iam.create_users(users_params) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.api_iam_users_path(conn, :show, users))

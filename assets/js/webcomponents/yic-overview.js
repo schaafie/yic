@@ -142,21 +142,20 @@ export default class YicOverview extends HTMLElement {
     }
 
     addItem() {
-
+        let action = this.datamodel.createaction;
+        let cmd= `${action}/0`;
+        this.app.doCommand( cmd );
     }
 
     editItem( path ) {
-        let pk = this.datamodel.getValue(path);
-        let action = this.definition.action;
-        let cmd= `${action}/${pk}`;
+        let cmd = buildaction(this.datamodel.editaction, path);
         this.app.doCommand( cmd );
     }
     
     deleteItem( path ) { 
         let pk = this.datamodel.getValue(path);
-        this.datamodel.deleteItem(pk);
+        if (this.datamodel.delete(pk)) this.populate();
     }
-
 
     static get observedAttributes() { 
         return ['value'];

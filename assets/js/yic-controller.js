@@ -40,7 +40,7 @@ export default class YicController {
     }
 
     doCommand( jsonCmd ) { 
-        fetch( YicConf.baseUrl()+jsonCmd, this.getCallOptions() )
+        fetch( YicConf.baseUrl()+jsonCmd, { method: "GET", headers: this.getCallOptions() })
             .then( this.handleErrors )
             .then( response => {
                 return response.json();
@@ -48,10 +48,11 @@ export default class YicController {
                 if (!json.data) {
                     this.view.showPage( "error", { msg: "This app request failed to deliver proper data.", topmenu: this.apps} );
                 } else {
-                    let formdef = json.formdef.data;
-                    let definition = JSON.parse( formdef.definition );
-                    this.model.setData(json.data.data,json.datadef, definition.action);
-                    this.view.showPage( "app", { form:definition, datamodel: this.model, topmenu: this.apps});
+                    let formdef = JSON.parse( json.formdef.data.definition );
+                    let datadef = JSON.parse( json.datadef.data.definition );
+                    this.model.setData( json.data.data, datadef );
+                    this.model.setActions( formdef.actions );
+                    this.view.showPage( "app", { form:formdef, datamodel: this.model, topmenu: this.apps});
                 }
             }).catch( error => {
                 console.log(error);
@@ -68,10 +69,6 @@ export default class YicController {
 
     getCallOptions() {
         let token = this.auth.getToken();
-        return { 
-            headers: { 
-                'Authorization': `Bearer ${token}`, 
-                'Content-Type': 'application/json' }
-        }
+        return { 'Authorization': `Bearer ${token}`,  'Content-Type': 'application/json' };
     }
 }

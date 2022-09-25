@@ -1,5 +1,5 @@
-import {EditorView, EditorState, basicSetup } from "@codemirror/basic-setup"
-import {json} from "@codemirror/lang-json"
+import {EditorView, EditorState, basicSetup } from "@codemirror/basic-setup";
+import {json} from "@codemirror/lang-json";
 
 const template = document.createElement('template');
 template.innerHTML = `

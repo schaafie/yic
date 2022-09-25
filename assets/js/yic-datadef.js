@@ -39,7 +39,7 @@ export default class YicDataDef {
                             case "string":
                             case "number":
                             case "boolean":
-                                element.type = element_def.base_type;
+                                element.type = element_def.basetype;
                                 break;
                         }
                         if (element_def.default) element.value = element_def.default;

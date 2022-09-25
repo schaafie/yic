@@ -1,0 +1,28 @@
+<h1>Show Datadef</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @datadef.name %>
+  </li>
+
+  <li>
+    <strong>Comment:</strong>
+    <%= @datadef.comment %>
+  </li>
+
+  <li>
+    <strong>Version:</strong>
+    <%= @datadef.version %>
+  </li>
+
+  <li>
+    <strong>Definition:</strong>
+    <%= @datadef.definition %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.html_forms_datadef_path(@conn, :edit, @datadef) %></span> |
+<span><%= link "Back", to: Routes.html_forms_datadef_path(@conn, :index) %></span>

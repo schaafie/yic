@@ -71,6 +71,7 @@ export default class YicView extends HTMLElement {
             case "app":
                 this.innerHTML = appPageTemplate;
                 this.querySelector("yic-top-menu").setMenu( opts.topmenu );
+                console.log(opts);
                 this.setContent( opts.form, opts.datamodel );
                 break;
         }

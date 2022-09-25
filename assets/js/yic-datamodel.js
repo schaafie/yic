@@ -7,53 +7,113 @@ export default class YicDatamodel {
         this.registrations = [];
     }
 
-    setData(data, datadef, action) {
+    setData( data, datadef ) {
         this.datadef = new YicDataDef(datadef);
         this.model = this.json2model("root",data);
-        this.action = action;
+    }
+
+    setActions( actions ) {
+        actions.forEach( action => {
+            if (action.list) this.getaction = action.list.url;
+            if (action.edit) this.editaction = action.edit.url;
+            if (action.save) this.saveaction = action.save.url;
+            if (action.create) this.createaction = action.create.url;
+            if (action.delete) this.deleteaction = action.delete.url;
+        });
+    }
+
+    delete(pk){
+        let actionparts = [];
+        let deleteaction = `${this.deleteaction}/${pk}`;
+        fetch( YicConf.baseUrl() + deleteaction, { 
+                method: "DELETE", 
+                headers: { 
+                    'Authorization': `Bearer ${this.auth.getToken()}`, 
+                    'Content-Type': 'application/json' 
+        }})
+        .then( this.handleErrors )
+        .then( response => {
+            return response.ok;
+        }).catch( error => {
+            console.log(error);
+            return false;
+        });
     }
 
     save() {
+        let saveaction = this.buildaction(this.saveaction);
+        // if buildkeys are set then save else create
+        if (this.buildkeys) {
+            fetch( YicConf.baseUrl() + saveaction, {
+                method: 'PATCH',
+                body: JSON.stringify(this.model2json(this.model)),
+                headers: { 
+                    'Authorization': `Bearer ${this.auth.getToken()}`, 
+                    'Content-Type': 'application/json' }
+            })
+            .then( this.handleErrors )
+            .then( response => {
+                return response.json();
+            }).then( json => {
+                if (json.errors) {
+                    for (let obj in json.errors) {
+                        this.setErrors( obj, json.errors[obj]);
+                    }
+                } 
+                if (json.data) {
+                    console.log(json.data);
+                }
+            }).catch( error => {
+                console.log(error);
+            });    
+        } else {
+            fetch( YicConf.baseUrl() + this.createaction, {
+                method: 'POST',
+                body: JSON.stringify(this.model2json(this.model)),
+                headers: { 
+                    'Authorization': `Bearer ${this.auth.getToken()}`, 
+                    'Content-Type': 'application/json' }
+            })
+            .then( this.handleErrors )
+            .then( response => {
+                return response.json();
+            }).then( json => {
+                if (json.errors) {
+                    for (let obj in json.errors) {
+                        this.setErrors( obj, json.errors[obj]);
+                    }
+                } 
+                if (json.data) {
+                    console.log(json.data);
+                }
+            }).catch( error => {
+                console.log(error);
+            });    
+        }        
+    }
 
+    buildaction(action, path = "") {
         let actionparts = [];
-
-        this.action.split('/').forEach( (actionpart) => {
+        this.buildkeys = false;
+        action.split('/').forEach( (actionpart) => {
             if (actionpart.startsWith(":")) {
-                let name = actionpart.slice(1);
-                let value =  this.getValue( name );
+                if (path === "") {
+                    let name  = actionpart.slice(1);
+                    let value = this.getValue( name );    
+                } else {
+                    let value = this.getValue( path );
+                }
                 if (value !== undefined) {
                     actionparts.push( value );
+                    this.buildkeys = true;
                 } else {
                     actionparts.push( "undef" );
                 }
             } else {
                 actionparts.push(actionpart);
             }
-        })
-        let action = YicConf.baseUrl() + actionparts.join('/');
-        console.log(action);
-        fetch( action, {
-            method: 'PATCH',
-            body: JSON.stringify(this.model2json(this.model)),
-            headers: { 
-                'Authorization': `Bearer ${this.auth.getToken()}`, 
-                'Content-Type': 'application/json' }
-        })
-        .then( this.handleErrors )
-        .then( response => {
-            return response.json();
-        }).then( json => {
-            if (json.errors) {
-                for (let obj in json.errors) {
-                    this.setErrors( obj, json.errors[obj]);
-                }
-            } 
-            if (json.data) {
-                console.log(json.data);
-            }
-        }).catch( error => {
-            console.log(error);
         });
+        return actionparts.join('/');
     }
         
     handleErrors(response) {
@@ -74,8 +134,8 @@ export default class YicDatamodel {
         return this.model2json(this.model); 
     }
 
-    getValue( path = "" ) {
-        let element = this.findElement( this.model, path.split('.'), false);
+    getValue( path = "", create = false ) {
+        let element = this.findElement( this.model, path.split('.'), create);
         if (element===undefined) {
             return element;
         } else {

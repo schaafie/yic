@@ -1,0 +1,29 @@
+<h1>Listing Datadefs</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Comment</th>
+      <th>Version</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for datadef <- @datadefs do %>
+    <tr>
+      <td><%= datadef.name %></td>
+      <td><%= datadef.comment %></td>
+      <td><%= datadef.version %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.html_forms_datadef_path(@conn, :show, datadef) %></span>
+        <span><%= link "Edit", to: Routes.html_forms_datadef_path(@conn, :edit, datadef) %></span>
+        <span><%= link "Delete", to: Routes.html_forms_datadef_path(@conn, :delete, datadef), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Datadef", to: Routes.html_forms_datadef_path(@conn, :new) %></span>

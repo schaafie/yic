@@ -7,7 +7,7 @@ defmodule Yic.Repo.Migrations.CreateApis do
       add :description, :string
       add :version, :string
       add :request, :string
-      add :definition, :string
+      add :definition, :map
 
       timestamps()
     end

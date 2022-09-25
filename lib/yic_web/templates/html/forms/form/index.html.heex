@@ -6,8 +6,6 @@
       <th>Name</th>
       <th>Comment</th>
       <th>Version</th>
-      <th>Definition</th>
-
       <th></th>
     </tr>
   </thead>
@@ -17,8 +15,6 @@
       <td><%= form.name %></td>
       <td><%= form.comment %></td>
       <td><%= form.version %></td>
-      <td><%= form.definition %></td>
-
       <td>
         <span><%= link "Show", to: Routes.html_forms_form_path(@conn, :show, form) %></span>
         <span><%= link "Edit", to: Routes.html_forms_form_path(@conn, :edit, form) %></span>

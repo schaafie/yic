@@ -38,4 +38,21 @@ defmodule Yic.FormsFixtures do
 
     datasource
   end
+
+  @doc """
+  Generate a datadef.
+  """
+  def datadef_fixture(attrs \\ %{}) do
+    {:ok, datadef} =
+      attrs
+      |> Enum.into(%{
+        comment: "some comment",
+        definition: %{},
+        name: "some name",
+        version: "some version"
+      })
+      |> Yic.Forms.create_datadef()
+
+    datadef
+  end
 end

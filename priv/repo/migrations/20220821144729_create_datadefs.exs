@@ -1,17 +1,14 @@
-defmodule Yic.Repo.Migrations.CreateForms do
+defmodule Yic.Repo.Migrations.CreateDatadefs do
   use Ecto.Migration
 
   def change do
-    create table(:forms) do
+    create table(:datadefs) do
       add :name, :string
       add :comment, :string
       add :version, :string
       add :definition, :map
-      add :author, references(:users, on_delete: :nothing)
 
       timestamps()
     end
-
-    create index(:forms, [:author])
   end
 end

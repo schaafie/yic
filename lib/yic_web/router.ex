@@ -55,10 +55,11 @@ defmodule YicWeb.Router do
   scope "/api/forms", YicWeb.Api.Forms, as: :api_forms do 
     pipe_through :api_authenticated                                     
                                                        
-    get "/datadef", FormController, :datadef
-    get "/byname/:name", FormController, :show
+    get "/formbyname/:name", FormController, :show
+    get "/datadefbyname/:name", DatadefController, :show
     resources "/forms", FormController
-    resources "/datasources", DatasourceController                    
+    resources "/datasources", DatasourceController
+    resources "/datadefs", DatadefController
   end                                                     
 
   scope "/api/apis", YicWeb.Api.Apis, as: :api_apis do
@@ -150,6 +151,7 @@ defmodule YicWeb.Router do
     
     resources "/forms", FormController
     resources "/datasources", DatasourceController
+    resources "/datadefs", DatadefController
   end
 
   scope "/html/apis", YicWeb.Html.Apis, as: :html_apis do

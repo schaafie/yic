@@ -1,0 +1,5 @@
+<h1>Edit Datadef</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.html_forms_datadef_path(@conn, :update, @datadef)) %>
+
+<span><%= link "Back", to: Routes.html_forms_datadef_path(@conn, :index) %></span>

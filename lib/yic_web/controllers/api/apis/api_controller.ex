@@ -75,11 +75,16 @@ defmodule YicWeb.Api.Apis.ApiController do
   defp handler(def, value) do
     {:ok, def_map} = Poison.decode(def)
     tasks = Enum.map( def_map["actions"], fn(task) ->
-      url = String.replace( task["url"], ":id", value )
-      method = task["method"]
-      token = task["token"]
-      output = task["output"]
-      Task.async( System, :call, [method, url, token, output ] )
+      case task["output"] do
+        "data" when value == "0"->
+          Task.async( System, :call, ["data", 0] )
+        _output -> 
+          url = String.replace( task["url"], ":id", value )
+          method = task["method"]
+          token = task["token"]
+          output = task["output"]
+          Task.async( System, :call, [method, url, token, output ] )
+      end
     end )
     results = Task.await_many(tasks)
     define_respons results, def_map["output"]

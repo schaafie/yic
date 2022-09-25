@@ -1,11 +1,12 @@
 defmodule Yic.Forms.Datasource do
   use Ecto.Schema
   import Ecto.Changeset
+  alias Yic.Json
 
   schema "datasources" do
     field :actions, {:array, :string}
     field :comment, :string
-    field :definition, :string
+    field :definition, :map
     field :name, :string
     field :version, :string
 

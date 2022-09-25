@@ -3,16 +3,15 @@ defmodule Yic.Apis.TokenRegistry do
 
   # Client API #
   def start_link( state ) do
-    GenServer.start_link( __MODULE__, state, name: __MODULE__)
-  end
+    start = GenServer.start_link( __MODULE__, state, name: __MODULE__)
 
-  # TODO: remove!
-  # This call is only for use in dev
-  #
-  # Usage:
-  # $ iex -S mix phx.server
-  # $ Yic.Apis.TokenRegistry.addsystem
-  #
+    # This call is only for use in dev and test
+    if Mix.env() in [:dev, :test] do
+      addsystem
+    end
+
+    start
+  end
 
   def addsystem do
     add "jwt_local", %{

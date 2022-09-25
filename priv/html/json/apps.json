@@ -1,7 +1,8 @@
 { "apps": [
     {"title": "Users" ,"json":"apis/users" },
     {"title": "Forms" ,"json":"apis/forms" },
-    {"title": "Datasources" ,"json":"apis/datasources" },
+    {"title": "Definitions" ,"json":"apis/datadefs" },
+    {"title": "Sources" ,"json":"apis/datasources" },
     {"title": "Publications" ,"json":"apis/publications" },
     {"title": "Api" ,"json":"apis/apis" },
     {"title": "Workflow" ,"json":"apis/workflows" },

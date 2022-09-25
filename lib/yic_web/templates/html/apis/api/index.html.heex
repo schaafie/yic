@@ -7,8 +7,6 @@
       <th>Description</th>
       <th>Version</th>
       <th>Request</th>
-      <th>Definition</th>
-
       <th></th>
     </tr>
   </thead>
@@ -19,8 +17,6 @@
       <td><%= api.description %></td>
       <td><%= api.version %></td>
       <td><%= api.request %></td>
-      <td><%= api.definition %></td>
-
       <td>
         <span><%= link "Show", to: Routes.html_apis_api_path(@conn, :show, api) %></span>
         <span><%= link "Edit", to: Routes.html_apis_api_path(@conn, :edit, api) %></span>

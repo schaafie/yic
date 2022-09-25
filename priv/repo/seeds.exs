@@ -33,18 +33,12 @@ Repo.insert! %Form{
   name: "listform",
   comment: "List view of all forms",
   version: "1.0",
-  definition: "{
-    \"action\": \"apis/forms\",
-    \"type\": \"overview\",
-    \"elements\": [
-    { \"datapath\": \"id\", \"type\": \"hidden\", \"pk\": true },
-    { \"datapath\": \"name\", \"label": "Name", \"type\": \"text\" },
-    { \"datapath\": \"version\", \"label\": \"Version\", \"type\": \"text\" },
-    { \"datapath\": \"comment\", \"label\": \"Comment", \"type\": \"text\" }
-    ],
-    \"globalValidations\": [],
-    \"title\": \"Form overview\"
-  }"
+  definition: %{ action: "apis/forms", type: "overview",
+  elements: [ %{ datapath: "id", type: "hidden", pk: true },
+              %{ datapath: "name", label: "Name", type: "text" },
+              %{ datapath: "version", label: "Version", type: "text" },
+              %{ datapath: "comment", label: "Comment", type: "text" } ],
+  globalValidations: [], title: "Form overview" }
 }
 
 Repo.insert! %Form{
@@ -56,11 +50,11 @@ Repo.insert! %Form{
     \"type\": \"detail\",
     \"elements\": [
     { \"datapath\": \"id\", \"type\": \"hidden\" },
-    { \"datapath\": \"name\", \"label": "Form Name", \"type\": \"text\" },
+    { \"datapath\": \"name\", \"label\": \"Form Name\", \"type\": \"text\" },
     { \"datapath\": \"version\", \"label\": \"Version\", \"type\": \"text\" },
-    { \"datapath\": \"comment\", \"label\": \"Comment", \"type\": \"text\" },
-    { \"datapath\": \"author\", \"label\": \"Author", \"type\": \"number\" },
-    { \"datapath\": \"definition\", \"label\": \"Definition", \"type\": \"json\" }
+    { \"datapath\": \"comment\", \"label\": \"Comment\", \"type\": \"text\" },
+    { \"datapath\": \"author\", \"label\": \"Author\", \"type\": \"number\" },
+    { \"datapath\": \"definition\", \"label\": \"Definition\", \"type\": \"json\" }
     ],
     \"globalValidations\": [],
     \"title\": \"Form detail\"
@@ -69,38 +63,24 @@ Repo.insert! %Form{
 
 Repo.insert! %Api{ 
   name: "List all forms",
-  description: "Get the data for List Forms (data, datadef & formdef)".
+  description: "Get the data for List Forms (data, datadef and formdef)",
   version: "0.1",
   request: "apis/forms",
-  definition: "{
-    \"actions\": [
-      {\"url\": \"http://localhost:4000/api/forms/forms\", \"method\": \"get\", \"token\": \"jwt_local\", \"output\": \"data\"},
-      {\"url\": \"http://localhost:4000/api/forms/datadef\", \"method\": \"get\", \"token\": \"jwt_local\", \"output\": \"datadef\"},
-      {\"url\": \"http://localhost:4000/api/forms/byname/listform\", \"method\": \"get\", \"token\": \"jwt_local\", \"output\": \"formdef\"}
-    ],
-    \"output\": {
-      \"data\": \"data\",
-      \"datadef\": \"datadef\",
-      \"formdef\": \"formdef\"
-    }
-  }"
+  definition: %{ actions: [
+      %{url: "http://localhost:4000/api/forms/forms", method: "get", token: "jwt_local", output: "data"},
+      %{url: "http://localhost:4000/api/forms/datadef", method: "get", token: "jwt_local", output: "datadef"},
+      %{url: "http://localhost:4000/api/forms/byname/listform", method: "get", token: "jwt_local", output: "formdef"}
+    ], output: %{ data: "data", datadef: "datadef", formdef: "formdef" } }
 }
 
 Repo.insert! %Api{ 
   name: "Show form by id",
-  description: "Get the data for the Edit Form (data, datadef & formdef)".
+  description: "Get the data for the Edit Form (data, datadef and formdef)",
   version: "0.1",
   request: "apis/forms/:id",
-  definition: "{ 
-    \"actions\": [ 
-      {\"url\": \"http://localhost:4000/api/forms/forms/:id\", \"method\": \"get\", \"token\": \"jwt_local\", \"outpu\t": \"data\"}, 
-      {\"url\": \"http://localhost:4000/api/forms/datadef\", \"method\": \"get\", \"token": \"jwt_local", \"output\": \"datadef\"}, 
+  definition: "{ \"actions\": [ 
+      {\"url\": \"http://localhost:4000/api/forms/forms/:id\", \"method\": \"get\", \"token\": \"jwt_local\", \"output\": \"data\"}, 
+      {\"url\": \"http://localhost:4000/api/forms/datadef\", \"method\": \"get\", \"token\": \"jwt_local\", \"output\": \"datadef\"}, 
       {\"url\": \"http://localhost:4000/api/forms/byname/detailsform\", \"method\": \"get\", \"token\": \"jwt_local\", \"output\": \"formdef\"} 
-    ], 
-    \"output\": { 
-      \"data\": \"data\", 
-      \"datadef\": \"datadef\", 
-      \"formdef\": \"formdef\" 
-    } 
-  }"
+    ], \"output\": { \"data\": \"data\", \"datadef\": \"datadef\",  \"formdef\": \"formdef\" } }"
 }

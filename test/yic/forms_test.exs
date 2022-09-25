@@ -124,4 +124,64 @@ defmodule Yic.FormsTest do
       assert %Ecto.Changeset{} = Forms.change_datasource(datasource)
     end
   end
+
+  describe "datadefs" do
+    alias Yic.Forms.Datadef
+
+    import Yic.FormsFixtures
+
+    @invalid_attrs %{comment: nil, definition: nil, name: nil, version: nil}
+
+    test "list_datadefs/0 returns all datadefs" do
+      datadef = datadef_fixture()
+      assert Forms.list_datadefs() == [datadef]
+    end
+
+    test "get_datadef!/1 returns the datadef with given id" do
+      datadef = datadef_fixture()
+      assert Forms.get_datadef!(datadef.id) == datadef
+    end
+
+    test "create_datadef/1 with valid data creates a datadef" do
+      valid_attrs = %{comment: "some comment", definition: %{}, name: "some name", version: "some version"}
+
+      assert {:ok, %Datadef{} = datadef} = Forms.create_datadef(valid_attrs)
+      assert datadef.comment == "some comment"
+      assert datadef.definition == %{}
+      assert datadef.name == "some name"
+      assert datadef.version == "some version"
+    end
+
+    test "create_datadef/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Forms.create_datadef(@invalid_attrs)
+    end
+
+    test "update_datadef/2 with valid data updates the datadef" do
+      datadef = datadef_fixture()
+      update_attrs = %{comment: "some updated comment", definition: %{}, name: "some updated name", version: "some updated version"}
+
+      assert {:ok, %Datadef{} = datadef} = Forms.update_datadef(datadef, update_attrs)
+      assert datadef.comment == "some updated comment"
+      assert datadef.definition == %{}
+      assert datadef.name == "some updated name"
+      assert datadef.version == "some updated version"
+    end
+
+    test "update_datadef/2 with invalid data returns error changeset" do
+      datadef = datadef_fixture()
+      assert {:error, %Ecto.Changeset{}} = Forms.update_datadef(datadef, @invalid_attrs)
+      assert datadef == Forms.get_datadef!(datadef.id)
+    end
+
+    test "delete_datadef/1 deletes the datadef" do
+      datadef = datadef_fixture()
+      assert {:ok, %Datadef{}} = Forms.delete_datadef(datadef)
+      assert_raise Ecto.NoResultsError, fn -> Forms.get_datadef!(datadef.id) end
+    end
+
+    test "change_datadef/1 returns a datadef changeset" do
+      datadef = datadef_fixture()
+      assert %Ecto.Changeset{} = Forms.change_datadef(datadef)
+    end
+  end
 end

@@ -62,6 +62,12 @@ mix phx.gen.json Forms Form forms name:string comment:string version:string auth
 
 mix phx.gen.html Forms Datasource datasources name:string comment:string version:string definition:string actions:array:string --web Html.Forms
 mix phx.gen.json Forms Datasource datasources name:string comment:string version:string definition:string actions:array:string --web Api.Forms --no-context
+
+mix phx.gen.html Forms Datadef datadefs name:string comment:string version:string definition:map --web Html.Forms
+mix phx.gen.json Forms Datadef datadefs name:string comment:string version:string definition:map --web Api.Forms --no-context
+
+mix phx.gen.html Forms Dataelement dataelements name:string comment:string version:string definition:string actions:array:string --web Html.Forms
+mix phx.gen.json Forms Dataelement dataelements name:string comment:string version:string definition:string actions:array:string --web Api.Forms --no-context
 ```
 
 3. Publication Manager
@@ -76,7 +82,7 @@ mix phx.gen.html Publications Publication publications target:references:pubtarg
 mix phx.gen.json Publications Publication publications target:references:pubtargets path:string version:string definition:string start:utc_datetime end:utc_datetime --web Api.Publications --no-context
 ```
 
-4. Publication Manager
+4. Api Manager
 ```
 mix phx.gen.html Apis Api apis name:string description:string version:string request:string definition:string --web Html.Apis
 mix phx.gen.json Apis Api apis name:string description:string version:string request:string definition:string --web Api.Apis --no-context

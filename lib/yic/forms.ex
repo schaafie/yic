@@ -200,4 +200,101 @@ defmodule Yic.Forms do
   def change_datasource(%Datasource{} = datasource, attrs \\ %{}) do
     Datasource.changeset(datasource, attrs)
   end
+
+  alias Yic.Forms.Datadef
+
+  @doc """
+  Returns the list of datadefs.
+
+  ## Examples
+
+      iex> list_datadefs()
+      [%Datadef{}, ...]
+
+  """
+  def list_datadefs do
+    Repo.all(Datadef)
+  end
+
+  @doc """
+  Gets a single datadef.
+
+  Raises `Ecto.NoResultsError` if the Datadef does not exist.
+
+  ## Examples
+
+      iex> get_datadef!(123)
+      %Datadef{}
+
+      iex> get_datadef!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_datadef!(id), do: Repo.get!(Datadef, id)
+  def get_datadef_by_name!(name), do: Repo.get_by!(Datadef, name: name)
+
+  @doc """
+  Creates a datadef.
+
+  ## Examples
+
+      iex> create_datadef(%{field: value})
+      {:ok, %Datadef{}}
+
+      iex> create_datadef(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_datadef(attrs \\ %{}) do
+    %Datadef{}
+    |> Datadef.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a datadef.
+
+  ## Examples
+
+      iex> update_datadef(datadef, %{field: new_value})
+      {:ok, %Datadef{}}
+
+      iex> update_datadef(datadef, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_datadef(%Datadef{} = datadef, attrs) do
+    datadef
+    |> Datadef.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a datadef.
+
+  ## Examples
+
+      iex> delete_datadef(datadef)
+      {:ok, %Datadef{}}
+
+      iex> delete_datadef(datadef)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_datadef(%Datadef{} = datadef) do
+    Repo.delete(datadef)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking datadef changes.
+
+  ## Examples
+
+      iex> change_datadef(datadef)
+      %Ecto.Changeset{data: %Datadef{}}
+
+  """
+  def change_datadef(%Datadef{} = datadef, attrs \\ %{}) do
+    Datadef.changeset(datadef, attrs)
+  end
 end

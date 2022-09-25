@@ -51,15 +51,13 @@ export default class YicForm extends HTMLElement {
                     this.addHidden(element);
                     break;
                 case "text":
-                    //this.addText(element);
                     this.addInput('yic-form-text-input', element)
                     break;
                 case "json":
-                    // this.addJson(element);
                     this.addInput('yic-form-json-input', element)
                     break;
+                case "id":
                 case "number":
-                    // this.addNumber(element);
                     this.addInput('yic-form-number-input', element)
                     break;
             }
@@ -67,29 +65,19 @@ export default class YicForm extends HTMLElement {
 
         // Add action buttons
         let div = document.createElement('div');
-        let cancel = document.createElement('yic-form-action');
-        cancel.setAttribute( 'label', 'Cancel');
-        cancel.addEventListener('click', (ev)=>{
-            console.log('cancel');
-        });
-        cancel.setSizeHalf();
         let save = document.createElement('yic-form-action');
         save.setAttribute( 'label', 'Save');
-        save.setSizeHalf();
-        save.addEventListener('click', (ev)=>{
-            this.datamodel.save();
-        });
-        div.appendChild(cancel);
+        save.addEventListener('click', (ev)=>{ this.datamodel.save(); });
         div.appendChild(save);
-
         this.$children.appendChild(div);
     }
 
     addHidden(element) {
-        let div = document.createElement('input');
-        div.type = "hidden";
-        div.value = element.value;
-        this.$children.appendChild(div);
+        let input = document.createElement('input');
+        input.type = "hidden";
+        let value = this.datamodel.getValue(element.datapath, true);
+        if (value !== undefined) input.setAttribute('value', value);
+        this.$children.appendChild(input);
     }
 
     addInput(inputelement, element){
@@ -97,17 +85,21 @@ export default class YicForm extends HTMLElement {
         let input = document.createElement(inputelement);
         if (element.label) input.setAttribute('label', element.label);
         if (element.name) input.setAttribute('name', element.name);
-        if (this.datamodel.getValue(element.datapath)) input.setAttribute('value', this.datamodel.getValue(element.datapath));
+        let value = this.datamodel.getValue(element.datapath, true);
+        if (value !== undefined) input.setAttribute('value', value);
+
+        // Register the input with the datamodel
+        // This is helpfull if value in datamodel is changed by other agents
+
+        this.datamodel.registerListener( element.datapath, input );
+        // Add a callback function to respond to changes in the datamodel
         // Add a listener to respond to input changes and notify the datamodel
+        
         input.addEventListener('change', (ev) =>{
             let value = ev.detail.value;
             console.log(value);
             this.datamodel.setValue(element.datapath, value);
         })
-        // Register the input with the datamodel
-        // This is helpfull if value in datamodel is changed by other agents
-        this.datamodel.registerListener( element.datapath, input );
-        // Add a callback function to respond to changes in the datamodel
         input.onChange = (datapath, value) => {
             if (input.getAttribute('value') != value) {
                 input.setAttribute('value', value);
