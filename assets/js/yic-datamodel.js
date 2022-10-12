@@ -97,11 +97,12 @@ export default class YicDatamodel {
         this.buildkeys = false;
         action.split('/').forEach( (actionpart) => {
             if (actionpart.startsWith(":")) {
+                let value="";
                 if (path === "") {
                     let name  = actionpart.slice(1);
-                    let value = this.getValue( name );    
+                    value = this.getValue( name );    
                 } else {
-                    let value = this.getValue( path );
+                    value = this.getValue( path );
                 }
                 if (value !== undefined) {
                     actionparts.push( value );

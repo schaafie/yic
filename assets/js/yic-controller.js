@@ -18,7 +18,11 @@ export default class YicController {
             this.loadApps();
         }
     }
-        
+
+    authFailed( errorObject ) {
+        this.view.showPage("login", { message: errorObject.message });
+    }
+    
     loadApps() {
         this.apps = [];
         let thisapp = this;
@@ -36,14 +40,25 @@ export default class YicController {
     }
 
     doAuth( user, password ) {
-        this.auth.doLogin( user, password) ;
+        this.auth.doLogin( user, password);
     }
 
     doCommand( jsonCmd ) { 
         fetch( YicConf.baseUrl()+jsonCmd, { method: "GET", headers: this.getCallOptions() })
-            .then( this.handleErrors )
             .then( response => {
-                return response.json();
+                if (!response.ok) {
+                    switch(response.status) {
+                        case 401:
+                        case 403:
+                            this.view.showPage("login", {msg: response.statusText});
+                            break;
+                        default:
+                            console.log(response);
+                            throw Error(response.statusText);
+                    }
+                } else {
+                    return response.json();
+                }
             }).then( json => {
                 if (!json.data) {
                     this.view.showPage( "error", { msg: "This app request failed to deliver proper data.", topmenu: this.apps} );
@@ -59,14 +74,6 @@ export default class YicController {
             });
     }
     
-    handleErrors(response) {
-        if (!response.ok) {
-            console.log(response);
-            throw Error(response.statusText);
-        }
-        return response;
-    }
-
     getCallOptions() {
         let token = this.auth.getToken();
         return { 'Authorization': `Bearer ${token}`,  'Content-Type': 'application/json' };

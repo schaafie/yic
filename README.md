@@ -4,12 +4,13 @@ You're in Control: Elixir JAM Stack based web solution for Content, Digital Asse
 The main idea is that all interaction is (ultimately) done via an API layer. There will be a basic phoenix html layer to start with, in the end, this will be superfluous. Web pages interact with the backend using frontend html/javascript, preferably web-components. Just as the site, the admin site will be maintained using the same principles. This way it will be possible to maintain your admin layer as well as your (public) site.
 
 # Usage
-The framework is in development.
-Thus it is not enough to start the server. You need to add basic credentials as well otherwise there will be token errors in accessing the site.
+The framework is in development. Thus it is not enough to start the server. 
+You need to add basic credentials as well otherwise there will be token errors in accessing the application.
+In dev and Test default tokens are inserted as part of the init of the token registry.
 
+To start server (in interactive mode):
 ```
 $ iex -S mix phx.server
-iex(1)> Yic.Apis.TokenRegistry.addsystem
 ```
 
 Open browser and go to:

@@ -8,9 +8,7 @@ topMenuTemplate.innerHTML = `<style>
 .nav-wrapper {
     width: 100%;
     padding: 5px 2px;
-    border-radius: 4px;
-    background: #eaeaea;
-    border: 1px solid grey;
+    background: cornflowerblue;
 }
 
 ul {
@@ -19,14 +17,13 @@ ul {
 }
 
 li {
+    background: cornflowerblue;
     display: inline;
     padding: 5px 10px;
     margin-right: 2px;
     position: relative;
-    background: cornflowerblue;
     color: white;
     font: 14pt arial, sans-serif;
-    border-radius: 4px;
     cursor: pointer;
 }
 

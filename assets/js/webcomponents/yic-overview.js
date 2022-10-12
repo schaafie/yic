@@ -5,33 +5,19 @@ template.innerHTML = `<style>
     font: 16px Arial, sans-serif;
 }
 
-h2 {
-    margin: 50px 50px 0px;
-    padding: 20px 50px;
-    max-width:1200px;
-    border-bottom: 2px solid #ccc;
-}
-
-.container {
-    margin: 0px 50px 50px;
-    padding: 20px 50px;
-    max-width:1200px;
-}
-
 table {
     border-collapse: collapse;
-    min-width: 400px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    width: 100%;
 }
 
 table thead tr {
     background-color: #009879;
     color: #ffffff;
-    text-align: left;
 }
 
 table th,
 table td {
+    text-align: left;
     padding: 12px 15px;
 }
 
@@ -53,20 +39,17 @@ tbody tr:last-of-type {
 
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined">
-<h2></h2>
-<div class="container">
-    <div id="yic-overview"></div>
-    <table>
-        <thead>
-        </thead>
-        <tbody>
-        </tbody>
-        <tfoot>
-        </tfoot>
-    </table>
-    <button id="addbutton" class="actionbutton"><i class="material-icons-outlined">add</i>&nbsp;New</button>
-</div>
+<table>
+    <thead>
+    </thead>
+    <tbody>
+    </tbody>
+    <tfoot>
+    </tfoot>
+</table>
 `;
+// <button id="addbutton" class="actionbutton"><i class="material-icons-outlined">add</i>&nbsp;New</button>
+// this._shadowRoot.querySelector('#addbutton').addEventListener('click',()=>);
 
 export default class YicOverview extends HTMLElement {
     
@@ -74,11 +57,8 @@ export default class YicOverview extends HTMLElement {
         super();
         this._shadowRoot = this.attachShadow({ 'mode': 'open' });
         this._shadowRoot.appendChild(template.content.cloneNode(true));
-        this.$children = this._shadowRoot.querySelector('#yic-overview');
-        this.$title = this._shadowRoot.querySelector('h2');
         this.$header = this._shadowRoot.querySelector('thead');
         this.$body = this._shadowRoot.querySelector('tbody');
-        this._shadowRoot.querySelector('#addbutton').addEventListener('click',()=>this.addItem());
     }
 
     connectedCallback() {}
@@ -87,7 +67,6 @@ export default class YicOverview extends HTMLElement {
         this.app = app;
         this.datamodel = datamodel;
         this.definition = definition;
-        this.$title.innerHTML = definition.title; 
     }
 
     populate() {
@@ -139,6 +118,12 @@ export default class YicOverview extends HTMLElement {
             tablerow.appendChild( column );
             this.$body.appendChild(tablerow);
         }
+
+        let add = document.createElement('yic-form-action');
+        add.setAttribute( 'label', 'Add');
+        add.addEventListener('click', (ev)=>{ this.addItem(); });
+        this._shadowRoot.appendChild(add);
+
     }
 
     addItem() {
@@ -148,7 +133,7 @@ export default class YicOverview extends HTMLElement {
     }
 
     editItem( path ) {
-        let cmd = buildaction(this.datamodel.editaction, path);
+        let cmd = this.datamodel.buildaction(this.datamodel.editaction, path);
         this.app.doCommand( cmd );
     }
     

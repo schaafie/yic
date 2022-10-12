@@ -2,26 +2,26 @@ import YicDatamodel from "../yic-datamodel.js";
 import YicAuth from "../yic-auth.js";
 import YicController from '../yic-controller.js';
 
-const appPageTemplate = `<div class="container">
+const appPageTemplate = `<div>
     <yic-top-menu></yic-top-menu>
-    <div id="app-page"></div>
+    <yic-panel title=""></yic-panel>
 </div>`;
 
-const errorPageTemplate = `<div class="container">
+const errorPageTemplate = `<div>
     <yic-top-menu></yic-top-menu>
     <h1>Error</h1>
     <div id="error"></div>
 </div>`;
 
-const indexPageTemplate = `<div class="container">
+const indexPageTemplate = `<div>
     <yic-top-menu></yic-top-menu>
-    <h1>Welcome</h1>
-    <div>Please select an app in the menu.</div>
+    <yic-panel title="Welcome"></yic-panel>
 </div>`;
 
 
-const loginTemplate = `<div class="container">
+const loginTemplate = `<div>
     <h2>Login</h2>
+    <div id="errortxt"></div>
     <p>
         <yic-form-text-input label="login"></yic-form-text-input>
         <yic-form-password-input label="password"></yic-form-password-input>
@@ -53,6 +53,7 @@ export default class YicView extends HTMLElement {
         switch(page) {
             case "login":
                 this.innerHTML = loginTemplate;
+                if (opts.message) this.querySelector("#errortxt").innerHTML = opts.message;
                 this.querySelector("yic-form-action").addEventListener('click', () => {
                     let login = this.querySelector("yic-form-text-input").getAttribute("Value");
                     let password = this.querySelector("yic-form-password-input").getAttribute("value");
@@ -61,17 +62,17 @@ export default class YicView extends HTMLElement {
                 break;
             case "error":
                 this.innerHTML = errorPageTemplate;
-                this.querySelector("#error").innerHTML = opts.msg;
                 this.querySelector("yic-top-menu").setMenu( opts.topmenu );
+                this.querySelector("#error").innerHTML = opts.msg;
                 break;
             case "index":
                 this.innerHTML = indexPageTemplate;
                 this.querySelector("yic-top-menu").setMenu( opts.topmenu );
+                this.querySelector("yic-panel").panelbody = `Please select an app in the menu.`;
                 break;
             case "app":
                 this.innerHTML = appPageTemplate;
                 this.querySelector("yic-top-menu").setMenu( opts.topmenu );
-                console.log(opts);
                 this.setContent( opts.form, opts.datamodel );
                 break;
         }
@@ -83,13 +84,15 @@ export default class YicView extends HTMLElement {
                 let overview = document.createElement("yic-overview");
                 overview.init(this.app, datamodel, formdef );
                 overview.populate();
-                document.querySelector("#app-page").appendChild(overview);
+                document.querySelector("yic-panel").setAttribute("title", formdef.title);
+                document.querySelector("yic-panel").panelbody = overview;
                 break;
             case "detail":
                 let form = document.createElement("yic-form");
                 form.init(this.app, datamodel, formdef );
                 form.populate();
-                document.querySelector("#app-page").appendChild(form);
+                document.querySelector("yic-panel").setAttribute("title", formdef.title);
+                document.querySelector("yic-panel").panelbody = form;
                 break;
         }
     }    

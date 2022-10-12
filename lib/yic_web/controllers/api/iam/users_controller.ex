@@ -26,11 +26,15 @@ defmodule YicWeb.Api.Iam.UsersController do
     render(conn, "show.json", users: users)
   end
 
-  def update(conn, %{"id" => id, "users" => users_params}) do
-    users = Iam.get_users!(id)
-
-    with {:ok, %Users{} = users} <- Iam.update_users(users, users_params) do
-      render(conn, "show.json", users: users)
+  def update(conn, users_params) do
+    users = Iam.get_users!(users_params["id"])
+    case Iam.update_users(users, users_params) do
+      {:ok, users} ->
+        render(conn, "show.json", users: users)
+      {:error, %Ecto.Changeset{} = changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render("error.json", changeset: changeset)      
     end
   end
 

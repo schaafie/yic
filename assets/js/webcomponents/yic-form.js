@@ -18,11 +18,8 @@ h2 {
 }
 
 </style>
-<h2></h2>
-<div class="container">
-    <form id="yic-form" action="" name="" method="POST" enctype="application/x-www-form-urlencoded">
-    </form>
-</div>
+<form id="yic-form" action="" name="" method="POST" enctype="application/x-www-form-urlencoded">
+</form>
 `;
 
 export default class YicForm extends HTMLElement {
@@ -32,7 +29,6 @@ export default class YicForm extends HTMLElement {
         this._shadowRoot = this.attachShadow({ 'mode': 'open' });
         this._shadowRoot.appendChild(template.content.cloneNode(true));
         this.$children = this._shadowRoot.querySelector('#yic-form');
-        this.$title = this._shadowRoot.querySelector('h2');
     }
 
     connectedCallback() {}
@@ -41,27 +37,10 @@ export default class YicForm extends HTMLElement {
         this.app = app;
         this.datamodel = datamodel;
         this.definition = definition;
-        this.$title.innerHTML = definition.title; 
     }
 
     populate() {
-        this.definition.elements.forEach(element => {
-            switch(element.type) {
-                case "hidden":
-                    this.addHidden(element);
-                    break;
-                case "text":
-                    this.addInput('yic-form-text-input', element)
-                    break;
-                case "json":
-                    this.addInput('yic-form-json-input', element)
-                    break;
-                case "id":
-                case "number":
-                    this.addInput('yic-form-number-input', element)
-                    break;
-            }
-        });
+        this.addElements(this.definition.elements, this.$children);
 
         // Add action buttons
         let div = document.createElement('div');
@@ -72,15 +51,64 @@ export default class YicForm extends HTMLElement {
         this.$children.appendChild(div);
     }
 
-    addHidden(element) {
+    addElements(elements, node) {
+        elements.forEach(element => {
+            switch(element.type) {
+                case "hidden":
+                    this.addHidden(node, element);
+                    break;
+                case "tabs":
+                    this.addTabs(node, element);
+                    break;
+                case "grid":
+                    this.addGrid(node, element);
+                    break;
+                case "text":
+                    this.addInput(node, 'yic-form-text-input', element)
+                    break;
+                case "textarea":
+                    this.addInput(node, 'yic-form-textarea-input', element)
+                    break;
+                case "json":
+                    this.addInput(node, 'yic-form-json-input', element)
+                    break;
+                case "id":
+                case "number":
+                    this.addInput(node, 'yic-form-number-input', element)
+                    break;
+            }
+        });
+    }
+
+    addGrid(node, element) {
+        let gridcontainer = document.createElement('yic-grid');
+        gridcontainer.setAttribute("count", element.count);
+        element.elements.forEach((grid)=>{
+            let gridElement = gridcontainer.addGridElement();
+            this.addElements( grid.elements, gridElement );
+        });
+        node.appendChild(gridcontainer);
+    }
+
+    addTabs(node, element) {
+        let tabs = document.createElement('yic-tabs');
+        element.elements.forEach((tab)=>{
+            let content = document.createElement('div');
+            this.addElements( tab.elements, content );
+            tabs.addTab( tab.label, content );
+        });
+        node.appendChild(tabs);
+    }
+
+    addHidden(node, element) {
         let input = document.createElement('input');
         input.type = "hidden";
         let value = this.datamodel.getValue(element.datapath, true);
         if (value !== undefined) input.setAttribute('value', value);
-        this.$children.appendChild(input);
+        node.appendChild(input);
     }
 
-    addInput(inputelement, element){
+    addInput(node, inputelement, element){
         let div = document.createElement('div');
         let input = document.createElement(inputelement);
         if (element.label) input.setAttribute('label', element.label);
@@ -110,7 +138,7 @@ export default class YicForm extends HTMLElement {
             input.refreshErrors();
         }
         div.appendChild(input);
-        this.$children.appendChild(div);
+        node.appendChild(div);
     }
 
     static get observedAttributes() { 

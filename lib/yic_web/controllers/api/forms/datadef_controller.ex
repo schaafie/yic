@@ -30,11 +30,15 @@ defmodule YicWeb.Api.Forms.DatadefController do
     render(conn, "show.json", datadef: datadef)
   end
 
-  def update(conn, %{"id" => id, "datadef" => datadef_params}) do
-    datadef = Forms.get_datadef!(id)
-
-    with {:ok, %Datadef{} = datadef} <- Forms.update_datadef(datadef, datadef_params) do
-      render(conn, "show.json", datadef: datadef)
+  def update(conn, datadef_params) do
+    datadef = Forms.get_datadef!(datadef_params["id"])
+    case Forms.update_datadef(datadef, datadef_params) do
+      {:ok, datadef} ->
+        render(conn, "show.json", datadef: datadef)
+      {:error, %Ecto.Changeset{} = changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render("error.json", changeset: changeset)      
     end
   end
 

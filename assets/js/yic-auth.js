@@ -51,6 +51,10 @@ export default class YicAuth {
         console.log( "Error: " + txt );
         this.uname = "";
         let errObject = JSON.parse( txt );
+        this.listeners.forEach(element => {
+            element.authFailed( errObject );    
+        });
+        
     }
 
     handleSucces( txt ) {
