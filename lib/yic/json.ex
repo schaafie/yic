@@ -1,4 +1,5 @@
 defmodule Yic.Json do
+  require Logger
   use Ecto.Type
 
   def type(), do: :map
@@ -10,34 +11,34 @@ defmodule Yic.Json do
       {:ok, map} -> 
         {:ok, map}
       {:error, exception} ->
-        IO.puts "Invalid JSON when DUMPING to database"
-        :error
+        Logger.error "Invalid JSON when DUMPING to database"
+        { :error, "Invalid JSON when DUMPING to database" }
     end
   end
   
-  def dump(_), do: :error
+  def dump(_), do: { :error, "dump error" }
 
   def load(map) when is_map(map) or is_list(map) do
-    IO.puts "LOADING MAP"
+    Logger.info "LOADING MAP"
     Poison.encode(map, pretty: true)
   end
 
   def load(json) when is_binary(json), do: {:ok, json}
 
-  def load(_), do: :error
+  def load(_), do: {:error, "load error"}
 
   def cast(map) when is_map(map) or is_list(map), do: {:ok, map}
 
   def cast(json) when is_binary(json) do
-    IO.puts "CASTING JSON"
+    Logger.info "CASTING JSON"
     case Poison.decode(json) do
       {:ok, map} -> 
         {:ok, json}
       {:error, exception} ->
-        IO.puts "Invalid JSON when CASTING"
+        Logger.error "Invalid JSON when CASTING"
         { :error, message: "Invalid JSON format" }
     end
   end
 
-  def cast(_other), do: :error
+  def cast(_other), do: {:error, "other error"}
 end

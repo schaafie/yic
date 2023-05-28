@@ -1,0 +1,28 @@
+<h1>Show Item</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @item.name %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @item.description %>
+  </li>
+
+  <li>
+    <strong>Version:</strong>
+    <%= @item.version %>
+  </li>
+
+  <li>
+    <strong>Content:</strong>
+    <%= @item.content %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.html_content_item_path(@conn, :edit, @item) %></span> |
+<span><%= link "Back", to: Routes.html_content_item_path(@conn, :index) %></span>

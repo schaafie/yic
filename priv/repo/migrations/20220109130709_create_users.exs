@@ -6,6 +6,7 @@ defmodule Yic.Repo.Migrations.CreateUsers do
       add :firstname, :string
       add :lastname, :string
       add :email, :string
+      add :details, :map
 
       timestamps()
     end

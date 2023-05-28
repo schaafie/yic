@@ -3,6 +3,11 @@ You're in Control: Elixir JAM Stack based web solution for Content, Digital Asse
 
 The main idea is that all interaction is (ultimately) done via an API layer. There will be a basic phoenix html layer to start with, in the end, this will be superfluous. Web pages interact with the backend using frontend html/javascript, preferably web-components. Just as the site, the admin site will be maintained using the same principles. This way it will be possible to maintain your admin layer as well as your (public) site.
 
+# Build with
+Erts 10.7 OTP 22
+Elixir 1.12.3
+Phoenix 1.2.5
+
 # Usage
 The framework is in development. Thus it is not enough to start the server. 
 You need to add basic credentials as well otherwise there will be token errors in accessing the application.
@@ -71,19 +76,31 @@ mix phx.gen.html Forms Dataelement dataelements name:string comment:string versi
 mix phx.gen.json Forms Dataelement dataelements name:string comment:string version:string definition:string actions:array:string --web Api.Forms --no-context
 ```
 
-3. Publication Manager
+6. Content Manager
 ```
-mix phx.gen.html Publications Pubtask pubtasks  --web Html.Forms --no-context --web Html.Publications
-mix phx.gen.json Publications Pubtask pubtasks  --web Html.Forms --no-context --web Api.Publications --no-context
+mix phx.gen.html Content Template templates name:string description:string owner:references:users version:map definition:map --web Html.Content
+mix phx.gen.json Content Template templates name:string description:string owner:references:users version:map definition:map --web Api.Content --no-context
 
-mix phx.gen.html Publications Pubtarget pubtargets name:string location:string type:string --web Html.Publications
-mix phx.gen.json Publications Pubtarget pubtargets name:string location:string type:string --web Api.Publications --no-context
+mix phx.gen.html Content Item items --web Api.Content name:string description:string owner:references:users version:map content:map --web Html.Content
+mix phx.gen.json Content Item items --web Api.Content name:string description:string owner:references:users version:map content:map --web Api.Content --no-context
+```
+
+4. Publication Manager
+```
+mix phx.gen.html Publications Pubtask pubtasks name:string version:string definition:map --web Html.Publications
+mix phx.gen.json Publications Pubtask pubtasks name:string version:string definition:map --web Api.Publications --no-context
+
+mix phx.gen.html Publications Pubtarget pubtargets name:string version:string type:string definition:map --web Html.Publications
+mix phx.gen.json Publications Pubtarget pubtargets name:string version:string type:string definition:map --web Api.Publications --no-context
+
+mix phx.gen.html Publications Pubresult pubresults  --web Html.Publications
+mix phx.gen.json Publications Pubresult pubresults  --web Api.Publications --no-context
 
 mix phx.gen.html Publications Publication publications target:references:pubtargets path:string version:string definition:string start:utc_datetime end:utc_datetime --web Html.Publications
 mix phx.gen.json Publications Publication publications target:references:pubtargets path:string version:string definition:string start:utc_datetime end:utc_datetime --web Api.Publications --no-context
 ```
 
-4. Api Manager
+5. Api Manager
 ```
 mix phx.gen.html Apis Api apis name:string description:string version:string request:string definition:string --web Html.Apis
 mix phx.gen.json Apis Api apis name:string description:string version:string request:string definition:string --web Api.Apis --no-context
@@ -91,9 +108,7 @@ mix phx.gen.json Apis Api apis name:string description:string version:string req
 
 TODO:
 
-5. asset
-
-6. content
+6. asset
 
 7. data
 

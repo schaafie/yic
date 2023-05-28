@@ -31,7 +31,13 @@ export default class YicController {
             return response.json();
         }).then( data => {
             data.apps.forEach( (app) => {
-                app.callback = function() { thisapp.doCommand(app.json); };
+                if (app.type=="dropdown") {
+                    app.items.forEach( (item) => {
+                        item.callback = function() { thisapp.doCommand(item.json); };    
+                    });
+                } else {
+                    app.callback = function() { thisapp.doCommand(app.json); };
+                }
                 this.apps.push(app);
             });
             this.apps.push( { title: this.auth.getLoggedInUser(), type: 'dropdown', align: "right", items: [{title: "logout", type: "link", callback: () => { this.auth.doLogout(); }}] } );

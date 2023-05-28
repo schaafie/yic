@@ -1,0 +1,32 @@
+<h1>Listing Items</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Version</th>
+      <th>Content</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for item <- @items do %>
+    <tr>
+      <td><%= item.name %></td>
+      <td><%= item.description %></td>
+      <td><%= item.version %></td>
+      <td><%= item.content %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.html_content_item_path(@conn, :show, item) %></span>
+        <span><%= link "Edit", to: Routes.html_content_item_path(@conn, :edit, item) %></span>
+        <span><%= link "Delete", to: Routes.html_content_item_path(@conn, :delete, item), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Item", to: Routes.html_content_item_path(@conn, :new) %></span>

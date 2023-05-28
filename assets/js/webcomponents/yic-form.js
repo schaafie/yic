@@ -63,6 +63,9 @@ export default class YicForm extends HTMLElement {
                 case "grid":
                     this.addGrid(node, element);
                     break;
+                case "groups":
+                    this.addGroups(node, element);
+                    break;
                 case "text":
                     this.addInput(node, 'yic-form-text-input', element)
                     break;
@@ -78,6 +81,25 @@ export default class YicForm extends HTMLElement {
                     break;
             }
         });
+    }
+
+    addGroup() {
+        let groups = document.createElement('yic-groups');
+        groups.setAttribute("label", element.label);
+        groups.setAttribute("actionlabel", element.actionlabel);
+        // Add listener for new group event
+        // Listen for custom add event
+        groups.addEventListener('add', (ev) => {
+
+        });
+        // Listen for custom delete event
+        groups.addEventListener('delete', (ev) => {
+
+        });
+        element.elements.forEach((group) => {
+            
+        });
+        node.appendChild(groups);
     }
 
     addGrid(node, element) {

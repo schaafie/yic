@@ -1,6 +1,6 @@
 defmodule YicWeb.Html.Forms.DatadefController do
   use YicWeb, :controller
-
+  require Logger
   alias Yic.Forms
   alias Yic.Forms.Datadef
 
@@ -47,6 +47,7 @@ defmodule YicWeb.Html.Forms.DatadefController do
         |> redirect(to: Routes.html_forms_datadef_path(conn, :show, datadef))
 
       {:error, %Ecto.Changeset{} = changeset} ->
+        Logger.error changeset
         render(conn, "edit.html", datadef: datadef, changeset: changeset)
     end
   end

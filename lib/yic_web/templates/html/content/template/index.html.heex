@@ -1,0 +1,32 @@
+<h1>Listing Templates</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Version</th>
+      <th>Definition</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for template <- @templates do %>
+    <tr>
+      <td><%= template.name %></td>
+      <td><%= template.description %></td>
+      <td><%= template.version %></td>
+      <td><%= template.definition %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.html_content_template_path(@conn, :show, template) %></span>
+        <span><%= link "Edit", to: Routes.html_content_template_path(@conn, :edit, template) %></span>
+        <span><%= link "Delete", to: Routes.html_content_template_path(@conn, :delete, template), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Template", to: Routes.html_content_template_path(@conn, :new) %></span>

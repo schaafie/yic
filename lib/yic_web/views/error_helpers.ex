@@ -4,12 +4,37 @@ defmodule YicWeb.ErrorHelpers do
   """
 
   use Phoenix.HTML
+  require Logger
 
   @doc """
   Generates tag for inlined form input errors.
   """
+  def deep_error_tag(form, field, root) do
+    list = find_all_fields( form.errors, field, root, [])
+    Enum.map( list, fn error -> 
+      content_tag(:span, translate_error(error), 
+        class: "invalid-feedback", 
+        phx_feedback_for: input_name(form, field))
+    end)
+  end
+
+  def find_all_fields([], _field, _root, list), do: list
+
+  def find_all_fields( [{key, val}|errors], field, root, list) do
+    if key == field do
+      find_all_fields( errors, field, root, [val|list] )
+    else
+      if String.starts_with?( Atom.to_string(key), root <> "." <> Atom.to_string(field)) do
+        { msg, opt } = val
+        find_all_fields( errors, field, root, [{ Atom.to_string(key)<>": "<>msg, opt}|list] )
+      else
+        find_all_fields( errors, field, root, list )
+      end
+    end
+  end
+
   def error_tag(form, field) do
-    Enum.map(Keyword.get_values(form.errors, field), fn error ->
+      Enum.map(Keyword.get_values(form.errors, field), fn error ->
       content_tag(:span, translate_error(error),
         class: "invalid-feedback",
         phx_feedback_for: input_name(form, field)

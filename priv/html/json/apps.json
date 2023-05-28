@@ -1,12 +1,17 @@
 { "apps": [
-    {"title": "Users" ,"json":"apis/users" },
-    {"title": "Forms" ,"json":"apis/forms" },
-    {"title": "Definitions" ,"json":"apis/datadefs" },
-    {"title": "Sources" ,"json":"apis/datasources" },
+    { "title": "admin", "type": "dropdown", "items": [
+        {"title": "Users" ,"json":"apis/users" },
+        {"title": "Forms" ,"json":"apis/forms" },
+        {"title": "Datadefs" ,"json":"apis/datadefs" },
+        {"title": "Sources" ,"json":"apis/datasources" }    
+    ]},
     {"title": "Publications" ,"json":"apis/publications" },
     {"title": "Api" ,"json":"apis/apis" },
     {"title": "Workflow" ,"json":"apis/workflows" },
     {"title": "Sites" ,"json":"apis/sites" },
-    {"title": "Content" ,"json":"apis/contents" },
+    {"title": "Content" , "type": "dropdown", "items": [ 
+        { "title": "Templates", "json":"apis/contenttemplates" },
+        { "title": "Items", "json":"apis/contentitems" }
+    ] },
     {"title": "Media" ,"json":"apis/medias" }
 ]}

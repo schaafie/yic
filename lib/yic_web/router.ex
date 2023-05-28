@@ -35,7 +35,7 @@ defmodule YicWeb.Router do
   end
 
   scope "/", YicWeb do
-    pipe_through :browser
+    pipe_through [:browser, :require_authenticated_account]
     get "/", PageController, :index
   end
 
@@ -60,7 +60,14 @@ defmodule YicWeb.Router do
     resources "/forms", FormController
     resources "/datasources", DatasourceController
     resources "/datadefs", DatadefController
-  end                                                     
+  end
+  
+  scope "/api/content", YicWeb.Api.Content, as: :api_content do 
+    pipe_through :api_authenticated           
+
+    resources "/templates", TemplateController
+    resources "/items", ItemController
+  end
 
   scope "/api/apis", YicWeb.Api.Apis, as: :api_apis do
     pipe_through :api_authenticated                                     
@@ -152,6 +159,13 @@ defmodule YicWeb.Router do
     resources "/forms", FormController
     resources "/datasources", DatasourceController
     resources "/datadefs", DatadefController
+  end
+
+  scope "/html/content", YicWeb.Html.Content, as: :html_content do
+    pipe_through [:browser, :require_authenticated_account]
+
+    resources "/templates", TemplateController
+    resources "/items", ItemController
   end
 
   scope "/html/apis", YicWeb.Html.Apis, as: :html_apis do

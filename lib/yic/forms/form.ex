@@ -18,7 +18,7 @@ defmodule Yic.Forms.Form do
   def changeset(form, attrs) do
     form
     |> cast(attrs, [:name, :comment, :version, :definition, :author])
-    |> validate_changes_against_datadef( datadef() )
+    |> validate_changes_against_datadef( "form" )
   end
 
   def datadef() do

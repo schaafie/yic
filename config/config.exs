@@ -22,7 +22,7 @@ config :yic, Yic.Guardian,
     secret_key: "lpsypNuD68xkKbwbmtsXBpwHEca+++a6BjlOu+Vj2CTlBeIi6H3Qd+yQ7+XCwLX7",
     ttl: {3, :days}
 
- config :yic, YicWeb.AuthAccessPipeline,
+config :yic, YicWeb.AuthAccessPipeline,
     module: Yic.Guardian,
     error_handler: YicWeb.AuthErrorHandler
 

@@ -28,12 +28,10 @@ defmodule YicWeb.Api.Forms.FormController do
 
   def show(conn, %{"name" => name}) do
     form = Forms.get_form_by_name!(name)
-    IO.inspect form
     render(conn, "show.json", form: form)
   end
 
   def update(conn, form_params) do
-    IO.inspect form_params
     form = Forms.get_form!(form_params["id"])
     case Forms.update_form(form, form_params) do
       {:ok, form} ->
