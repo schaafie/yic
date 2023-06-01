@@ -9,7 +9,7 @@ defmodule Yic.Validate do
     # Merge into one set with latest proposed values
     dataset = Map.merge( data, changes )
     # Validate all datadef fields against the set
-    new = validate_dataitem [], dataset, datadef, "", datadef.root
+    new = validate_dataitem [], dataset, datadef, datadef.root, datadef.root
     case new do
       []    -> changeset
       [_|_] -> %{changeset | errors: new ++ errors, valid?: false}
@@ -29,7 +29,7 @@ defmodule Yic.Validate do
     end    
   end
 
-  def validate_dataitem errors, data, datadef, path, name  do
+  def validate_dataitem errors, data, datadef, path, name do
     case find_element( name, datadef.datatypes ) do
       { :error, msg } ->
         Logger.error msg
@@ -151,9 +151,10 @@ defmodule Yic.Validate do
   defp append(a, b), do: a ++ b
 
   defp build_path path, name do
-    case path do
-      "" -> name
-      _ -> path <> "." <> name
+    cond do
+      path == name -> ""
+      path == "" -> name
+      true -> path <> "." <> name
     end
   end
 end

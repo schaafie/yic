@@ -47,7 +47,7 @@ defmodule YicWeb.Html.Forms.DatadefController do
         |> redirect(to: Routes.html_forms_datadef_path(conn, :show, datadef))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        Logger.error changeset
+        Logger.error changeset.errors
         render(conn, "edit.html", datadef: datadef, changeset: changeset)
     end
   end

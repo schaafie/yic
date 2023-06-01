@@ -2,14 +2,14 @@ defmodule Yic.SeedData do
 
     def data_dd do
         %{ root: "form", datatypes: [                                                   
-            %{ name: "form", basetype: "map", validations: [ %{ fields: [                                                   
+            %{ name: "form", basetype: "map", validations: [ %{ type: "fields", fields: [                                                   
                 %{field: "id", required: false},                          
                 %{field: "comment", required: true},                      
                 %{field: "definition", required: true},                   
                 %{field: "name", required: true},                         
                 %{field: "version", required: true},                      
                 %{field: "author", required: false} ] } ] },
-            %{ basetype: "string", name: "definition", validations: [ %{ fields: [                                                   
+            %{ basetype: "string", name: "definition", validations: [ %{ type: "fields", fields: [                                                   
                 %{field: "action", required: false},                      
                 %{field: "saveaction", required: false},                  
                 %{field: "createaction", required: false},                
@@ -33,14 +33,14 @@ defmodule Yic.SeedData do
         
     def form_dd do
         %{ root: "form", datatypes: [ 
-            %{ name: "form", basetype: "map", validations: [ %{ fields: [                                                  
+            %{ name: "form", basetype: "map", validations: [ %{ type: "fields", fields: [                                                  
                 %{field: "id", required: false},                         
                 %{field: "comment", required: true},                     
                 %{field: "definition", required: true},                  
                 %{field: "name", required: true},                        
                 %{field: "version", required: true},                     
                 %{field: "author", required: false} ] } ] },          
-            %{ basetype: "string", name: "definition", validations: [ %{ fields: [                                                  
+            %{ basetype: "string", name: "definition", validations: [ %{ type: "fields", fields: [                                                  
                 %{field: "action", required: false},                     
                 %{field: "saveaction", required: false},                 
                 %{field: "createaction", required: false},               
@@ -64,7 +64,7 @@ defmodule Yic.SeedData do
     
     def user_dd do
         %{ root: "user", datatypes: [                                                  
-            %{ name: "user", basetype: "map", validations: [ %{ fields: [                                                 
+            %{ name: "user", basetype: "map", validations: [ %{ type: "fields", fields: [                                                 
                 %{field: "id", required: false},                        
                 %{field: "firstname", required: true},                  
                 %{field: "lastname", required: true},                   
