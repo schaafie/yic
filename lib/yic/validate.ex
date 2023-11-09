@@ -50,7 +50,9 @@ defmodule Yic.Validate do
             validate errors, data, datadef, element.validations, build_path( path, element.name )
             # validate_array( data, element, path, errors )
           basetype when basetype in ["string", "number", "id"] ->
-            validate errors, data, datadef, element.validations, build_path( path, element.name )
+            errors
+            |> type_check( element.basetype, data, path )
+            |> validate( data, datadef, element.validations, build_path( path, element.name ) )
           _ ->
             Logger.info("Field type #{element.basetype} not found, alert admin")
             errors ++ [{ String.to_atom( element.name ), "Field type #{element.basetype} not found, alert admin" }]
@@ -101,6 +103,46 @@ defmodule Yic.Validate do
     errors
     |> append( [{ String.to_atom( path ), {"Validation rule not of correct format", []} }] )
     |> validate( value, datadef, validations, path )
+  end
+
+  def type_check( errors, type, value, path ) do
+    valid = case type do
+      "string" ->
+        is_binary(value)
+      "id" ->
+        if is_binary(value) do
+          try do
+            String.to_integer(value)
+          rescue
+            ArgumentError ->
+              false
+          else
+            castvalue ->
+              is_integer(castvalue)
+          end
+        else
+          is_integer(value)
+        end
+      "number" ->
+        if is_binary(value) do
+          try do
+            String.to_integer(value)
+          rescue
+            ArgumentError ->
+              false
+          else
+            castvalue ->
+              is_integer(castvalue)
+          end
+        else
+          is_integer(value)
+        end
+    end
+    if valid do
+      errors
+    else
+      errors ++ [{ String.to_atom( path ), {"Value type is incorrect. Expected type #{type}", []} }]     
+    end
   end
 
   def exec_rule errors, "format", rule, value, error, path do

@@ -15,11 +15,11 @@
 
   <%= label f, :version %>
   <%= codearea f, :version %>
-  <%= error_tag f, :version %>
+  <%= deep_error_tag f, :version %>
 
   <%= label f, :definition %>
   <%= codearea f, :definition %>
-  <%= deep_error_tag f, :definition, "template" %>
+  <%= deep_error_tag f, :definition %>
 
   <div>
     <%= submit "Save" %>

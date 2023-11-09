@@ -1,33 +1,26 @@
 # ./Dockerfile
 # Extend from the official Elixir image
-FROM elixir:1.9.4
+FROM elixir:1.12.3
 
-RUN apt-get update && \ 
-   apt-get install -y postgresql-client
+RUN apt-get update
+RUN apt-get install -y build-essential inotify-tools postgresql-client git
+RUN apt-get clean
 
 # Create required directories
 RUN mkdir /yic
 WORKDIR /yic
-RUN mkdir /apps
-RUN mkdir /config
-RUN mkdir /deps
-
-# Create database_host ENV for ecto
-ENV DATABASE_HOST "db"
 
 # copy the Elixir files
 COPY entrypoint.sh .
 COPY mix.exs .
 COPY mix.lock .
-COPY config config
-
-RUN ["chmod", "+x", "./entrypoint.sh"]
 
 # Install hex package manager
-RUN mix local.hex --force && \
-  mix local.rebar && \
-  mix deps.get && \
-  mix deps.compile
+RUN mix local.hex --force
+RUN mix local.rebar --force
+RUN mix deps.get
+RUN mix deps.compile
 
 # Run the entrypoint script
+RUN ["chmod", "+x", "./entrypoint.sh"]
 CMD ["bash","-c","./entrypoint.sh"] 

@@ -21,40 +21,40 @@ defmodule Yic.Content.Template do
     |> validate_changes_against_datadef( "contenttemplate" )
   end
 
-  def datadef() do
-    %{ root: "template", datatypes: [
-      %{ name: "template", basetype: "map", type: "form", fields: [
-        %{ field: "id", required: false}, 
-        %{ field: "description", required: true}, 
-        %{ field: "definition", required: true}, 
-        %{ field: "name", required: true}, 
-        %{ field: "version", required: true}, 
-        %{ field: "owner", required: false}
-      ]},
-      %{ name: "description", basetype: "string", validations: []},
-      %{ name: "definition", basetype: "string", type: "map", fields: [
-        %{ field: "type", required: true}, 
-        %{ field: "elements", required: true}, 
-        %{ field: "title", required: true}
-      ]},
-      %{ name: "id", basetype: "number", validations: []},
-      %{ name: "type", basetype: "string", validations: []},
-      %{ name: "elements", basetype: "array", validations: []},
-      %{ name: "title", basetype: "string", validations: []},
-      %{ name: "name", basetype: "string", validations: []},
-      %{ name: "version", basetype: "string", type: "map", fields: [
-        %{ field: "minor", required: false}, 
-        %{ field: "medior", required: false}, 
-        %{ field: "major", required: false}, 
-        %{ field: "author", required: false}, 
-        %{ field: "comment", required: false}
-      ]},
-      %{ name: "minor", basetype: "number", validations: []},
-      %{ name: "medior", basetype: "number", validations: []},
-      %{ name: "major", basetype: "number", validations: []},
-      %{ name: "author", basetype: "id", validations: []},
-      %{ name: "comment", basetype: "string", validations: []},
-      %{ name: "owner", basetype: "id", validations: []}
-    ]}
-  end  
+  # def datadef() do
+  #   %{ root: "template", datatypes: [
+  #     %{ name: "template", basetype: "map", type: "form", fields: [
+  #       %{ field: "id", required: false}, 
+  #       %{ field: "description", required: true}, 
+  #       %{ field: "definition", required: true}, 
+  #       %{ field: "name", required: true}, 
+  #       %{ field: "version", required: true}, 
+  #       %{ field: "owner", required: false}
+  #     ]},
+  #     %{ name: "description", basetype: "string", validations: []},
+  #     %{ name: "definition", basetype: "string", type: "map", fields: [
+  #       %{ field: "type", required: true}, 
+  #       %{ field: "elements", required: true}, 
+  #       %{ field: "title", required: true}
+  #     ]},
+  #     %{ name: "id", basetype: "number", validations: []},
+  #     %{ name: "type", basetype: "string", validations: []},
+  #     %{ name: "elements", basetype: "array", validations: []},
+  #     %{ name: "title", basetype: "string", validations: []},
+  #     %{ name: "name", basetype: "string", validations: []},
+  #     %{ name: "version", basetype: "string", type: "map", fields: [
+  #       %{ field: "minor", required: false}, 
+  #       %{ field: "medior", required: false}, 
+  #       %{ field: "major", required: false}, 
+  #       %{ field: "author", required: false}, 
+  #       %{ field: "comment", required: false}
+  #     ]},
+  #     %{ name: "minor", basetype: "number", validations: []},
+  #     %{ name: "medior", basetype: "number", validations: []},
+  #     %{ name: "major", basetype: "number", validations: []},
+  #     %{ name: "author", basetype: "id", validations: []},
+  #     %{ name: "comment", basetype: "string", validations: []},
+  #     %{ name: "owner", basetype: "id", validations: []}
+  #   ]}
+  # end  
 end

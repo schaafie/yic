@@ -4,12 +4,12 @@ services:
   phoenix:
     build: .
     volumes:
-      - './apps:/yic/apps'
-    environment:
-      PGUSER: postgres
-      PGPASSWORD: postgres
-      PGPORT: 5432
-      PGHOST: db
+      - './lib:/yic/lib'
+      - './config:/yic/config'
+      - './assets:/yic/assets'
+      - './priv:/yic/priv'
+    env_file:
+      - yic.env
     ports:
       - "4000:4000"
     depends_on:
@@ -21,13 +21,7 @@ services:
       POSTGRES_PASSWORD: postgres
       PGDATA: /var/lib/postgresql/data/pgdata
     restart: always
+    ports:
+      - "5432:5432"
     volumes:
       - /var/lib/postgresql/data
-  web:
-    build: ./docker/web
-    volumes:
-      - ./target:/usr/local/apache2/htdocs
-    ports:
-      - "8080:80"
-    depends_on: 
-      - phoenix

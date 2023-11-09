@@ -2,14 +2,14 @@ defmodule Yic.SeedData do
 
     def data_dd do
         %{ root: "form", datatypes: [                                                   
-            %{ name: "form", basetype: "map", validations: [ %{ type: "fields", fields: [                                                   
+            %{ name: "form", basetype: "map", validations: [ %{ type: "fields",  strict: false, fields: [                                                   
                 %{field: "id", required: false},                          
                 %{field: "comment", required: true},                      
                 %{field: "definition", required: true},                   
                 %{field: "name", required: true},                         
                 %{field: "version", required: true},                      
                 %{field: "author", required: false} ] } ] },
-            %{ basetype: "string", name: "definition", validations: [ %{ type: "fields", fields: [                                                   
+            %{ basetype: "string", name: "definition", validations: [ %{ type: "fields",  strict: false, fields: [                                                   
                 %{field: "action", required: false},                      
                 %{field: "saveaction", required: false},                  
                 %{field: "createaction", required: false},                
@@ -26,21 +26,51 @@ defmodule Yic.SeedData do
             %{basetype: "string", name: "title", validations: []},        
             %{basetype: "string", name: "label", validations: []},        
             %{basetype: "string", name: "name", validations: []},         
-            %{ basetype: "string", name: "version", validations: [ %{ error: "Invalid version format.", rule: "^(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)$", type: "format" }]},                                                            
-            %{basetype: "id", name: "author", validations: []}            
+            %{ basetype: "string", name: "version", validations: [ %{ error: "Invalid version format.", rule: "^(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)$", type: "format" } ]},                                                            
+            %{basetype: "id", name: "author", validations: []}
         ]}                                                               
     end    
-        
+
+    def template_dd do
+        %{ root: "template", datatypes: [                                                   
+            %{ name: "template", basetype: "map", validations: [ %{ type: "fields", strict: false, fields: [                                                   
+                %{field: "id", required: false},                          
+                %{field: "description", required: true},                      
+                %{field: "definition", required: true},                   
+                %{field: "name", required: true},                         
+                %{field: "version", required: true},                      
+                %{field: "owner", required: false} ] } ] },
+            %{ basetype: "map", name: "version", validations: [ %{ type: "fields",  strict: false, fields: [
+                %{ field: "major", required: true },
+                %{ field: "medior", required: true },
+                %{ field: "minor", required: true },
+                %{ field: "author", required: true },
+                %{ field: "comment", required: true }
+            ] } ] },
+            %{ basetype: "string", name: "definition", validations: [] },
+            %{ basetype: "string", name: "description", validations: []}, 
+            %{ basetype: "number", name: "id", validations: []},           
+            %{ basetype: "string", name: "name", validations: []},         
+            %{ basetype: "id", name: "owner", validations: []},
+            %{ basetype: "id", name: "author", validations: []},            
+            %{ basetype: "number", name: "major", validations: []},           
+            %{ basetype: "number", name: "medior", validations: []},           
+            %{ basetype: "number", name: "minor", validations: []},           
+            %{ basetype: "string", name: "comment", validations: []}         
+        ]}                                                               
+    end    
+    
+
     def form_dd do
         %{ root: "form", datatypes: [ 
-            %{ name: "form", basetype: "map", validations: [ %{ type: "fields", fields: [                                                  
+            %{ name: "form", basetype: "map", validations: [ %{ type: "fields",  strict: false, fields: [                                                  
                 %{field: "id", required: false},                         
                 %{field: "comment", required: true},                     
                 %{field: "definition", required: true},                  
                 %{field: "name", required: true},                        
                 %{field: "version", required: true},                     
                 %{field: "author", required: false} ] } ] },          
-            %{ basetype: "string", name: "definition", validations: [ %{ type: "fields", fields: [                                                  
+            %{ basetype: "string", name: "definition", validations: [ %{ type: "fields",  strict: false, fields: [                                                  
                 %{field: "action", required: false},                     
                 %{field: "saveaction", required: false},                 
                 %{field: "createaction", required: false},               
@@ -57,14 +87,14 @@ defmodule Yic.SeedData do
             %{basetype: "string", name: "title", validations: []},       
             %{basetype: "string", name: "label", validations: []},       
             %{basetype: "string", name: "name", validations: []},        
-            %{ basetype: "string", name: "version", validations: [ %{ error: "Invalid version format.", rule: "^(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)$", type: "format" }]},                                                           
+            %{ basetype: "string", name: "version", validations: [%{ error: "Invalid version format.", rule: "^(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)$", type: "format" }]}, 
             %{basetype: "id", name: "author", validations: []}
         ]}                                                                        
     end    
     
     def user_dd do
         %{ root: "user", datatypes: [                                                  
-            %{ name: "user", basetype: "map", validations: [ %{ type: "fields", fields: [                                                 
+            %{ name: "user", basetype: "map", validations: [ %{ type: "fields",  strict: false, fields: [                                                 
                 %{field: "id", required: false},                        
                 %{field: "firstname", required: true},                  
                 %{field: "lastname", required: true},                   

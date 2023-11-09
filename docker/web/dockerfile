@@ -1,4 +1,0 @@
-FROM httpd:2.4
-# Using a modified conf file to activate mod_rewrite
-# required using docker run --rm httpd:2.4 cat /usr/local/apache2/conf/httpd.conf > my-httpd.conf
-COPY ./my-httpd.conf /usr/local/apache2/conf/httpd.conf

@@ -9,8 +9,9 @@ defmodule YicWeb.ErrorHelpers do
   @doc """
   Generates tag for inlined form input errors.
   """
-  def deep_error_tag(form, field, root) do
-    list = find_all_fields( form.errors, field, root, [])
+  def deep_error_tag(form, field) do
+    Logger.debug(form.errors)
+    list = find_all_fields( form.errors, field, [])
     Enum.map( list, fn error -> 
       content_tag(:span, translate_error(error), 
         class: "invalid-feedback", 
@@ -18,17 +19,17 @@ defmodule YicWeb.ErrorHelpers do
     end)
   end
 
-  def find_all_fields([], _field, _root, list), do: list
+  def find_all_fields([], _field, list), do: list
 
-  def find_all_fields( [{key, val}|errors], field, root, list) do
+  def find_all_fields( [{key, val}|errors], field, list) do
     if key == field do
-      find_all_fields( errors, field, root, [val|list] )
+      find_all_fields( errors, field, [val|list] )
     else
-      if String.starts_with?( Atom.to_string(key), root <> "." <> Atom.to_string(field)) do
+      if String.starts_with?( Atom.to_string(key), Atom.to_string(field)) do
         { msg, opt } = val
-        find_all_fields( errors, field, root, [{ Atom.to_string(key)<>": "<>msg, opt}|list] )
+        find_all_fields( errors, field, [{ Atom.to_string(key)<>": "<>msg, opt}|list] )
       else
-        find_all_fields( errors, field, root, list )
+        find_all_fields( errors, field, list )
       end
     end
   end
