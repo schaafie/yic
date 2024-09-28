@@ -73,7 +73,7 @@ defmodule Yic.Validate do
   
   def validate( errors, _value, _datadef, [], _path ), do: errors
 
-  def validate errors, value, datadef, [ %{ type: "array", fields: fields} | validations], path do
+  def validate errors, value, datadef, [ %{ type: "array", fields: _fields} | validations], path do
     errors 
     # |> validate_arrayfields data, datadef, fields, path
     |> validate( value, datadef, validations, path )

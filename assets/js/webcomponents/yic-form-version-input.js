@@ -50,28 +50,32 @@ input[type="submit"] {
 </style>
 <p>
     <label></label>
-    <input name="" type="text"></input>
+    <input name="major" type="text"></input>.<input name="medior" type="text"></input>.<input name="minor" type="text"></input>
     <div class="errors"></div>
 </p>
 `;
 
-export default class YicFormTextInput extends HTMLElement {
+export default class YicFormVersionInput extends HTMLElement {
     
     constructor() {
         super();
         this._shadowRoot = this.attachShadow({ 'mode': 'open' });
         this._shadowRoot.appendChild(template.content.cloneNode(true));
-        this.$field = this._shadowRoot.querySelector('input');
-        this.$field.addEventListener('change', this.handleValueChange.bind(this));
+        this.$minor = this._shadowRoot.querySelector('input[name="minor"]');
+        this.$minor.addEventListener('change', this.handleMinorChange.bind(this));
+        this.$major = this._shadowRoot.querySelector('input[name="major"]');
+        this.$major.addEventListener('change', this.handleMajorChange.bind(this));
+        this.$medior = this._shadowRoot.querySelector('input[name="medior"]');
+        this.$medior.addEventListener('change', this.handleMediorChange.bind(this));
         this.$errors = this._shadowRoot.querySelector('.errors');
         this.errors = [];
     }
 
     connectedCallback() {}
 
-    handleValueChange( event ) {
-        this.setAttribute('value', event.target.value);
-    }
+    handleMinorChange( event ) { this.setAttribute( 'minor', event.target.value); }
+    handleMediorChange( event ) { this.setAttribute( 'medior', event.target.value); }
+    handleMajorChange( event ) { this.setAttribute( 'major', event.target.value); }
 
     refreshErrors() {
         this.$errors.innerHTML = "";
@@ -84,7 +88,7 @@ export default class YicFormTextInput extends HTMLElement {
     }
 
     static get observedAttributes() { 
-        return ['value', 'label', 'required', 'name','count'];
+        return ['minor', 'medior', 'major', 'label', 'required', 'name', 'count'];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -114,7 +118,19 @@ export default class YicFormTextInput extends HTMLElement {
                 break;
             case 'value':
                 if (this.value != newValue) {
-                    this.$field.setAttribute( name, newValue);
+                    this.$field.setAttribute( 'value', newValue);
+                    this.dispatchEvent(new CustomEvent('change',{ detail: {value: newValue}, bubbles: false }));
+                }
+                break;
+            case 'value':
+                if (this.value != newValue) {
+                    this.$field.setAttribute( 'value', newValue);
+                    this.dispatchEvent(new CustomEvent('change',{ detail: {value: newValue}, bubbles: false }));
+                }
+                break;
+            case 'value':
+                if (this.value != newValue) {
+                    this.$field.setAttribute( 'value', newValue);
                     this.dispatchEvent(new CustomEvent('change',{ detail: {value: newValue}, bubbles: false }));
                 }
                 break;
@@ -122,4 +138,4 @@ export default class YicFormTextInput extends HTMLElement {
     }
 }
 
-window.customElements.define('yic-form-text-input', YicFormTextInput);
+window.customElements.define('yic-form-version-input', YicFormVersionInput);

@@ -1,15 +1,19 @@
-import YicDataDef from "./yic-datadef";
+import { YicPath as Path } from "./yic-path.js";
+import YicDataDef from "./yic-datadef.js";
 
 export default class YicDatamodel {
 
     constructor( auth ) {
         this.auth = auth;
+        this.items = [];
         this.registrations = [];
     }
 
-    setData( data, datadef ) {
+    setData(data, datadef) {
+        this.items = [];
+        this.registrations = [];
         this.datadef = new YicDataDef(datadef);
-        this.model = this.json2model("root",data);
+        this.setValue("", data);
     }
 
     setActions( actions ) {
@@ -22,8 +26,11 @@ export default class YicDatamodel {
         });
     }
 
+    /* ------------------
+    Actions 
+    ------------------ */
+
     delete(pk){
-        let actionparts = [];
         let deleteaction = `${this.deleteaction}/${pk}`;
         fetch( YicConf.baseUrl() + deleteaction, { 
                 method: "DELETE", 
@@ -42,19 +49,19 @@ export default class YicDatamodel {
 
     save() {
         let saveaction = this.buildaction(this.saveaction);
+        let payload = this.getValue("");
         // if buildkeys are set then save else create
         if (this.buildkeys) {
             fetch( YicConf.baseUrl() + saveaction, {
                 method: 'PATCH',
-                body: JSON.stringify(this.model2json(this.model)),
+                body: JSON.stringify(payload),
                 headers: { 
                     'Authorization': `Bearer ${this.auth.getToken()}`, 
                     'Content-Type': 'application/json' }
             })
             .then( this.handleErrors )
-            .then( response => {
-                return response.json();
-            }).then( json => {
+            .then( response => { return response.json(); })
+            .then( json => {
                 if (json.errors) {
                     for (let obj in json.errors) {
                         this.setErrors( obj, json.errors[obj]);
@@ -63,21 +70,18 @@ export default class YicDatamodel {
                 if (json.data) {
                     console.log(json.data);
                 }
-            }).catch( error => {
-                console.log(error);
-            });    
+            }).catch( error => { console.log(error); });    
         } else {
             fetch( YicConf.baseUrl() + this.createaction, {
                 method: 'POST',
-                body: JSON.stringify(this.model2json(this.model)),
+                body: JSON.stringify(payload),
                 headers: { 
                     'Authorization': `Bearer ${this.auth.getToken()}`, 
                     'Content-Type': 'application/json' }
             })
             .then( this.handleErrors )
-            .then( response => {
-                return response.json();
-            }).then( json => {
+            .then( response => { return response.json(); })
+            .then( json => {
                 if (json.errors) {
                     for (let obj in json.errors) {
                         this.setErrors( obj, json.errors[obj]);
@@ -86,9 +90,7 @@ export default class YicDatamodel {
                 if (json.data) {
                     console.log(json.data);
                 }
-            }).catch( error => {
-                console.log(error);
-            });    
+            }).catch( error => { console.log(error); });    
         }        
     }
 
@@ -116,7 +118,7 @@ export default class YicDatamodel {
         });
         return actionparts.join('/');
     }
-        
+
     handleErrors(response) {
         let err = false;
         if (!response.ok) {
@@ -131,164 +133,158 @@ export default class YicDatamodel {
         return response;
     }
 
-    getJson() { 
-        return this.model2json(this.model); 
-    }
-
-    getValue( path = "", create = false ) {
-        let element = this.findElement( this.model, path.split('.'), create);
-        if (element===undefined) {
-            return element;
-        } else {
-            if (element.type == "object" || element.type == "array" ) {
-                return element.items;
-            } else {
-                return element.value;
-            }
-        } 
-    }
-
-    registerListener( path, listener ) {
-        let element = this.findElement( this.model, path.split('.'), false);
-        if (element===undefined) {
-            return false;
-        } else {
-            element.listeners.push( listener );
-            return true;
-        }
-    }
-
-    setValue( path, value, origin="" ) {
-        let element = this.findElement( this.model, path.split('.'), true);
-
-        // TODO: requires validations based on datamodel definition
-        // TODO: requieres checks on object type => add element vs set value
-        if ( element.value != value) {
-            element.value = value;
-            element.listeners.forEach( (listener) => { listener.onChange( path, value ); });
-        }
-    }
-
-    getErrors( path ) {
-        let element = this.findElement( this.model, path.split('.'), false);
-        return element.errors;
-    }
-
-    setError( path, error ) {
-        let element = this.findElement( this.model, path.split('.'), false);
-        element.errors.push( error );
-        element.listeners.forEach( (listener) => { listener.onError( path, value ); });
-    }
-
-    setErrors( path, errors ) {
-        let element = this.findElement( this.model, path.split('.'), false);
-        element.errors = errors;
-        element.listeners.forEach( (listener) => { listener.onError( path, errors ); });
-    }
-
-    // -----------------------------------
-    // Private methods.
-    // -----------------------------------
-
-    findElement( model, list, create=false, parent="" ) {
-        // TODO: allow for more complex JSON-path queries.
-        let result = false;
-        let next = list.shift();
-        if (next === undefined || next === "") result = model;
-
-        if (model.type == 'object' || model.type=='array') {
-            model.items.forEach( item => {
-                if (item.name == next) {
-                    result = this.findElement(item, list, create, next);
-                }
-            });
-        }
-
-        // When the item is not found
-        //    And the search is at this level (deep item create is not allowed, this creates level with no value)
-        //    And findElement states that if not found, create an new item (Create = true)
-        // Then create a new item, add it to the model 
-        //    And return the reference to the new item
-        if (result===false && list.length==0 && create) {
-            let result = undefined;
-            let item = this.datadef.getNode(parent, next);
-            if (item !== undefined) {
-                if (model.type == 'object' || model.type=='array') {
-                    let index = model.items.push(item) - 1;
-                    result = model.items[index];
-                }
-            }
-            return result;
-        } else return (result === false)?undefined:result;  // if the item is not found or created, return undefined else return reference to item
-    }
-    
-    findDef( name ) {
-        let result = undefined;
-        this.datadef.datatypes.forEach( datatype => {
-            if (datatype.name == name) result = datatype;
-        });
-        return result;
-    }
-
-    json2model( name, data ) {
-        switch(typeof data) {
-            case 'object':
-                if (Array.isArray(data)) {
-                    var array = {name: name, type:"array", errors:[], listeners:[], items:[] };
-                    data.forEach((item, index) => {
-                        array.items.push( this.json2model( `row_${index}` , item ));
-                    });
-                    return array;
-                } else if (data ===null) {
-                    let node = this.datadef.findDef(name);
-                    let type = node.basetype;
-                    return {name: name, type: type, errors:[], listeners:[], items:[] };
-                } else {
-                    var object = {name: name, type:"object", errors:[], listeners:[], items:[] };
-                    for (const [key, item] of Object.entries(data)) {
-                        object.items.push( this.json2model( key, item ) );
-                    }                    
-                    return object;
-                }
-                break;
-            case 'string':
-                return { name: name, type: "string", value: data, errors:[], listeners:[] };
-                break;
-            case 'number':
-                return { name: name, type: "number", value: data, errors:[], listeners:[] };
-                break;
-            case 'boolean':
-                return { name: name, type: "boolean", value: data, errors:[], listeners:[] };
-                break;
-        }
-    }
-
-    model2json( model ) {
-        switch(model.type) {
+    /* -----------------------
+    Internal code
+    ----------------------- */
+    getValue(pathName = "") {
+        let item = this.getItem(pathName);
+        switch (item.type) {
             case "object":
-                var object = {};
-                model.items.forEach((item, index)=>{
-                    object[item.name]=this.model2json(item);
+                let object = item.value;
+                this.items.forEach(subitem => {
+                    let childName = Path.getDirectChildName(pathName, subitem.path);
+                    if (childName) object[childName] = this.getValue(subitem.path);
                 });
-                return object;    
+                return object;
                 break;
             case "array":
-                var array = [];
-                model.items.forEach((item, index) => {
-                    array.push(this.model2json(item));
+                let array = item.value;
+                this.items.forEach(subitem => {
+                    let childName = Path.getDirectChildName(pathName, subitem.path);
+                    if (childName) array[childName] = this.getValue(subitem.path);
                 });
-                return array;        
+                return array;
                 break;
             case "string":
-                return model.value;
-                break;
-            case "id":
-            case "number":
-                return parseInt(model.value);
-                break;
             case "boolean":
-                return Boolean(model.value);
+            case "integer":
+                return item.value;
                 break;
         }
+    }
+
+    getItem(pathName) {
+        let index = this.items.findIndex(item => item.path == pathName);
+        if (index == -1) return undefined;
+        return this.items[index];
+    }
+
+    setValue(pathName, value) {
+        let item = this.getItem(pathName);
+        if (item == undefined) {
+            this.buildPath(pathName);
+            this.setValue(pathName, value);
+        } else {
+            switch (typeof (value)) {
+                case "object":
+                    if (Array.isArray(value)) {
+                        // Object is an Array
+                        item.value = [];
+                        value.forEach( ( arrayItem, index ) => {
+                            let newName = Path.addChild( pathName, index.toString() );
+                            this.setValue( newName, arrayItem );
+                        });
+                    } else if (value === null) {
+                        // Object is of null type
+
+                    } else {
+                        // Object is an Object
+                        item.value = {};
+                        for (const [key, objectItem] of Object.entries(value)) {
+                            let newName = Path.addChild(pathName, key);
+                            this.setValue(newName, objectItem);
+                        }
+                    }
+                break;
+                case "number":
+                    switch (item.type) {
+                        case "integer":
+                            item.value = Math.trunc(value);
+                            break;
+                        case "number":
+                            item.value = value;
+                            break;
+                        default:
+                            throw new Error(`Set Value error. Value ${value} at path ${pathName} is not of type ${item.type}.`);
+                            break;
+                    }
+                    break;
+                case "string":
+                    switch( item.type ) {
+                        case "object":
+                            let jsonObj = JSON.parse( value );
+                            item.value = {};
+                            try {
+                                for (const [key, jsonItem] of Object.entries(jsonObj)) {
+                                    let newName = Path.addChild(pathName, key);
+                                    this.setValue(newName, jsonItem);
+                                }    
+                            } catch (error) {
+                                item.value = jsonObj;
+                            }
+                            break;
+                        case "string":
+                            item.value = value;
+                            break;
+                        default:
+                            throw new Error(`Set Value error. Value ${value} at path ${pathName} is not of type ${item.type}.`);
+                            break;
+                    }
+                    break;
+                case "boolean":
+                    if (item.type != "boolean") throw new Error(`Set Value error. Value ${value} at path ${pathName} is not of type ${item.type}.`);
+                    item.value = value;
+                    break;
+            }
+            item.listeners.forEach( (listener) => { listener.onChange( pathName, item.value ); });
+            this.validateItem(item.path, item.value);    
+        }
+    }
+
+    buildPath(pathName) {
+        let nextName = "";
+        let iterator = Path.makeSteps(pathName);
+        while (Path.hasSteps(iterator)) {
+            nextName = Path.addChild(nextName, Path.nextStep(iterator));
+            let index = this.items.findIndex(item => item.path == nextName);
+            if (index == -1) this.createItem(nextName);
+        }
+    }
+
+    createItem(pathName) {
+        let definition = this.datadef.getItem(pathName);
+        let newItem = { path: pathName, type: definition.type, errors: [], listeners: [] };
+        this.items.push(newItem);
+    }
+
+    fullValidation() {
+        this.items.forEach(item => {
+            this.validateItem(item.path, item.value, this.items);
+        });
+    }
+
+    validateItem(pathName, value) {
+        this.setErrors(pathName, this.datadef.validate(pathName, value, this.items));
+    }
+
+    getErrors(pathName) {
+        let item = this.getItem(pathName);
+        if (item == undefined) return [];
+        return item.errors;
+    }
+
+    setErrors( pathName, errors ) {
+        let item = this.getItem(pathName);
+        if (item==undefined) return false;
+        item.errors = errors;
+        item.listeners.forEach( (listener) => { listener.onError( pathName, errors ); });
+        return true;
+    }
+
+    registerListener( pathName, listener ) {
+        let item = this.getItem(pathName);
+        if (item==undefined) return false;
+        item.listeners.push( listener );
+        return true;
     }
 }

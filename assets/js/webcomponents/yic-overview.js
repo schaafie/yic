@@ -93,13 +93,13 @@ export default class YicOverview extends HTMLElement {
             let tablerow = document.createElement('tr');
             elementlist.forEach(item => {
                 let column = document.createElement('td');
-                let path = `row_${rownum}.${item}`;
+                let path = `${rownum}/${item}`;
                 column.innerHTML = this.datamodel.getValue(path);
                 tablerow.appendChild( column );
             });
             let column = document.createElement('td');
 
-            let keypath = `row_${rownum}.${pk}`;
+            let keypath = `${rownum}/${pk}`;
             let del_icon = document.createElement('i');
             del_icon.classList.add("material-icons-outlined");
             del_icon.classList.add("actionbutton");
@@ -127,7 +127,7 @@ export default class YicOverview extends HTMLElement {
     }
 
     addItem() {
-        let action = this.datamodel.createaction;
+        let action = this.datamodel.getaction;
         let cmd= `${action}/0`;
         this.app.doCommand( cmd );
     }

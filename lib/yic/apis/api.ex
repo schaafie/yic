@@ -8,7 +8,7 @@ defmodule Yic.Apis.Api do
     field :description, :string
     field :name, :string
     field :request, :string
-    field :version, :string
+    field :version, Json
 
     timestamps()
   end

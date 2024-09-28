@@ -7,7 +7,7 @@ defmodule Yic.Apis.TokenRegistry do
 
     # This call is only for use in dev and test
     if Mix.env() in [:dev, :test] do
-      addsystem
+      addsystem()
     end
 
     start

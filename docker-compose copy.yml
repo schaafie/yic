@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  phoenix:
+    image: "elixir-phoenix:latest"
+    volumes:
+      - './lib:/yic/lib'
+      - './config:/yic/config'
+      - './assets:/yic/assets'
+      - './priv:/yic/priv'
+    environment:
+      - yic.env
+    ports:
+      - "4000:4000"
+
+# copy the Elixir files
+COPY entrypoint.sh .
+COPY mix.exs .
+COPY mix.lock .
+
+RUN mix deps.get
+RUN mix deps.compile
+
+# Run the entrypoint script
+RUN ["chmod", "+x", "./entrypoint.sh"]
+CMD ["bash","-c","./entrypoint.sh"] 

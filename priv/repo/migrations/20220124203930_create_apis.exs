@@ -5,7 +5,7 @@ defmodule Yic.Repo.Migrations.CreateApis do
     create table(:apis) do
       add :name, :string
       add :description, :string
-      add :version, :string
+      add :version, :map
       add :request, :string
       add :definition, :map
 

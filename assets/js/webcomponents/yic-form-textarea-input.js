@@ -61,6 +61,7 @@ export default class YicFormTextareaInput extends HTMLElement {
 
     handleValueChange( event ) {
         this.setAttribute('value', event.target.value);
+        this.$field.innerHTML = event.target.value;
     }
 
     refreshErrors() {
@@ -105,6 +106,7 @@ export default class YicFormTextareaInput extends HTMLElement {
             case 'value':
                 if (this.value != newValue) {
                     this.$field.setAttribute( 'value', newValue);
+                    this.$field.innerHTML = newValue;
                     this.dispatchEvent(new CustomEvent('change',{ detail: {value: newValue}, bubbles: false }));
                 }
                 break;

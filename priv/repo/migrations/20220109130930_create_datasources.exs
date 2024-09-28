@@ -5,7 +5,7 @@ defmodule Yic.Repo.Migrations.CreateDatasources do
     create table(:datasources) do
       add :name, :string
       add :comment, :string
-      add :version, :string
+      add :version, :map
       add :definition, :map
       add :actions, {:array, :string}
 

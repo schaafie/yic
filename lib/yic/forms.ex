@@ -8,8 +8,6 @@ defmodule Yic.Forms do
 
   alias Yic.Forms.Form
 
-  def get_datadef(), do: Form.datadef()
-
   @doc """
   Returns the list of forms.
 
@@ -230,6 +228,7 @@ defmodule Yic.Forms do
       ** (Ecto.NoResultsError)
 
   """
+  def get_datadef(), do: get_form_by_name!("datadef")
   def get_datadef!(id), do: Repo.get!(Datadef, id)
   def get_datadef_by_name!(name), do: Repo.get_by!(Datadef, name: name)
 

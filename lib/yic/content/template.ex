@@ -1,7 +1,7 @@
 defmodule Yic.Content.Template do
   use Ecto.Schema
   import Ecto.Changeset
-  import Yic.Validate
+  import Yic.SchemaValidator
   alias Yic.Json
 
   schema "templates" do
@@ -18,7 +18,7 @@ defmodule Yic.Content.Template do
   def changeset(template, attrs) do
     template
     |> cast(attrs, [:name, :description, :version, :definition, :owner ])
-    |> validate_changes_against_datadef( "contenttemplate" )
+    |> validate_changes_against_schema( "contenttemplate" )
   end
 
   # def datadef() do

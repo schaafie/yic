@@ -5,7 +5,7 @@ defmodule Yic.Repo.Migrations.CreateForms do
     create table(:forms) do
       add :name, :string
       add :comment, :string
-      add :version, :string
+      add :version, :map
       add :definition, :map
       add :author, references(:users, on_delete: :nothing)
 

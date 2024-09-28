@@ -1,3 +1,5 @@
+import wcconfig from "./wcconfig.json";
+
 const template = document.createElement('template');
 template.innerHTML = `<style>
 :host {
@@ -66,18 +68,8 @@ export default class YicForm extends HTMLElement {
                 case "groups":
                     this.addGroups(node, element);
                     break;
-                case "text":
-                    this.addInput(node, 'yic-form-text-input', element)
-                    break;
-                case "textarea":
-                    this.addInput(node, 'yic-form-textarea-input', element)
-                    break;
-                case "json":
-                    this.addInput(node, 'yic-form-json-input', element)
-                    break;
-                case "id":
-                case "number":
-                    this.addInput(node, 'yic-form-number-input', element)
+                default:
+                    this.addInput(node, element);
                     break;
             }
         });
@@ -130,35 +122,89 @@ export default class YicForm extends HTMLElement {
         node.appendChild(input);
     }
 
-    addInput(node, inputelement, element){
+    addInput(node, element){
+        let config = wcconfig[element.type];
         let div = document.createElement('div');
-        let input = document.createElement(inputelement);
+        let input = document.createElement( config.component );
         if (element.label) input.setAttribute('label', element.label);
         if (element.name) input.setAttribute('name', element.name);
-        let value = this.datamodel.getValue(element.datapath, true);
-        if (value !== undefined) input.setAttribute('value', value);
 
-        // Register the input with the datamodel
-        // This is helpfull if value in datamodel is changed by other agents
+        config.values.forEach( valueItem => {
+            let path = (valueItem.path=="")?element.datapath:`${element.datapath}/${valueItem.path}`;
+            let value = this.datamodel.getValue(path);
+            let type =  typeof(value);
 
-        this.datamodel.registerListener( element.datapath, input );
-        // Add a callback function to respond to changes in the datamodel
-        // Add a listener to respond to input changes and notify the datamodel
-        
-        input.addEventListener('change', (ev) =>{
-            let value = ev.detail.value;
-            console.log(value);
-            this.datamodel.setValue(element.datapath, value);
-        })
-        input.onChange = (datapath, value) => {
-            if (input.getAttribute('value') != value) {
-                input.setAttribute('value', value);
+            switch(valueItem.method ) {
+                case "attr":
+                    if (value !== undefined && type == "object") {
+                        input.setAttribute(valueItem.name, JSON.stringify(value));
+                    } else if (value !== undefined) {
+                        input.setAttribute(valueItem.name, value);
+                    }
+                    
+                    // Register the input with the datamodel
+                    // This is helpfull if value in datamodel is changed by other agents
+                    this.datamodel.registerListener( path, input );
+
+                    // Add a callback function to respond to changes in the datamodel        
+                    input.addEventListener('change', (ev) =>{
+                        let value = ev.detail[valueItem.name];
+                        if (type=="object") {
+                            this.datamodel.setValue(path, JSON.parse(value));
+                        } else {
+                            this.datamodel.setValue(path, value);
+                        }
+                    });
+                    
+                    // Add a listener to respond to input changes and notify the datamodel
+                    input.onChange = (path, value) => {
+                        if (input.getAttribute(valueItem.name) != value) {
+                            input.setAttribute(valueItem.name, value);
+                        }
+                    };
+                    
+                    input.onError = (datapath, errors) => {
+                        input.errors = errors;
+                        input.refreshErrors();
+                    }
+
+                    break;
+                case "data":
+                    if (value !== undefined && type == "object") {
+                        input.setData(valueItem.name, JSON.stringify(value));
+                    } else if (value !== undefined) {
+                        input.setData(valueItem.name, value);
+                    }
+                    
+                    // Register the input with the datamodel
+                    // This is helpfull if value in datamodel is changed by other agents
+                    this.datamodel.registerListener( path, input );
+
+                    // Add a callback function to respond to changes in the datamodel        
+                    input.addEventListener('change', (ev) =>{
+                        let value = ev.detail[valueItem.name];
+                        if (type=="object") {
+                            this.datamodel.setValue(path, JSON.parse(value));
+                        } else {
+                            this.datamodel.setValue(path, value);
+                        }
+                    });
+                    
+                    // Add a listener to respond to input changes and notify the datamodel
+                    input.onChange = (path, value) => {
+                        if (input.getData(valueItem.name) != value) {
+                            input.setData(valueItem.name, value);
+                        }
+                    };
+                    
+                    input.onError = (datapath, errors) => {
+                        input.errors = errors;
+                        input.refreshErrors();
+                    }
+                    break;
             }
-        };
-        input.onError = (datapath, errors) => {
-            input.errors = errors;
-            input.refreshErrors();
-        }
+        });
+
         div.appendChild(input);
         node.appendChild(div);
     }

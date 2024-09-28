@@ -5,7 +5,7 @@ defmodule Yic.Repo.Migrations.CreateDatadefs do
     create table(:datadefs) do
       add :name, :string
       add :comment, :string
-      add :version, :string
+      add :version, :map
       add :definition, :map
 
       timestamps()

@@ -1,0 +1,33 @@
+{
+    "text": {
+        "component": "yic-form-text-input",
+        "values": [{ "path": "", "name": "value", "method": "attr" }]
+    },
+    "textarea": {
+        "component": "yic-form-textarea-input",
+        "values": [{ "path": "", "name": "value", "method": "attr" }]
+    },
+    "id": {
+        "component": "yic-form-number-input",
+        "values": [{ "path": "", "name": "value", "method": "attr" }]
+    },
+    "number": {
+        "component": "yic-form-number-input",
+        "values": [{ "path": "", "name": "value", "method": "attr" }]
+    },
+    "json": {
+        "component": "yic-form-json-input",
+        "values": [{ "path": "", "name": "value", "method": "attr" }]
+    },
+    "version": {
+        "component": "yic-form-version-input",
+        "values": [
+            {"path": "minor", "name": "minor", "method": "attr"},
+            {"path": "medior", "name": "medior", "method": "attr"}, 
+            {"path": "major", "name": "major", "method": "attr"},
+            {"path": "comment" , "name": "comment", "method": "attr"},
+            {"path": "author", "name": "author", "method": "attr"}
+
+        ]
+    }
+}
