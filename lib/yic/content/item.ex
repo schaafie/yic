@@ -5,10 +5,10 @@ defmodule Yic.Content.Item do
   alias Yic.Json
   
   schema "items" do
-    field :content, Json
+    field :content, :map # Json
     field :description, :string
     field :name, :string
-    field :version, Json
+    field :version, :map # Json
     field :owner, :id
 
     timestamps()

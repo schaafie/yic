@@ -7,6 +7,19 @@ const appPageTemplate = `<div>
     <yic-panel title=""></yic-panel>
 </div>`;
 
+const appPageDebugTemplate = `<div>
+    <yic-top-menu></yic-top-menu>
+    <yic-grid count=2>
+        <yic-panel title="Debug">
+            <yic-form-debug></yic-form-debug>
+        </yic-panel>
+    </yic-grid>
+    <yic-grid count=2>
+        <yic-panel title=""></yic-panel>
+    </yic-grid>
+</div>`;
+
+
 const errorPageTemplate = `<div>
     <yic-top-menu></yic-top-menu>
     <h1>Error</h1>
@@ -19,14 +32,17 @@ const indexPageTemplate = `<div>
 </div>`;
 
 
-const loginTemplate = `<div>
-    <h2>Login</h2>
-    <div id="errortxt"></div>
-    <p>
-        <yic-form-text-input label="login"></yic-form-text-input>
-        <yic-form-password-input label="password"></yic-form-password-input>
-        <yic-form-action label="login"></yic-form-action>
-    </p>
+const loginTemplate = `
+<div class="appcontainer">
+    <div class="innercontainer">
+        <h2>Login</h2>
+        <div id="errortxt"></div>
+        <p>
+            <yic-form-text-input label="User name"></yic-form-text-input>
+            <yic-form-password-input label="Password"></yic-form-password-input>
+            <yic-form-action label="login"></yic-form-action>
+        </p>
+    </div>
 </div>`;
 
 export default class YicView extends HTMLElement {

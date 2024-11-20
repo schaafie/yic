@@ -2,7 +2,7 @@
     "use strict";
 
     var options = {
-        baseUrl: `http://localhost:4000/api/`
+        baseUrl: `http://192.168.178.73:4000/api/`
     }
 
     window.YicConf = {

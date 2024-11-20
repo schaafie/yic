@@ -1,17 +1,17 @@
 { "apps": [
     { "title": "admin", "type": "dropdown", "items": [
-        {"title": "Users" ,"json":"apis/users" },
-        {"title": "Forms" ,"json":"apis/forms" },
-        {"title": "Datadefs" ,"json":"apis/datadefs" },
-        {"title": "Sources" ,"json":"apis/datasources" }    
+        {"title": "Users" ,"json":"orchestrator/users" },
+        {"title": "Forms" ,"json":"orchestrator/forms" },
+        {"title": "Datadefs" ,"json":"orchestrator/datadefs" },
+        {"title": "Sources" ,"json":"orchestrator/datasources" }    
     ]},
-    {"title": "Publications" ,"json":"apis/publications" },
-    {"title": "Api" ,"json":"apis/apis" },
-    {"title": "Workflow" ,"json":"apis/workflows" },
-    {"title": "Sites" ,"json":"apis/sites" },
+    {"title": "Publications" ,"json":"orchestrator/publications" },
+    {"title": "Api" ,"json":"orchestrator/apis" },
+    {"title": "Workflow" ,"json":"orchestrator/workflows" },
+    {"title": "Sites" ,"json":"orchestrator/sites" },
     {"title": "Content" , "type": "dropdown", "items": [ 
-        { "title": "Templates", "json":"apis/contenttemplates" },
-        { "title": "Items", "json":"apis/contentitems" }
+        { "title": "Templates", "json":"orchestrator/contenttemplates" },
+        { "title": "Items", "json":"orchestrator/contentitems" }
     ] },
-    {"title": "Media" ,"json":"apis/medias" }
+    {"title": "Media" ,"json":"orchestrator/medias" }
 ]}

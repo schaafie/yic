@@ -138,6 +138,7 @@ export default class YicDatamodel {
     ----------------------- */
     getValue(pathName = "") {
         let item = this.getItem(pathName);
+        if (item==undefined) return item;
         switch (item.type) {
             case "object":
                 let object = item.value;
@@ -170,74 +171,96 @@ export default class YicDatamodel {
     }
 
     setValue(pathName, value) {
-        let item = this.getItem(pathName);
-        if (item == undefined) {
-            this.buildPath(pathName);
-            this.setValue(pathName, value);
-        } else {
-            switch (typeof (value)) {
-                case "object":
-                    if (Array.isArray(value)) {
-                        // Object is an Array
-                        item.value = [];
-                        value.forEach( ( arrayItem, index ) => {
-                            let newName = Path.addChild( pathName, index.toString() );
-                            this.setValue( newName, arrayItem );
-                        });
-                    } else if (value === null) {
-                        // Object is of null type
+        try { 
+            let dditem  = this.datadef.getItem( pathName );
+            let item    = this.getItem(pathName);
+            if (item == undefined) {
+                this.buildPath(pathName);
+                this.setValue(pathName, value);
+            } else {
+                switch (typeof (value)) {
+                    case "object":
+                        if (Array.isArray(value)) {
+                            // Object is an Array
+                            item.value = [];
+                            value.forEach( ( arrayItem, index ) => {
+                                let newName = Path.addChild( pathName, index.toString() );
+                                try { 
+                                    if (this.datadef.getItem(newName) != undefined ) {
+                                        this.setValue( newName, arrayItem );
+                                    } else {
+                                        item.value.push( arrayItem );
+                                    }
+                                } catch( error ) {
+                                    item.value.push( arrayItem );
+                                }                            
+                            });
+                        } else if (value === null) {
+                            // Object is of null type
 
-                    } else {
-                        // Object is an Object
-                        item.value = {};
-                        for (const [key, objectItem] of Object.entries(value)) {
-                            let newName = Path.addChild(pathName, key);
-                            this.setValue(newName, objectItem);
-                        }
-                    }
-                break;
-                case "number":
-                    switch (item.type) {
-                        case "integer":
-                            item.value = Math.trunc(value);
-                            break;
-                        case "number":
-                            item.value = value;
-                            break;
-                        default:
-                            throw new Error(`Set Value error. Value ${value} at path ${pathName} is not of type ${item.type}.`);
-                            break;
-                    }
-                    break;
-                case "string":
-                    switch( item.type ) {
-                        case "object":
-                            let jsonObj = JSON.parse( value );
-                            item.value = {};
-                            try {
-                                for (const [key, jsonItem] of Object.entries(jsonObj)) {
+                        } else {
+                            // Object is an Object
+                            let objType = this.datadef.getObjectType( dditem );
+                            if (objType > 0) {
+                                item.value = {};
+                                for (const [key, objectItem] of Object.entries(value)) {
                                     let newName = Path.addChild(pathName, key);
-                                    this.setValue(newName, jsonItem);
-                                }    
-                            } catch (error) {
-                                item.value = jsonObj;
-                            }
-                            break;
-                        case "string":
-                            item.value = value;
-                            break;
-                        default:
-                            throw new Error(`Set Value error. Value ${value} at path ${pathName} is not of type ${item.type}.`);
-                            break;
-                    }
+                                    this.setValue( newName, objectItem );
+                                }
+                            } else if (objType==0) {
+                                item.value = value;
+                            } else throw new Error(`Object is invalid`);  
+                        }
                     break;
-                case "boolean":
-                    if (item.type != "boolean") throw new Error(`Set Value error. Value ${value} at path ${pathName} is not of type ${item.type}.`);
-                    item.value = value;
-                    break;
+                    case "number":
+                        switch (item.type) {
+                            case "integer":
+                                item.value = Math.trunc(value);
+                                break;
+                            case "number":
+                                item.value = value;
+                                break;
+                            default:
+                                throw new Error(`Set Value error. Value ${value} at path ${pathName} is not of type ${item.type}.`);
+                                break;
+                        }
+                        break;
+                    case "string":
+                        switch( item.type ) {
+                            case "object":
+                                let jsonObj = JSON.parse( value );
+                                let strObjType = this.datadef.getObjectType( dditem );
+                                if (strObjType == 0) {
+                                    item.value = jsonObj;
+                                } else if (strObjType>0) {
+                                    item.value = {};
+                                    for (const [key, jsonItem] of Object.entries(jsonObj)) {
+                                        let newName = Path.addChild(pathName, key);
+                                        this.setValue(newName, jsonItem);
+                                    }    
+                                } else throw new Error(`Object is invalid`);
+                                break;
+                            case "string":
+                                item.value = value;
+                                break;
+                            default:
+                                throw new Error(`Set Value error. Value ${value} at path ${pathName} is not of type ${item.type}.`);
+                                break;
+                        }
+                        break;
+                    case "boolean":
+                        if (item.type != "boolean") throw new Error(`Set Value error. Value ${value} at path ${pathName} is not of type ${item.type}.`);
+                        item.value = value;
+                        break;
+                }
+                item.listeners.forEach( (listener) => { 
+                    listener.onChange( pathName, item.value ); }
+                );
+                this.validateItem(item.path, item.value);    
             }
-            item.listeners.forEach( (listener) => { listener.onChange( pathName, item.value ); });
-            this.validateItem(item.path, item.value);    
+        } catch(error) {
+            console.log(`ERROR. Message: ${error.message}`);
+            return;
         }
     }
 
@@ -253,7 +276,8 @@ export default class YicDatamodel {
 
     createItem(pathName) {
         let definition = this.datadef.getItem(pathName);
-        let newItem = { path: pathName, type: definition.type, errors: [], listeners: [] };
+        let type = (definition!=undefined)?definition.type:definition;
+        let newItem = { path: pathName, type: type, errors: [], listeners: [] };
         this.items.push(newItem);
     }
 

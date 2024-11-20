@@ -69,9 +69,11 @@ export default class YicController {
                 if (!json.data) {
                     this.view.showPage( "error", { msg: "This app request failed to deliver proper data.", topmenu: this.apps} );
                 } else {
-                    let formdef = JSON.parse( json.formdef.data.definition );
-                    let datadef = JSON.parse( json.datadef.data.definition );
-                    this.model.setData( json.data.data, datadef );
+                    let formdef = json.formdef.definition;
+                    let datadef = json.datadef.definition;
+//                    let formdef = JSON.parse( json.formdef.definition );
+//                    let datadef = JSON.parse( json.datadef.definition );
+                    this.model.setData( json.data, datadef );
                     this.model.setActions( formdef.actions );
                     this.view.showPage( "app", { form:formdef, datamodel: this.model, topmenu: this.apps});
                 }

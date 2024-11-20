@@ -46,10 +46,17 @@ export default class YicForm extends HTMLElement {
 
         // Add action buttons
         let div = document.createElement('div');
+
         let save = document.createElement('yic-form-action');
         save.setAttribute( 'label', 'Save');
         save.addEventListener('click', (ev)=>{ this.datamodel.save(); });
         div.appendChild(save);
+
+        // Add debug element
+        let debug = document.createElement('yic-form-debug');
+        debug.setModel( this.datamodel );
+        div.appendChild( debug );
+
         this.$children.appendChild(div);
     }
 
@@ -128,16 +135,20 @@ export default class YicForm extends HTMLElement {
         let input = document.createElement( config.component );
         if (element.label) input.setAttribute('label', element.label);
         if (element.name) input.setAttribute('name', element.name);
+        let itemlist = [];
 
         config.values.forEach( valueItem => {
             let path = (valueItem.path=="")?element.datapath:`${element.datapath}/${valueItem.path}`;
             let value = this.datamodel.getValue(path);
             let type =  typeof(value);
+            let name = valueItem.name;
+            itemlist.push({ name: name, type: type, value: value, path: path});
 
             switch(valueItem.method ) {
                 case "attr":
                     if (value !== undefined && type == "object") {
-                        input.setAttribute(valueItem.name, JSON.stringify(value));
+                        let str_value = JSON.stringify(value, null, "  ");
+                        input.setAttribute(valueItem.name, str_value);
                     } else if (value !== undefined) {
                         input.setAttribute(valueItem.name, value);
                     }
@@ -145,16 +156,6 @@ export default class YicForm extends HTMLElement {
                     // Register the input with the datamodel
                     // This is helpfull if value in datamodel is changed by other agents
                     this.datamodel.registerListener( path, input );
-
-                    // Add a callback function to respond to changes in the datamodel        
-                    input.addEventListener('change', (ev) =>{
-                        let value = ev.detail[valueItem.name];
-                        if (type=="object") {
-                            this.datamodel.setValue(path, JSON.parse(value));
-                        } else {
-                            this.datamodel.setValue(path, value);
-                        }
-                    });
                     
                     // Add a listener to respond to input changes and notify the datamodel
                     input.onChange = (path, value) => {
@@ -163,33 +164,20 @@ export default class YicForm extends HTMLElement {
                         }
                     };
                     
-                    input.onError = (datapath, errors) => {
+                    input.onError = ( path, errors ) => {
                         input.errors = errors;
                         input.refreshErrors();
                     }
 
                     break;
+
                 case "data":
-                    if (value !== undefined && type == "object") {
-                        input.setData(valueItem.name, JSON.stringify(value));
-                    } else if (value !== undefined) {
-                        input.setData(valueItem.name, value);
-                    }
+                    if (value !== undefined) input.setData(valueItem.name, value);
                     
                     // Register the input with the datamodel
                     // This is helpfull if value in datamodel is changed by other agents
                     this.datamodel.registerListener( path, input );
 
-                    // Add a callback function to respond to changes in the datamodel        
-                    input.addEventListener('change', (ev) =>{
-                        let value = ev.detail[valueItem.name];
-                        if (type=="object") {
-                            this.datamodel.setValue(path, JSON.parse(value));
-                        } else {
-                            this.datamodel.setValue(path, value);
-                        }
-                    });
-                    
                     // Add a listener to respond to input changes and notify the datamodel
                     input.onChange = (path, value) => {
                         if (input.getData(valueItem.name) != value) {
@@ -202,6 +190,14 @@ export default class YicForm extends HTMLElement {
                         input.refreshErrors();
                     }
                     break;
+            }
+        });
+
+        // Add a callback function to respond to changes in the datamodel        
+        input.addEventListener('change', (ev) => {
+            for (const [key, value] of Object.entries(ev.detail)) {
+                let item = itemlist.find(({ name }) => name === key);
+                this.datamodel.setValue(item.path, value);                    
             }
         });
 

@@ -41,15 +41,15 @@ Repo.insert! %Form{ name: "detailcontenttemplate", author: 1, comment: "Edit for
 Repo.insert! %Form{ name: "listapi", author: 1, comment: "List view of all api defintions", version: SeedData.base_version(), definition: SeedData.data_ofa() }
 Repo.insert! %Form{ name: "detailapi", author: 1, comment: "Edit form for api defintion", version: SeedData.base_version(), definition: SeedData.data_dfa() }
 
-Repo.insert! %Api{ name: "List all forms", description: "Get the data for List Forms (data, datadef and formdef)", version: SeedData.base_version(), request: "apis/forms", definition: SeedData.api_laf() }
-Repo.insert! %Api{ name: "Show form by id", description: "Get the data for the Edit Form (data, datadef and formdef)", version: SeedData.base_version(), request: "apis/forms/:id", definition: SeedData.api_fbyid() }
-Repo.insert! %Api{ name: "List all users", description: "Get the data for list Users (data, datadef and formdef)", version: SeedData.base_version(), request: "apis/users", definition: SeedData.api_lau() }
-Repo.insert! %Api{ name: "Show user by id", description: "Get the data for the edit form (data, datadef and formdef)", version: SeedData.base_version(), request: "apis/users/:id", definition: SeedData.api_ubyid() }
-Repo.insert! %Api{ name: "List all data definitions", description: "Get the data for List data definitions", version: SeedData.base_version(), request: "apis/datadefs", definition: SeedData.api_ladd() }
-Repo.insert! %Api{ name: "Show data definition by id", description: "Get the data for Data def forms", version: SeedData.base_version(), request: "apis/datadefs/:id", definition: SeedData.api_ddbyid() }
-Repo.insert! %Api{ name: "List all content template definitions", description: "Get the data for List content template definitions", version: SeedData.base_version(), request: "apis/contenttemplates", definition: SeedData.api_lact() }
-Repo.insert! %Api{ name: "Show content template definition by id", description: "Get the data for content template forms", version: SeedData.base_version(), request: "apis/contenttemplates/:id", definition: SeedData.api_ctbyid() }
-#Repo.insert! %Api{ name: "List all content item definitions", description: "Get the data for List content item definitions", version: SeedData.base_version(), request: "apis/contentitems", definition: SeedData.api_laci() }
-#Repo.insert! %Api{ name: "Show content item definition by id", description: "Get the data for content item forms", version: SeedData.base_version(), request: "apis/contentitems/:id", definition: SeedData.api_cibyid() }
-Repo.insert! %Api{ name: "List all api definitions", description: "Get the data for List api definitions", version: SeedData.base_version(), request: "apis/apis", definition: SeedData.api_laa() }
-Repo.insert! %Api{ name: "Show api definition by id", description: "Get the data for api forms", version: SeedData.base_version(), request: "apis/apis/:id", definition: SeedData.api_abyid() }
+Repo.insert! %Api{ name: "List all forms", description: "Get the data for List Forms (data, datadef and formdef)", version: SeedData.base_version(), request: "forms", definition: SeedData.api_laf() }
+Repo.insert! %Api{ name: "Show form by id", description: "Get the data for the Edit Form (data, datadef and formdef)", version: SeedData.base_version(), request: "forms/:id", definition: SeedData.api_fbyid() }
+Repo.insert! %Api{ name: "List all users", description: "Get the data for list Users (data, datadef and formdef)", version: SeedData.base_version(), request: "users", definition: SeedData.api_lau() }
+Repo.insert! %Api{ name: "Show user by id", description: "Get the data for the edit form (data, datadef and formdef)", version: SeedData.base_version(), request: "users/:id", definition: SeedData.api_ubyid() }
+Repo.insert! %Api{ name: "List all data definitions", description: "Get the data for List data definitions", version: SeedData.base_version(), request: "datadefs", definition: SeedData.api_ladd() }
+Repo.insert! %Api{ name: "Show data definition by id", description: "Get the data for Data def forms", version: SeedData.base_version(), request: "datadefs/:id", definition: SeedData.api_ddbyid() }
+Repo.insert! %Api{ name: "List all content template definitions", description: "Get the data for List content template definitions", version: SeedData.base_version(), request: "contenttemplates", definition: SeedData.api_lact() }
+Repo.insert! %Api{ name: "Show content template definition by id", description: "Get the data for content template forms", version: SeedData.base_version(), request: "contenttemplates/:id", definition: SeedData.api_ctbyid() }
+# Repo.insert! %Api{ name: "List all content item definitions", description: "Get the data for List content item definitions", version: SeedData.base_version(), request: "contentitems", definition: SeedData.api_laci() }
+# Repo.insert! %Api{ name: "Show content item definition by id", description: "Get the data for content item forms", version: SeedData.base_version(), request: "contentitems/:id", definition: SeedData.api_cibyid() }
+Repo.insert! %Api{ name: "List all api definitions", description: "Get the data for List api definitions", version: SeedData.base_version(), request: "apis", definition: SeedData.api_laa() }
+Repo.insert! %Api{ name: "Show api definition by id", description: "Get the data for api forms", version: SeedData.base_version(), request: "apis/:id", definition: SeedData.api_abyid() }

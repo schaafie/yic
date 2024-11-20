@@ -4,11 +4,11 @@ defmodule Yic.Apis.Api do
   alias Yic.Json
 
   schema "apis" do
-    field :definition, Json
+    field :definition, :map   #Json
     field :description, :string
     field :name, :string
     field :request, :string
-    field :version, Json
+    field :version, :map      #Json
 
     timestamps()
   end

@@ -17,29 +17,32 @@ defmodule Yic.SchemaValidator do
   # If datadef is defined as string, it will be retrieved from database.
   def validate_changes_against_schema( changeset, schema_name ) when is_binary( schema_name ) do
     dd = Forms.get_datadef_by_name!( schema_name )
-    case Poison.decode( dd.definition, %{keys: :atoms} ) do
-      {:ok, map} ->
-        validate_changes_against_schema( changeset, map )
-      {:error, msg} ->
-        Logger.error( msg )
-        %{changeset | errors: [{schema_name, {"Schema could not be decoded", []}}], valid?: false}
-    end    
+    validate_changes_against_schema( changeset, dd.definition )
+    # Datadef was stored as map but retrieved as JSON
+    # case Poison.decode( dd.definition, %{keys: :atoms} ) do
+    #  {:ok, map} ->
+    #    validate_changes_against_schema( changeset, map )
+    #  {:error, msg} ->
+    #    Logger.error( msg )
+    #    %{changeset | errors: [{schema_name, {"Schema could not be decoded", []}}], valid?: false}
+    # end    
   end
 
   def validate_dataitem errors, data, schemaitem, path do
-    case schemaitem.type do
+    IO.inspect schemaitem
+    case schemaitem["type"] do
       "object" when is_map( data ) ->
         errors
         |> check_required_properties( schemaitem, data, path )
-        |> check_undefined_properties( schemaitem.properties, Map.keys(data), path )
-        |> validate_properties( Map.keys( schemaitem.properties ), data, schemaitem.properties, path )
+        |> check_undefined_properties( schemaitem["properties"], Map.keys(data), path )
+        |> validate_properties( Map.keys( schemaitem["properties"] ), data, schemaitem["properties"], path )
       "object" when is_binary( data ) ->
         case Poison.decode( data ) do
           {:ok, map} ->
             errors
             |> check_required_properties( schemaitem, map, path )
-            |> check_undefined_properties( schemaitem.properties, Map.keys(map), path )
-            |> validate_properties( Map.keys( schemaitem.properties ), map, schemaitem.properties, path )
+            |> check_undefined_properties( schemaitem["properties"], Map.keys(map), path )
+            |> validate_properties( Map.keys( schemaitem["properties"] ), map, schemaitem["properties"], path )
           {:error, msg} ->
             Logger.error( msg )
             [{path, {"Invalid data item for JSON decoding", []}}|errors]
@@ -291,7 +294,7 @@ defmodule Yic.SchemaValidator do
       { :ok, true } ->
         errors
       { :ok, false } ->
-        check_undefined_properties( errors, schemaitem.properties, Map.keys(data), path )
+        check_undefined_properties( errors, schemaitem["properties"], Map.keys(data), path )
       :error ->
         errors
     end
@@ -318,7 +321,7 @@ defmodule Yic.SchemaValidator do
         "#{path}.#{key}"
     end
     errors
-    |> validate_dataitem( Map.get( data, Atom.to_string( key ) ), Map.get( schema_item, key), new_path )
+    |> validate_dataitem( Map.get( data, key ), Map.get( schema_item, key), new_path )
     |> validate_properties( keys, data, schema_item, path )
   end
 

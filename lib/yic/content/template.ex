@@ -5,10 +5,10 @@ defmodule Yic.Content.Template do
   alias Yic.Json
 
   schema "templates" do
-    field :definition, Json
+    field :definition, :map # Json
     field :description, :string
     field :name, :string
-    field :version, Json
+    field :version, :map # Json
     field :owner, :id
 
     timestamps()

@@ -8,48 +8,116 @@ topMenuTemplate.innerHTML = `<style>
 .nav-wrapper {
     width: 100%;
     padding: 5px 2px;
-    background: cornflowerblue;
-}
-
-ul {
-    padding: 0;
-    margin: 4px;
-}
-
-li {
-    background: cornflowerblue;
-    display: inline;
-    padding: 5px 10px;
-    margin-right: 2px;
-    position: relative;
+    background-color: cornflowerblue;
     color: white;
-    font: 14pt arial, sans-serif;
+    font: bold;
+}
+
+#menu {
+    width: 100%;
+    margin: 0;
+    padding: 10px 0 0 0;
+    list-style: none;
+}
+
+#menu li {
+    float: left;
+    padding: 0 0 10px 0;
+    position: relative;
+}
+
+#menu a {
+    float: left;
+    height: 25px;
+    padding: 0 25px;
+    text-decoration: none;
     cursor: pointer;
+}
+
+#menu li:hover > a {
+    color: #fafafa;
+}
+
+#menu li:hover > ul {
+    display: block;
+}
+
+/* Sub-menu */
+#menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: none;
+    position: absolute;
+    top: 35px;
+    left: 0;
+    z-index: 99999;
+    background-color: cornflowerblue;
+}
+
+#menu ul li {
+    float: none;
+    margin: 0;
+    padding: 0;
+    display: block;
+}
+
+#menu ul li:last-child {
+    box-shadow: none;
+}
+
+#menu ul a {
+    padding: 10px;
+    height: auto;
+    line-height: 1;
+    display: block;
+    white-space: nowrap;
+    float: none;
+    text-transform: none;
+}
+
+#menu ul a:hover {
+    background-color: #0186ba;
+}
+
+#menu ul li:first-child a:after {
+    content: '';
+    position: absolute;
+    left: 30px;
+    top: -8px;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 8px solid #444;
+}
+
+#menu ul li:first-child a:hover:after {
+    border-bottom-color: #04acec;
+}
+
+#menu ul li:last-child a {
+    border-radius: 0 0 5px 5px;
+}
+
+/* Clear floated elements */
+#menu:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
 }
 
 li.right {
     float: right;
-    margin-top: -5px;
-    margin-right: -2px;
-}
-
-li:hover ul {
-    display: block;
-}
-
-ul ul {
-    position: absolute;
-    display: none;
-    left: -5px;
-    top: 100%;
 }
 
 </style>
-<div id="top-menu-bar" class="nav-wrapper">
-   <nav class="nav-menu">
-      <ul class="clearfix">
-      </ul>
-   </nav>
+<div class="nav-wrapper">
+    <ul id="menu">
+    </ul>
 </div>
 `;
 
@@ -60,7 +128,7 @@ export default class YicTopMenu extends HTMLElement {
         this.logoutSet = false;
         this._shadowRoot = this.attachShadow({ 'mode': 'open' });
         this._shadowRoot.appendChild( topMenuTemplate.content.cloneNode(true) );
-        this.$topmenu = this._shadowRoot.querySelector('.clearfix');
+        this.$topmenu = this._shadowRoot.querySelector('#menu');
     }
 
     connectedCallback() {}
@@ -78,7 +146,6 @@ export default class YicTopMenu extends HTMLElement {
             if (item.title) link.innerHTML = item.title;
             if (item.align == "right") li.classList.add("right");
             let ul = document.createElement('ul');
-            ul.classList.add("sub-menu");
             item.items.forEach(subitem => {
                 this.setMenuItem(ul, subitem);
             });

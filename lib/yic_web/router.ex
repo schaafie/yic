@@ -31,6 +31,9 @@ defmodule YicWeb.Router do
 
   scope "/api", YicWeb.Api.Iam, as: :api_iam do
     pipe_through :api
+    
+    get "/refresh", SessionController, :refresh
+    get "/restore", SessionController, :restore
     post "/sign_in", SessionController, :create
   end
 
@@ -77,7 +80,7 @@ defmodule YicWeb.Router do
 
   # API Handler through api manager
   #
-  scope "/api", YicWeb.Api.Apis, as: :api_apis do
+  scope "/api/orchestrator", YicWeb.Api.Apis, as: :api_apis do
     pipe_through :api_authenticated
     
     get "/*path", ApiController, :handle

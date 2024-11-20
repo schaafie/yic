@@ -29,4 +29,21 @@ defmodule YicWeb.Api.Iam.SessionController do
         end  
       end
     end
-  end
+
+    def refresh( conn, _arg ) do
+      case Yic.Apis.TokenRegistry.addsystem do
+        {:ok, _msg} ->
+          redirect( conn, to: "/index.html" )
+        {:error, msg} ->
+            conn
+            |> put_status(500)
+            |> render("error.json", message: msg)
+      end
+    end
+
+    def restore( conn, _arg ) do
+      Mix.Task.run("ecto.softreset", [])
+      redirect( conn, to: "./index.html" )
+    end
+
+  end 

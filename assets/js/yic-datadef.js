@@ -6,6 +6,15 @@ export default class YicDatadef {
         this.def = dd;
     }
 
+    getObjectType( element ) {
+        if (Object.keys(element.properties)) {
+            if (Object.keys(element.properties).length > 0) return 2;
+            if (element.additionalProperties == false || element.additionalProperties == undefined) return 1;
+            if (element.additionalProperties == true) return 0;
+        }
+        return -1;
+    }
+
     getItem(pathName) {
         let iterator = Path.makeSteps(pathName);
         let currentElement = this.def;
@@ -17,15 +26,21 @@ export default class YicDatadef {
     }
 
     getElement(datadefBranch, element) {
-        // console.log(datadefBranch);
-        // console.log(element);
         if (element == "") return datadefBranch;
         switch (datadefBranch.type) {
             case "object":
+                let hasProperties = false;
                 for (const [key, value] of Object.entries(datadefBranch.properties)) {
+                    hasProperties = true;
                     if (key == element) return value;
                 }
-                throw new Error("Object property not defined!");
+                // Return null if no properties are defined and extra properties are allowed
+                // In this case the object should be invalid but it was defined.
+                // Return undefined if additional properties are allowed and no properties were defined. 
+                // These additional properties do not have a definition hence undefined.
+                if (datadefBranch.additionalProperties) return hasProperties?undefined:null;
+                // If properties were defined, no additional properties are allowed and none are found => throw exception
+                throw new Error(`Object property ${element} not allowed!`);
                 break;
             case "array":
                 return datadefBranch.items;

@@ -1,14 +1,30 @@
 {
+    "text-only": {
+        "component": "yic-form-text-only",
+        "values": [{ "path": "", "name": "value", "method": "attr" }]
+    },
+    "number-only": {
+        "component": "yic-form-text-only",
+        "values": [{ "path": "", "name": "value", "method": "attr" }]
+    },
+    "version-only": {
+        "component": "yic-form-version-only",
+        "values": [
+            {"path": "minor", "name": "minor", "method": "attr"},
+            {"path": "medior", "name": "medior", "method": "attr"}, 
+            {"path": "major", "name": "major", "method": "attr"}
+        ]
+    },
+    "id": {
+        "component": "yic-form-number-input",
+        "values": [{ "path": "", "name": "value", "method": "attr" }]
+    },
     "text": {
         "component": "yic-form-text-input",
         "values": [{ "path": "", "name": "value", "method": "attr" }]
     },
     "textarea": {
         "component": "yic-form-textarea-input",
-        "values": [{ "path": "", "name": "value", "method": "attr" }]
-    },
-    "id": {
-        "component": "yic-form-number-input",
         "values": [{ "path": "", "name": "value", "method": "attr" }]
     },
     "number": {
@@ -27,7 +43,6 @@
             {"path": "major", "name": "major", "method": "attr"},
             {"path": "comment" , "name": "comment", "method": "attr"},
             {"path": "author", "name": "author", "method": "attr"}
-
         ]
     }
 }

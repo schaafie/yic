@@ -1,4 +1,5 @@
-import {EditorView, EditorState, basicSetup } from "@codemirror/basic-setup";
+import {EditorView, basicSetup } from "codemirror";
+import {EditorState} from "@codemirror/state"
 import {json} from "@codemirror/lang-json";
 
 const template = document.createElement('template');
@@ -44,6 +45,7 @@ export default class YicFormJsonInput extends HTMLElement {
                 basicSetup, 
                 EditorView.updateListener.of((v)=>{
                     if (v.docChanged) {
+                        // this.setData("value", this.editor.state.doc.toString());
                         this.setAttribute("value", this.editor.state.doc.toString())
                     }
                 }),
@@ -54,6 +56,7 @@ export default class YicFormJsonInput extends HTMLElement {
         this.$errors = this._shadowRoot.querySelector('.errors');
         this.$label = this._shadowRoot.querySelector('label');
         this.errors = [];
+        this.value = {};
     }
 
     connectedCallback() {}
@@ -76,6 +79,30 @@ export default class YicFormJsonInput extends HTMLElement {
     static get observedAttributes() { 
         return ['value', 'label' ];
     }
+
+    setData( name, value ) {
+        switch(name) {
+            case "value":
+                if (this.value != value) {
+                    this.value = value;
+                    if (this.editor.state.doc.toString() != value) {
+                        this.editor.dispatch( { changes: {from: 0, to: this.editor.state.doc.length, insert: value } } );
+                    }
+                    this.dispatchEvent(new CustomEvent('change',{ detail: {value: value}, bubbles: false }));
+                }
+                break;
+        }
+    }
+
+    getData( name ) {
+        switch(name) {
+            case "value":
+                return this.value;
+                break;
+        }
+
+    }
+
 
     attributeChangedCallback(name, oldValue, newValue) {
         switch(name) {

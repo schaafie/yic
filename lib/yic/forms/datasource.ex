@@ -6,9 +6,9 @@ defmodule Yic.Forms.Datasource do
   schema "datasources" do
     field :actions, {:array, :string}
     field :comment, :string
-    field :definition, Json
+    field :definition, :map #Json
     field :name, :string
-    field :version, Json
+    field :version, :map  #Json
 
     timestamps()
   end

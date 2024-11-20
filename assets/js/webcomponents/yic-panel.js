@@ -5,15 +5,24 @@ template.innerHTML = `<style>
     font: 16px Arial, sans-serif;
 }
 
+.appcontainer {
+    background-color: whitesmoke;
+    padding: 2rem;
+}
+
 .panel {
-    border:solid cornflowerblue 2px;
+    border: 1px solid gray;
     border-radius: 10px;
-    margin: 20px;
+    margin: 30px auto;
+    padding: 2.0rem;
+    position: relative;
+    width: 100%;
+    max-width:90%;
+    background-color: white;
 }
 
 .panel-head {
-    background-color: cornflowerblue;
-    color: white;
+    color: black;
     font: 24px Arial, sans-serif;
     padding: 10px;
 }
@@ -23,9 +32,11 @@ template.innerHTML = `<style>
     padding: 20px;
 }
 </style>
-<div id="#yic-panel" class="panel">
-    <div id="title" class="panel-head"></div>
-    <div id="content" class="panel-body"></div>
+<div class="appcontainer">
+    <div id="yic-panel" class="panel">
+        <div id="title" class="panel-head"></div>
+        <div id="content" class="panel-body"></div>
+    </div>
 </div>
 `;
 

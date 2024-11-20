@@ -48,7 +48,7 @@ export default class YicAuth {
     }
 
     handleError( txt ) {
-        console.log( "Error: " + txt );
+        // console.log( "Error: " + txt );
         this.uname = "";
         let errObject = JSON.parse( txt );
         this.listeners.forEach(element => {
@@ -58,7 +58,7 @@ export default class YicAuth {
     }
 
     handleSucces( txt ) {
-        console.log( "Succes: " + txt );
+        // console.log( "Succes: " + txt );
         let jsonObject = JSON.parse(txt);
         this.jwt = jsonObject.data.token;
         this.listeners.forEach(element => {

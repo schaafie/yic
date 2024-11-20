@@ -1,0 +1,18 @@
+services:
+  phoenix:
+    image: "elixir-phoenix:latest"
+    build: "/DATA/Projects/yic"
+    volumes:
+      - "/DATA/Projects/yic/lib:/yic/lib"
+      - "/DATA/Projects/yic/config:/yic/config"
+      - "/DATA/Projects/yic/assets:/yic/assets"
+      - "/DATA/Projects/yic/priv:/yic/priv"
+    environment:
+      PGUSER: casaos
+      PGPASSWORD: casaos
+      PGDATABASE: yic_dev
+      PGPORT: "5432"
+      PGHOST: localhost
+    ports:
+      - "4000:4000"
+    command: [sh, -c, "chmod +x ./entrypoint.sh && bash -c ./entrypoint.sh"]

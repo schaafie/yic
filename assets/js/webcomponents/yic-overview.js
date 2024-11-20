@@ -1,3 +1,5 @@
+import wcconfig from "./wcconfig.json";
+
 const template = document.createElement('template');
 template.innerHTML = `<style>
 :host {
@@ -79,7 +81,7 @@ export default class YicOverview extends HTMLElement {
                 let tableHeader = document.createElement("th");
                 tableHeader.innerHTML = element.label;
                 this.$header.appendChild( tableHeader );    
-                elementlist.push(element.datapath);
+                elementlist.push( {path: element.datapath, type: element.type});
             }
         });
 
@@ -93,8 +95,9 @@ export default class YicOverview extends HTMLElement {
             let tablerow = document.createElement('tr');
             elementlist.forEach(item => {
                 let column = document.createElement('td');
-                let path = `${rownum}/${item}`;
-                column.innerHTML = this.datamodel.getValue(path);
+                let path = `${rownum}/${item.path}`;
+//              column.innerHTML = this.datamodel.getValue(path);
+                column.appendChild( this.getElementValue( path, item.type) );
                 tablerow.appendChild( column );
             });
             let column = document.createElement('td');
@@ -123,7 +126,25 @@ export default class YicOverview extends HTMLElement {
         add.setAttribute( 'label', 'Add');
         add.addEventListener('click', (ev)=>{ this.addItem(); });
         this._shadowRoot.appendChild(add);
+    }
 
+    getElementValue( path, type ) {
+        let config = wcconfig[type];
+        let element = document.createElement( config.component );
+        
+        // Set Values of object
+        config.values.forEach( valueItem => { 
+            let valItemPath = (valueItem.path=="")?path:`${path}/${valueItem.path}`;
+            let value = this.datamodel.getValue(valItemPath);
+            if (value!==undefined) {
+                if (valueItem.method=="attr") {
+                    element.setAttribute(valueItem.name, value);
+                } else {
+                    element.setValue(valueItem.name, value);
+                }
+            }
+        });
+        return element;
     }
 
     addItem() {

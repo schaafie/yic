@@ -42,7 +42,7 @@ defmodule Yic.Apis.TokenRegistry do
   end
 
   def handle_call( {:add, tokenname, tokendef}, _from, store) do
-    case :ets.insert_new( store, { tokenname, tokendef } ) do
+    case :ets.insert( store, { tokenname, tokendef } ) do
       false -> 
         {:reply, {:error, "system not added to store"}, store}
       true ->

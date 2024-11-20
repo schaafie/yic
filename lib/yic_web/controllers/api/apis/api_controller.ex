@@ -1,6 +1,7 @@
 defmodule YicWeb.Api.Apis.ApiController do
   use YicWeb, :controller
 
+  require Logger
   alias Yic.Apis
   alias Yic.Apis.Api
   alias Yic.Apis.System
@@ -49,18 +50,21 @@ defmodule YicWeb.Api.Apis.ApiController do
         data = handler(definition)
         render(conn, "respons.json", data: data )
       :nok ->
+        IO.inspect path
         case Apis.match_call_id( path ) do
           {:ok, definition, value} ->
             data = handler(definition, value)
             render(conn, "respons.json", data: data )
           :nok ->
-            render(conn, "respons.json", data: [])
+            render( conn, "respons.json", data: %{"message": "No matching API to call" } )
         end
     end
   end
 
-  defp handler(def) do
-    {:ok, def_map} = Poison.decode(def)
+  # defp handler(def) do
+    #IO.inspect def
+    # {:ok, def_map} = Poison.decode(def)
+  defp handler(def_map) do
     tasks = Enum.map( def_map["actions"], fn(task) ->
       url = task["url"]
       method = task["method"]
@@ -72,8 +76,9 @@ defmodule YicWeb.Api.Apis.ApiController do
     define_respons results, def_map["output"]
   end
 
-  defp handler(def, value) do
-    {:ok, def_map} = Poison.decode(def)
+  # defp handler(def, value) do
+  #  {:ok, def_map} = Poison.decode(def)
+  defp handler(def_map, value) do
     tasks = Enum.map( def_map["actions"], fn(task) ->
       case task["output"] do
         "data" when value == "0"->
@@ -92,14 +97,22 @@ defmodule YicWeb.Api.Apis.ApiController do
 
 
   def define_respons( [], output ) do
+    Logger.debug(output)
     output
   end
 
   def define_respons [item|list], output do
-    IO.inspect output
     case item do
+      {:ok, %{key: "data", value: data }} ->
+        respons = case data["data"] do
+          nil ->
+            Map.replace( output, "data", %{} )
+          _ ->
+            Map.replace( output, "data", data["data"] )
+          end
+        define_respons list, respons
       {:ok, %{key: key, value: data }} ->
-        respons = Map.replace( output, key, data )
+        respons = Map.replace( output, key, data["data"] )
         define_respons list, respons
       {:error, %{msg: msg, key: key}} ->
         error = "Error found on key #{key} with error message #{msg}"

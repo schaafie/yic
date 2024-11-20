@@ -7,7 +7,7 @@ defmodule Yic.Iam.Users do
     field :email, :string
     field :firstname, :string
     field :lastname, :string
-    field :details, Json
+    field :details, :map # Json
 
     timestamps()
   end

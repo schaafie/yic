@@ -17,9 +17,7 @@ defmodule Yic.Apis do
       [%Api{}, ...]
 
   """
-  def list_apis do
-    Repo.all(Api)
-  end
+  def list_apis, do: Repo.all(Api)
 
   @doc """
   Gets a single api.
@@ -129,5 +127,7 @@ defmodule Yic.Apis do
         :nok  
     end    
   end
+
+  def refresh_token, do: Yic.Apis.TokenRegistry.addsystem
 
 end

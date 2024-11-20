@@ -23,5 +23,4 @@ else
 fi
 
 echo ">>>> Done."
-
 exec mix phx.server

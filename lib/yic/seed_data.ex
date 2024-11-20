@@ -478,26 +478,23 @@ defmodule Yic.SeedData do
     # -------------------
     # Form definitions
     #
-    # 2 Forms are definted:
-    #   1. Overview
-    #   2. Detail
+    # 2 Forms are defined:
+    #   1. Overview (Overview Form Data sort)
+    #   2. Detail (Detail Form Data sort)
     # -------------------
 
     def data_ofd do 
-        %{ title: "Data definition overview", 
-            type: "overview", 
-            globalValidations: [], 
+        %{ title: "Data definition overview", type: "overview", globalValidations: [], 
             actions: [
-              %{list: %{url: "apis/datadefs"}},
-              %{edit: %{url: "apis/datadefs/:id"}},
+              %{list: %{url: "orchestrator/datadefs"}},
+              %{edit: %{url: "orchestrator/datadefs/:id"}},
               %{delete: %{url: "api/forms/datadefs/:id"}}
             ], 
             elements: [
               %{datapath: "id", pk: true, type: "hidden"},
-              %{datapath: "name", label: "Name", type: "text"},
-              %{datapath: "version", label: "Version", type: "json"},
-              %{datapath: "comment", label: "Comment", type: "text"}
-            ],
+              %{datapath: "name", label: "Name", type: "text-only"},
+              %{datapath: "version", label: "Version", type: "version-only"}
+            ]
         }
     end
 
@@ -527,14 +524,14 @@ defmodule Yic.SeedData do
     def data_off do 
         %{ title: "Form overview", type: "overview", globalValidations: [],
             actions: [                                               
-              %{list: %{url: "apis/forms"}},                         
-              %{edit: %{url: "apis/forms/:id"}},                     
+              %{list: %{url: "orchestrator/forms"}},                         
+              %{edit: %{url: "orchestrator/forms/:id"}},                     
               %{delete: %{url: "api/forms/forms/:id"}} ],
             elements: [                                              
               %{datapath: "id", pk: true, type: "hidden"},           
-              %{datapath: "name", label: "Name", type: "text"},      
-              %{datapath: "version", label: "Version", type: "json"},
-              %{datapath: "comment", label: "Comment", type: "text"} ]
+              %{datapath: "name", label: "Name", type: "text-only"},      
+              %{datapath: "version", label: "Version", type: "version-only"}
+            ]
           }
     end
 
@@ -547,7 +544,7 @@ defmodule Yic.SeedData do
             elements: [
               %{datapath: "id", type: "hidden"},
               %{datapath: "name", label: "Form Name", type: "text"},
-              %{datapath: "version", label: "Version", type: "json"},
+              %{datapath: "version", label: "Version", type: "version"},
               %{datapath: "comment", label: "Comment", type: "text"},
               %{datapath: "author", label: "Author", type: "number"},
               %{datapath: "definition", label: "Definition", type: "json"}
@@ -559,14 +556,14 @@ defmodule Yic.SeedData do
     def data_ofct do 
         %{ title: "Content template overview", type: "overview", globalValidations: [],
             actions: [                                               
-              %{list: %{url: "apis/contenttemplates"}},                         
-              %{edit: %{url: "apis/contenttemplates/:id"}},  
+              %{list: %{url: "orchestrator/contenttemplates"}},                         
+              %{edit: %{url: "orchestrator/contenttemplates/:id"}},  
               %{delete: %{url: "api/contenttemplates/contenttemplates/:id"}} ],
             elements: [                                              
               %{datapath: "id", pk: true, type: "hidden"},           
-              %{datapath: "name", label: "Name", type: "text"},      
-              %{datapath: "version", label: "Version", type: "json"},
-              %{datapath: "comment", label: "Comment", type: "text"} ]
+              %{datapath: "name", label: "Name", type: "text-only"},      
+              %{datapath: "version", label: "Version", type: "version-only"} 
+            ]
           }
     end
 
@@ -589,18 +586,17 @@ defmodule Yic.SeedData do
     end
 
     def data_ofu do 
-        %{ title: "User overview", type: "overview",  getaction: "apis/users", globalValidations: [],
+        %{ title: "User overview", type: "overview", globalValidations: [],
             actions: [
-                %{list: %{label: "Show users", url: "apis/users"}},
-                %{edit: %{label: "Edit", url: "apis/users/:id"}},
-                %{create: %{label: "New", url: "apis/users"}},
+                %{list: %{label: "Show users", url: "orchestrator/users"}},
+                %{edit: %{label: "Edit", url: "orchestrator/users/:id"}},
                 %{delete: %{label: "Delete", url: "iam/users"}}
             ],
             elements: [
                 %{datapath: "id", pk: true, type: "hidden"},
-                %{datapath: "firstname", label: "First name", type: "text"},
-                %{datapath: "lastname", label: "Last name", type: "text"},
-                %{datapath: "email", label: "email address", type: "text"}
+                %{datapath: "firstname", label: "First name", type: "text-only"},
+                %{datapath: "lastname", label: "Last name", type: "text-only"},
+                %{datapath: "email", label: "email address", type: "text-only"}
             ]
         }
     end
@@ -621,20 +617,16 @@ defmodule Yic.SeedData do
     end
 
     def data_ofa do 
-        %{ title: "Api overview", type: "overview",  getaction: "apis/apis", globalValidations: [],
+        %{ title: "Api overview", type: "overview", globalValidations: [],
             actions: [
-                %{list: %{label: "Show apis", url: "apis/apis"}},
-                %{edit: %{label: "Edit", url: "apis/apis/:id"}},
-                %{create: %{label: "New", url: "apis/apis"}},
+                %{list: %{label: "Show apis", url: "orchestrator/apis"}},
+                %{edit: %{label: "Edit", url: "orchestrator/apis/:id"}},
                 %{delete: %{label: "Delete", url: "apis/apis"}}
             ],
             elements: [
                 %{datapath: "id", pk: true, type: "hidden"},
-                %{datapath: "name", label: "Form Name", type: "text"},
-                %{datapath: "version", label: "Version", type: "json"},
-                %{datapath: "comment", label: "Comment", type: "text"},
-                %{datapath: "author", label: "Author", type: "number"},
-                %{datapath: "definition", label: "Definition", type: "json"}
+                %{datapath: "name", label: "Form Name", type: "text-only"},
+                %{datapath: "version", label: "Version", type: "version-only"}
               ]
         }
     end
