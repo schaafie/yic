@@ -7,7 +7,11 @@
     ]},
     {"title": "Publications" ,"json":"orchestrator/publications" },
     {"title": "Api" ,"json":"orchestrator/apis" },
-    {"title": "Workflow" ,"json":"orchestrator/workflows" },
+    {"title": "Workflows" , "type": "dropdown", "items": [
+        { "title": "Flows",  "json":"orchestrator/workflows" },
+        { "title": "Tasks",  "json":"orchestrator/workflowtasks" },
+        { "title": "Running flows",  "json":"orchestrator/workflowitems" }
+    ]},
     {"title": "Sites" ,"json":"orchestrator/sites" },
     {"title": "Content" , "type": "dropdown", "items": [ 
         { "title": "Templates", "json":"orchestrator/contenttemplates" },

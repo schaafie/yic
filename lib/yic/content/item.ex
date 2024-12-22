@@ -9,6 +9,7 @@ defmodule Yic.Content.Item do
     field :description, :string
     field :name, :string
     field :version, :map # Json
+    field :template, :id
     field :owner, :id
 
     timestamps()
@@ -17,7 +18,7 @@ defmodule Yic.Content.Item do
   @doc false
   def changeset(item, attrs) do
     item
-    |> cast(attrs, [:name, :description, :version, :content])
+    |> cast(attrs, [:name, :description, :version, :content, :template, :owner])
     |> validate_changes_against_schema( "contentitem" )
   end
 end

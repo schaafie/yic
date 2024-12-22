@@ -1,0 +1,28 @@
+{
+    "globaldata": { "definition": "datadef_name", "version": "1.0.0" },
+    "flow": {
+        "current": null,
+        "processes": [
+            { 
+                "name": "processtep1",
+                "status": "",
+                "localdata": { "definition": "datadef_name", "version": "1.0.0" },
+                "claimed": { "actor": 0, "claim_ts": "00/00/00 00:00"  },
+                "preproces": [
+                    { "action": "set_claim" },
+                    { "action": "call_for_data", "api_call" },
+                    { "action": "set_expiration", "duration": "1d", "postproces": "pp1" }
+                ],
+                "proces": {
+                    "type": "sytem",
+                    "application": { "name": "", "version": "1.0.0" },
+                    "executive": { "actorgroup": "", "actor": 0 }
+                },
+                "postproces": [
+                    { "condition": "is_expired", "action": "release", "target": "processtep1" }
+                ]
+
+            }
+        ]
+    }
+}

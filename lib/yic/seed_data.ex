@@ -85,32 +85,6 @@ defmodule Yic.SeedData do
 
     end    
 
-
-    # %{ root: "datadef", datatypes: [
-    #     %{ name: "datadef", basetype: "map", validations: [ 
-    #       %{ type: "fields", strict: true, fields: [
-    #         %{ field: "id", required: false },
-    #         %{ field: "name", required: true },
-    #         %{ field: "comment", required: true },
-    #         %{ field: "definition", required: true},
-    #         %{ field: "version", required: true }
-    #       ]}
-    #     ]},
-    #     %{ name: "id", basetype: "number", validations: [] },
-    #     %{ name: "name", basetype: "string", validations: [] },
-    #     %{ name: "comment", basetype: "string", validations: [] },
-    #     %{ name: "definition", basetype: "map", validations: [ %{ type: "fields", strict: false, fields: []} ]},
-    #     %{ name: "version", basetype: "map", validations: [
-    #       %{ type: "fields",  strict: false, fields: [
-    #         %{ field: "major", required: true },
-    #         %{ field: "medior", required: true },
-    #         %{ field: "minor", required: true },
-    #         %{ field: "author", required: true },
-    #         %{ field: "comment", required: true }
-    #       ]} 
-    #     ]}
-    # ]}                                                        
-
     def template_dd do
         %{
             "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -126,6 +100,42 @@ defmodule Yic.SeedData do
                 definition: %{ 
                     type: "object", 
                     description: "Data Definition object", 
+                    properties: %{},
+                    required: [],
+                    additionalProperties: true
+                },
+                version: %{
+                    type: "object",
+                    description: "Version object",
+                    required: [ "minor", "medior", "major", "author" ],
+                    properties: %{
+                        minor: %{ type: "integer", description: "", minimum: 0 },
+                        medior: %{ type: "integer", description: "", minimum: 0 },
+                        major: %{ type: "integer", description: "", minimum: 0 },
+                        author: %{ type: "integer", description: "" },
+                        comment: %{ type: "string", description: "" }
+                    }
+                }
+            }
+        }
+    end
+
+    def item_dd do
+        %{
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            title: "Content item definition schema",
+            type: "object",
+            description: "Schema that defines what the content item definition should look like",
+            required: [ "name", "content", "version", "template", "owner" ],
+            properties: %{
+                id: %{ type: "integer", description: "" },
+                name: %{ type: "string", description: "" },
+                description: %{ type: "string", description: "" },
+                owner: %{ type: "integer", description: "" },
+                template: %{ type: "integer", description: "" },
+                content: %{ 
+                    type: "object", 
+                    description: "Item content object", 
                     properties: %{},
                     required: [],
                     additionalProperties: true
@@ -182,34 +192,34 @@ defmodule Yic.SeedData do
         }
     end
 
-
-    # def template_dd do
-    #     %{ root: "template", datatypes: [                                                   
-    #         %{ name: "template", basetype: "map", validations: [ %{ type: "fields", strict: false, fields: [                                                   
-    #             %{field: "id", required: false},                          
-    #             %{field: "description", required: true},                      
-    #             %{field: "definition", required: true},                   
-    #             %{field: "name", required: true},                         
-    #             %{field: "version", required: true},                      
-    #             %{field: "owner", required: false} ] } ] },
-    #         %{ basetype: "map", name: "version", validations: [ %{ type: "fields",  strict: false, fields: [
-    #             %{ field: "major", required: true },
-    #             %{ field: "medior", required: true },
-    #             %{ field: "minor", required: true },
-    #             %{ field: "author", required: true },
-    #             %{ field: "comment", required: true }
-    #         ] } ] },
-    #         %{ basetype: "string", name: "definition", validations: [] },
-    #         %{ basetype: "string", name: "description", validations: []}, 
-    #         %{ basetype: "number", name: "id", validations: []},           
-    #         %{ basetype: "string", name: "name", validations: []},         
-    #         %{ basetype: "id", name: "owner", validations: []},
-    #         %{ basetype: "id", name: "author", validations: []},            
-    #         %{ basetype: "number", name: "major", validations: []},           
-    #         %{ basetype: "number", name: "medior", validations: []},           
-    #         %{ basetype: "number", name: "minor", validations: []},           
-    #         %{ basetype: "string", name: "comment", validations: []}         
-    #     ]}                                                               
+    def item_ldd do
+        %{
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            title: "List Content Item object data definition schema",
+            type: "array",
+            description: "Schema that defines what the content item list should look like",
+            items: %{
+                type: "object", 
+                properties: %{
+                    id: %{ type: "integer", description: "" },
+                    name: %{ type: "string", description: "" },
+                    description: %{ type: "string", description: "" },
+                    owner: %{ type: "integer", description: "" },
+                    version: %{
+                        type: "object",
+                        description: "Version object",
+                        properties: %{
+                            minor: %{ type: "integer", description: "", minimum: 0 },
+                            medior: %{ type: "integer", description: "", minimum: 0 },
+                            major: %{ type: "integer", description: "", minimum: 0 },
+                            author: %{ type: "integer", description: "" },
+                            comment: %{ type: "string", description: "" }
+                        }
+                    }
+                }
+            }
+        }
+    end
 
     def api_dd do
         %{
@@ -281,37 +291,7 @@ defmodule Yic.SeedData do
             }
         }
     end
-    
-    # def api_dd do
-    #     %{ root: "api", datatypes: [                                                   
-    #         %{ name: "api", basetype: "map", validations: [ %{ type: "fields", strict: false, fields: [                                                   
-    #             %{field: "id", required: false},                          
-    #             %{field: "description", required: true},                      
-    #             %{field: "definition", required: true},                   
-    #             %{field: "name", required: true},                         
-    #             %{field: "request", required: true},                         
-    #             %{field: "version", required: true}
-    #         ]} ]},                     
-    #         %{ basetype: "map", name: "version", validations: [ %{ type: "fields",  strict: false, fields: [
-    #             %{ field: "major", required: true },
-    #             %{ field: "medior", required: true },
-    #             %{ field: "minor", required: true },
-    #             %{ field: "author", required: true },
-    #             %{ field: "comment", required: true }
-    #         ] } ] },
-    #         %{ basetype: "string", name: "definition", validations: [] },
-    #         %{ basetype: "string", name: "description", validations: []}, 
-    #         %{ basetype: "number", name: "id", validations: []},           
-    #         %{ basetype: "string", name: "request", validations: []},         
-    #         %{ basetype: "string", name: "name", validations: []},
-    #         %{ basetype: "id", name: "author", validations: []},            
-    #         %{ basetype: "number", name: "major", validations: []},           
-    #         %{ basetype: "number", name: "medior", validations: []},           
-    #         %{ basetype: "number", name: "minor", validations: []},           
-    #         %{ basetype: "string", name: "comment", validations: []}         
-    #     ]}                                                               
-    # end    
-    
+        
     def form_dd do
         %{
             "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -382,47 +362,6 @@ defmodule Yic.SeedData do
             }
         }
     end
-
-    # def form_dd do
-    #     %{ root: "form", datatypes: [ 
-    #         %{ name: "form", basetype: "map", validations: [ %{ type: "fields",  strict: false, fields: [                                                  
-    #             %{field: "id", required: false},                         
-    #             %{field: "comment", required: true},                     
-    #             %{field: "definition", required: true},                  
-    #             %{field: "name", required: true},                        
-    #             %{field: "version", required: true},                     
-    #             %{field: "author", required: false} ] } ] },          
-    #         %{ basetype: "string", name: "definition", validations: [ %{ type: "fields",  strict: false, fields: [                                                  
-    #             %{field: "action", required: false},                     
-    #             %{field: "saveaction", required: false},                 
-    #             %{field: "createaction", required: false},               
-    #             %{field: "type", required: true},                        
-    #             %{field: "elements", required: true},                    
-    #             %{field: "title", required: true} ] } ] },                                                           
-    #         %{ basetype: "map", name: "version", validations: [ %{ type: "fields",  strict: false, fields: [
-    #             %{ field: "major", required: true },
-    #             %{ field: "medior", required: true },
-    #             %{ field: "minor", required: true },
-    #             %{ field: "author", required: true },
-    #             %{ field: "comment", required: true }
-    #         ] } ] },
-    #         %{basetype: "string", name: "comment", validations: []},
-    #         %{basetype: "number", name: "id", validations: []},          
-    #         %{basetype: "string", name: "action", validations: []},      
-    #         %{basetype: "string", name: "saveaction", validations: []},  
-    #         %{basetype: "string", name: "createaction", validations: []},
-    #         %{basetype: "string", name: "type", validations: []},        
-    #         %{basetype: "array", name: "elements", validations: []},     
-    #         %{basetype: "string", name: "title", validations: []},       
-    #         %{basetype: "string", name: "label", validations: []},       
-    #         %{basetype: "string", name: "name", validations: []},        
-    #         %{ basetype: "id", name: "author", validations: []},            
-    #         %{ basetype: "number", name: "major", validations: []},           
-    #         %{ basetype: "number", name: "medior", validations: []},           
-    #         %{ basetype: "number", name: "minor", validations: []},           
-    #         %{ basetype: "string", name: "comment", validations: []}         
-    #     ]}                                                                        
-    # end    
     
     def user_dd do
         %{
@@ -458,29 +397,13 @@ defmodule Yic.SeedData do
         }
     end
 
-
-    # def user_dd do
-    #     %{ root: "user", datatypes: [                                                  
-    #         %{ name: "user", basetype: "map", validations: [ %{ type: "fields",  strict: false, fields: [                                                 
-    #             %{field: "id", required: false},                        
-    #             %{field: "firstname", required: true},                  
-    #             %{field: "lastname", required: true},                   
-    #             %{field: "email", required: true}                       
-    #         ] } ] },
-    #         %{basetype: "string", name: "firstname", validations: []},  
-    #         %{basetype: "number", name: "id", validations: []},         
-    #         %{basetype: "string", name: "lastname", validations: []},   
-    #         %{basetype: "string", name: "email", validations: []},      
-    #         %{basetype: "string", name: "createaction", validations: []}
-    #     ]}                                                              
-    # end
-
     # -------------------
     # Form definitions
-    #
-    # 2 Forms are defined:
-    #   1. Overview (Overview Form Data sort)
-    #   2. Detail (Detail Form Data sort)
+    # name structure is as follows: data_<type>F<item>
+    # data:     it is a data object
+    # <type>    o for overview, d for detail
+    # F         it is a form definition
+    # <item>    the obect that it is about. d for detail, f for form etc...
     # -------------------
 
     def data_ofd do 
@@ -567,6 +490,22 @@ defmodule Yic.SeedData do
           }
     end
 
+    # Content Item Overview Form
+    def data_ofci do 
+        %{ title: "Content item overview", type: "overview", globalValidations: [],
+            actions: [                                               
+              %{list: %{url: "orchestrator/contentitems"}},                         
+              %{edit: %{url: "orchestrator/contentitems/:id"}},  
+              %{delete: %{url: "api/contenttemplates/contentitems/:id"}} ],
+            elements: [                                              
+              %{datapath: "id", pk: true, type: "hidden"},           
+              %{datapath: "name", label: "Name", type: "text-only"},      
+              %{datapath: "template", label: "Template", type: "number-only"},      
+              %{datapath: "version", label: "Version", type: "version-only"} 
+            ]
+          }
+    end
+
     # Content Template Detail Form
     def data_dfct do 
         %{ type: "detail", title: "Content template detail", saveaction: "/content/templates/:id", globalValidations: [],
@@ -581,6 +520,25 @@ defmodule Yic.SeedData do
               %{datapath: "comment", label: "Comment", type: "text"},
               %{datapath: "author", label: "Author", type: "number"},
               %{datapath: "definition", label: "Definition", type: "json"}
+            ]
+          }
+    end
+
+    # Content Item Detail Form
+    def data_dfci do 
+        %{ type: "detail", title: "Content item detail", saveaction: "/content/items/:id", globalValidations: [],
+            actions: [
+              %{create: %{url: "/content/items"}},
+              %{save: %{url: "/content/items/:id"}}
+            ],
+            elements: [
+              %{datapath: "id", type: "hidden"},
+              %{datapath: "name", label: "Form Name", type: "text"},
+              %{datapath: "version", label: "Version", type: "json"},
+              %{datapath: "comment", label: "Comment", type: "text"},
+              %{datapath: "author", label: "Author", type: "number"},
+              %{datapath: "template", label: "Template", type: "number"},
+              %{datapath: "content", label: "Content", type: "json"}
             ]
           }
     end
@@ -708,12 +666,27 @@ defmodule Yic.SeedData do
               %{ method: "get", output: "formdef", token: "jwt_local", url: "http://localhost:4000/api/forms/formbyname/detailcontenttemplate" } ] }
     end
 
+    # Content item by Id API
+    def api_cibyid do 
+        %{ output: %{data: "data", datadef: "datadef", formdef: "formdef" }, actions: [
+              %{ method: "get", output: "data", token: "jwt_local", url: "http://localhost:4000/api/content/items/:id" },
+              %{ method: "get", output: "datadef", token: "jwt_local", url: "http://localhost:4000/api/forms/datadefbyname/contentitem" },
+              %{ method: "get", output: "formdef", token: "jwt_local", url: "http://localhost:4000/api/forms/formbyname/detailcontentitem" } ] }
+    end
+
     # List all Content templates API
     def api_lact do 
         %{ output: %{data: "data", datadef: "datadef", formdef: "formdef" }, actions: [
               %{ method: "get", output: "data", token: "jwt_local", url: "http://localhost:4000/api/content/templates" },
               %{ method: "get", output: "datadef", token: "jwt_local", url: "http://localhost:4000/api/forms/datadefbyname/contenttemplatelist" },
               %{ method: "get", output: "formdef", token: "jwt_local", url: "http://localhost:4000/api/forms/formbyname/listcontenttemplate" } ] }
+    end
+    # List all Content items API
+    def api_laci do 
+        %{ output: %{data: "data", datadef: "datadef", formdef: "formdef" }, actions: [
+              %{ method: "get", output: "data", token: "jwt_local", url: "http://localhost:4000/api/content/items" },
+              %{ method: "get", output: "datadef", token: "jwt_local", url: "http://localhost:4000/api/forms/datadefbyname/contentitemlist" },
+              %{ method: "get", output: "formdef", token: "jwt_local", url: "http://localhost:4000/api/forms/formbyname/listcontentitem" } ] }
     end
 
     # Api by Id API
