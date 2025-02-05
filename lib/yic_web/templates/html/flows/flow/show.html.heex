@@ -1,0 +1,33 @@
+<h1>Show Flow</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @flow.name %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @flow.description %>
+  </li>
+
+  <li>
+    <strong>Version:</strong>
+    <%= @flow.version %>
+  </li>
+
+  <li>
+    <strong>Definition:</strong>
+    <%= @flow.definition %>
+  </li>
+
+  <li>
+    <strong>Can start:</strong>
+    <%= @flow.can_start %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.html_flows_flow_path(@conn, :edit, @flow) %></span> |
+<span><%= link "Back", to: Routes.html_flows_flow_path(@conn, :index) %></span>

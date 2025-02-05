@@ -75,7 +75,7 @@ config :yic, YicWeb.Endpoint,
 config :logger, level: :debug
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "$time $metadata[$level] $message\n",
-metadata: [:file, :line, :request_id]
+metadata: [:file, :line]
 
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.

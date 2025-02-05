@@ -85,7 +85,13 @@ mix phx.gen.html Content Item items --web Api.Content name:string description:st
 mix phx.gen.json Content Item items --web Api.Content name:string description:string owner:references:users version:map content:map --web Api.Content --no-context
 ```
 
-4. Publication Manager
+4. Api Manager
+```
+mix phx.gen.html Apis Api apis name:string description:string version:map request:string definition:map --web Html.Apis
+mix phx.gen.json Apis Api apis name:string description:string version:map request:string definition:map --web Api.Apis --no-context
+```
+
+5. Publication Manager
 ```
 mix phx.gen.html Publications Pubtask pubtasks name:string version:map definition:map --web Html.Publications
 mix phx.gen.json Publications Pubtask pubtasks name:string version:map definition:map --web Api.Publications --no-context
@@ -100,12 +106,6 @@ mix phx.gen.html Publications Publication publications target:references:pubtarg
 mix phx.gen.json Publications Publication publications target:references:pubtargets path:string version:map definition:map start:utc_datetime end:utc_datetime --web Api.Publications --no-context
 ```
 
-5. Api Manager
-```
-mix phx.gen.html Apis Api apis name:string description:string version:map request:string definition:map --web Html.Apis
-mix phx.gen.json Apis Api apis name:string description:string version:map request:string definition:map --web Api.Apis --no-context
-```
-
 6. workflow
 
 The workflow works as follows. A flow is defined as a template. 
@@ -113,8 +113,8 @@ When the flow is started, a token will be created based on the template. As soon
 a task is created so not all tokens have to be queried to get the tasks that a (system)user can perform.
 
 ```
-mix phx.gen.html Flows Flow flows name:string description:string version:map definition:map --web Html.Flows
-mix phx.gen.json Flows Flow flows name:string description:string version:map definition:map --web Flow.Flows --no-context
+mix phx.gen.html Flows Flow flows name:string description:string version:map definition:map can_start:map --web Html.Flows
+mix phx.gen.json Flows Flow flows name:string description:string version:map definition:map can_start:map --web Flow.Flows --no-context
 
 mix phx.gen.html Flows Token tokens flow_id:references:flows owner:references:users token:map --web Html.Tokens
 mix phx.gen.json Flows Token tokens flow_id:references:flows owner:references:users token:map --web Flow.Tokens --no-context

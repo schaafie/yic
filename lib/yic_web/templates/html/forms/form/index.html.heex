@@ -14,7 +14,7 @@
     <tr>
       <td><%= form.name %></td>
       <td><%= form.comment %></td>
-      <td><%= form.version %></td>
+      <td><%= "#{form.version["major"]}.#{form.version["medior"]}.#{form.version["minor"]}" %></td>
       <td>
         <span><%= link "Show", to: Routes.html_forms_form_path(@conn, :show, form) %></span>
         <span><%= link "Edit", to: Routes.html_forms_form_path(@conn, :edit, form) %></span>
