@@ -13,14 +13,18 @@ The framework is in development. Thus it is not enough to start the server.
 You need to add basic credentials as well otherwise there will be token errors in accessing the application.
 In dev and Test default tokens are inserted as part of the init of the token registry.
 
-To start server (in interactive mode):
-```
-$ iex -S mix phx.server
-``` 
+Docker compose and docker file are provided to run in container. 
+The files assume you have a running postgress instance the the container can connect to. 
+The .env.portainer file contains the specifics of the connection.
+To create the image, use portainer-dockerfile and add a jar that contains .env.portainer, entrypoint.sh, mix.exs and mix.lock. 
+Name the image yic:latest (or change the docker-compose to match the image name you declared).
+The image will build the Phoenix environment and retrieve the YIC files from the GIT-repo.
+
+Once the image is build, create the stack using the portainer-docker-compose.yml file. 
 
 Open browser and go to:
-1. http://localhost:4000/index.html for API based admin front end
-2. http://localhost:4000/html/iam/accounts/log_in for traditional Phoenix based admin front end 
+1. http://<address>:4000/index.html for API based admin front end
+2. http://<address>:4000/html/iam/accounts/log_in for traditional Phoenix based admin front end 
 
 # Commands for basic structure
 This section will be moved later to a wiki page. For now I will leave this here for development purposes.

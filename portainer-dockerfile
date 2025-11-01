@@ -23,7 +23,7 @@ WORKDIR /yic
 RUN git clone https://github.com/schaafie/yic.git
 
 # copy relevant files - add using Upload
-ADD entrypoint.sh mix.exs mix.lock ./
+ADD entrypoint.sh mix.exs mix.lock .env.portainer ./
 
 # Build the application
 RUN mix deps.get

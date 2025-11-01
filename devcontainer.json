@@ -1,6 +1,0 @@
-{
-    "name": "YIC",
-    "dockerComposeFile": "./docker-compose.yml",
-    "service": "phoenix",
-    "shutdownAction": "stopCompose"
-  }
