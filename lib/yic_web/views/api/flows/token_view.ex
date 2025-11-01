@@ -1,6 +1,6 @@
-defmodule YicWeb.Flow.Tokens.TokenView do
+defmodule YicWeb.Api.Flows.TokenView do
   use YicWeb, :view
-  alias YicWeb.Flow.Tokens.TokenView
+  alias YicWeb.Api.Flows.TokenView
 
   def render("index.json", %{tokens: tokens}) do
     %{data: render_many(tokens, TokenView, "token.json")}
@@ -13,7 +13,8 @@ defmodule YicWeb.Flow.Tokens.TokenView do
   def render("token.json", %{token: token}) do
     %{
       id: token.id,
-      token: token.token
+      current_task: token.current_task,
+      can_do: token.can_do
     }
   end
 end

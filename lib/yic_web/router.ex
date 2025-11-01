@@ -72,6 +72,13 @@ defmodule YicWeb.Router do
     resources "/items", ItemController
   end
 
+  scope "/api/flows", YicWeb.Api.Flows, as: :api_flows do
+    pipe_through :api_authenticated           
+
+    resources "/flows", FlowController
+    resources "/tokens", TokenController
+  end
+
   scope "/api/apis", YicWeb.Api.Apis, as: :api_apis do
     pipe_through :api_authenticated                                     
 
@@ -170,6 +177,14 @@ defmodule YicWeb.Router do
     resources "/templates", TemplateController
     resources "/items", ItemController
   end
+
+  scope "/html/flows", YicWeb.Html.Flows, as: :html_flows do
+    pipe_through [:browser, :require_authenticated_account]
+
+    resources "/flows", FlowController
+    resources "/tokens", TokenController
+  end
+
 
   scope "/html/apis", YicWeb.Html.Apis, as: :html_apis do
     pipe_through [:browser, :require_authenticated_account]

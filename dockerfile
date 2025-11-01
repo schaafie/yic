@@ -19,6 +19,7 @@ WORKDIR /yic
 COPY /DATA/Projects/yic/entrypoint.sh .
 COPY /DATA/Projects/yic/mix.exs .
 COPY /DATA/Projects/yic/mix.lock .
+COPY /DATA/Projects/yic/.env.yic .
 
 # Build the application
 RUN mix deps.get

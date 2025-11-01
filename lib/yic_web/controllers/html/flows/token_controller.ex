@@ -1,4 +1,4 @@
-defmodule YicWeb.Html.Tokens.TokenController do
+defmodule YicWeb.Html.Flows.TokenController do
   use YicWeb, :controller
 
   alias Yic.Flows
@@ -19,7 +19,7 @@ defmodule YicWeb.Html.Tokens.TokenController do
       {:ok, token} ->
         conn
         |> put_flash(:info, "Token created successfully.")
-        |> redirect(to: Routes.html_tokens_token_path(conn, :show, token))
+        |> redirect(to: Routes.html_flows_token_path(conn, :show, token))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
@@ -44,7 +44,7 @@ defmodule YicWeb.Html.Tokens.TokenController do
       {:ok, token} ->
         conn
         |> put_flash(:info, "Token updated successfully.")
-        |> redirect(to: Routes.html_tokens_token_path(conn, :show, token))
+        |> redirect(to: Routes.html_flows_token_path(conn, :show, token))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", token: token, changeset: changeset)
@@ -57,6 +57,6 @@ defmodule YicWeb.Html.Tokens.TokenController do
 
     conn
     |> put_flash(:info, "Token deleted successfully.")
-    |> redirect(to: Routes.html_tokens_token_path(conn, :index))
+    |> redirect(to: Routes.html_flows_token_path(conn, :index))
   end
 end

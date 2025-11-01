@@ -5,9 +5,13 @@
     </div>
   <% end %>
 
-  <%= label f, :token %>
-  <%= text_input f, :token %>
-  <%= error_tag f, :token %>
+  <%= label f, :current_task %>
+  <%= text_input f, :current_task %>
+  <%= error_tag f, :current_task %>
+
+  <%= label f, :can_do %>
+  <%= text_input f, :can_do %>
+  <%= error_tag f, :can_do %>
 
   <div>
     <%= submit "Save" %>

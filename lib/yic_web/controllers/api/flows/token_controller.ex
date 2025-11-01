@@ -1,4 +1,4 @@
-defmodule YicWeb.Flow.Tokens.TokenController do
+defmodule YicWeb.Api.Flows.TokenController do
   use YicWeb, :controller
 
   alias Yic.Flows
@@ -15,7 +15,7 @@ defmodule YicWeb.Flow.Tokens.TokenController do
     with {:ok, %Token{} = token} <- Flows.create_token(token_params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.flow_tokens_token_path(conn, :show, token))
+      |> put_resp_header("location", Routes.api_flows_token_path(conn, :show, token))
       |> render("show.json", token: token)
     end
   end

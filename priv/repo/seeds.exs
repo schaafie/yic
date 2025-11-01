@@ -20,6 +20,8 @@ Repo.insert! %Datadef{ name: "datadef", comment: "Data definition for datadef", 
 Repo.insert! %Datadef{ name: "contenttemplate", comment: "Data definition for content template", version: SeedData.base_version(), definition: SeedData.template_dd() }
 Repo.insert! %Datadef{ name: "contentitem", comment: "Data definition for content items", version: SeedData.base_version(), definition: SeedData.item_dd() }
 Repo.insert! %Datadef{ name: "api", comment: "Data definition for apis", version: SeedData.base_version(), definition: SeedData.api_dd() }
+Repo.insert! %Datadef{ name: "flow", comment: "Data definition for flow", version: SeedData.base_version(), definition: SeedData.flow_dd() }
+Repo.insert! %Datadef{ name: "token", comment: "Data definition for token", version: SeedData.base_version(), definition: SeedData.flowtoken_dd() }
 
 Repo.insert! %Datadef{ name: "formlist", comment: "Data definition for list of forms", version: SeedData.base_version(), definition: SeedData.form_ldd() }
 Repo.insert! %Datadef{ name: "userlist", comment: "Data definition for list of users", version: SeedData.base_version(), definition: SeedData.user_ldd() }
@@ -27,6 +29,8 @@ Repo.insert! %Datadef{ name: "datadeflist", comment: "Data definition for list o
 Repo.insert! %Datadef{ name: "contenttemplatelist", comment: "Data definition for list of content templates", version: SeedData.base_version(), definition: SeedData.template_ldd() }
 Repo.insert! %Datadef{ name: "contentitemlist", comment: "Data definition for list of content items", version: SeedData.base_version(), definition: SeedData.item_ldd() }
 Repo.insert! %Datadef{ name: "apilist", comment: "Data definition for list of apis", version: SeedData.base_version(), definition: SeedData.api_ldd() }
+Repo.insert! %Datadef{ name: "flowlist", comment: "Data definition for list of flows", version: SeedData.base_version(), definition: SeedData.flow_ldd() }
+Repo.insert! %Datadef{ name: "tokenlist", comment: "Data definition for list of tokens", version: SeedData.base_version(), definition: SeedData.flowtoken_ldd() }
 
 Repo.insert! %Form{ name: "listform", author: 1, comment: "List view of all form defintions", version: SeedData.base_version(), definition: SeedData.data_off() }
 Repo.insert! %Form{ name: "detailsform", author: 1, comment: "Edit view for form defintion", version: SeedData.base_version(), definition: SeedData.data_dff() }
@@ -40,6 +44,10 @@ Repo.insert! %Form{ name: "listcontentitem", comment: "List view of all content 
 Repo.insert! %Form{ name: "detailcontentitem", comment: "Edit form for content item defintion", version: SeedData.base_version(), definition: SeedData.data_dfci() }
 Repo.insert! %Form{ name: "listapi", author: 1, comment: "List view of all api defintions", version: SeedData.base_version(), definition: SeedData.data_ofa() }
 Repo.insert! %Form{ name: "detailapi", author: 1, comment: "Edit form for api defintion", version: SeedData.base_version(), definition: SeedData.data_dfa() }
+Repo.insert! %Form{ name: "listflow", author: 1, comment: "List view of all api defintions", version: SeedData.base_version(), definition: SeedData.data_offl() }
+Repo.insert! %Form{ name: "detailflow", author: 1, comment: "Edit form for api defintion", version: SeedData.base_version(), definition: SeedData.data_dffl() }
+Repo.insert! %Form{ name: "listtoken", author: 1, comment: "List view of all api defintions", version: SeedData.base_version(), definition: SeedData.data_offt() }
+Repo.insert! %Form{ name: "detailtoken", author: 1, comment: "Edit form for api defintion", version: SeedData.base_version(), definition: SeedData.data_dfft() }
 
 Repo.insert! %Api{ name: "List all forms", description: "Get the data for List Forms (data, datadef and formdef)", version: SeedData.base_version(), request: "forms", definition: SeedData.api_laf() }
 Repo.insert! %Api{ name: "Show form by id", description: "Get the data for the Edit Form (data, datadef and formdef)", version: SeedData.base_version(), request: "forms/:id", definition: SeedData.api_fbyid() }

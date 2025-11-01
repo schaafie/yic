@@ -1,0 +1,18 @@
+<h1>Show Token</h1>
+
+<ul>
+
+  <li>
+    <strong>Current task:</strong>
+    <%= @token.current_task %>
+  </li>
+
+  <li>
+    <strong>Can do:</strong>
+    <%= @token.can_do %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.html_flows_token_path(@conn, :edit, @token) %></span> |
+<span><%= link "Back", to: Routes.html_flows_token_path(@conn, :index) %></span>

@@ -1,6 +1,6 @@
-defmodule YicWeb.Flow.Flows.FlowView do
+defmodule YicWeb.Api.Flows.FlowView do
   use YicWeb, :view
-  alias YicWeb.Flow.Flows.FlowView
+  alias YicWeb.Api.Flows.FlowView
 
   def render("index.json", %{flows: flows}) do
     %{data: render_many(flows, FlowView, "flow.json")}

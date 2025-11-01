@@ -81,8 +81,8 @@ mix phx.gen.json Forms Dataelement dataelements name:string comment:string versi
 mix phx.gen.html Content Template templates name:string description:string owner:references:users version:map definition:map --web Html.Content
 mix phx.gen.json Content Template templates name:string description:string owner:references:users version:map definition:map --web Api.Content --no-context
 
-mix phx.gen.html Content Item items --web Api.Content name:string description:string owner:references:users version:map content:map --web Html.Content
-mix phx.gen.json Content Item items --web Api.Content name:string description:string owner:references:users version:map content:map --web Api.Content --no-context
+mix phx.gen.html Content Item items name:string description:string owner:references:users version:map content:map --web Html.Content
+mix phx.gen.json Content Item items name:string description:string owner:references:users version:map content:map --web Api.Content --no-context
 ```
 
 4. Api Manager
@@ -109,18 +109,16 @@ mix phx.gen.json Publications Publication publications target:references:pubtarg
 6. workflow
 
 The workflow works as follows. A flow is defined as a template. 
-When the flow is started, a token will be created based on the template. As soon as the flow is waiting to be continued,
-a task is created so not all tokens have to be queried to get the tasks that a (system)user can perform.
+When the flow is started, a token will be created based on the template. Each token represents the current task to be done (can_do) or being_done (claimed_by). 
+A flow can have multiple tokens, depending on the flows branches.
 
 ```
 mix phx.gen.html Flows Flow flows name:string description:string version:map definition:map can_start:map --web Html.Flows
-mix phx.gen.json Flows Flow flows name:string description:string version:map definition:map can_start:map --web Flow.Flows --no-context
+mix phx.gen.json Flows Flow flows name:string description:string version:map definition:map can_start:map --web Api.Flows --no-context
 
-mix phx.gen.html Flows Token tokens flow_id:references:flows owner:references:users token:map --web Html.Tokens
-mix phx.gen.json Flows Token tokens flow_id:references:flows owner:references:users token:map --web Flow.Tokens --no-context
+mix phx.gen.html Flows Token tokens flow_id:references:flows current_task:string claimed_by:references:users can_do:map --web Html.Flows
+mix phx.gen.json Flows Token tokens flow_id:references:flows current_task:string claimed_by:references:users can_do:map --web Api.Flows --no-context
 
-mix phx.gen.html Flows Task tasks flow_id:references:flows can_do:map --web Html.Tasks
-mix phx.gen.json Flows Task tasks flow_id:references:flows can_do:map --web Flow.Tasks --no-context
 ```
 
 TODO:

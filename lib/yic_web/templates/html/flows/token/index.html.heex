@@ -1,0 +1,28 @@
+<h1>Listing Tokens</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Current task</th>
+      <th>Can do</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for token <- @tokens do %>
+    <tr>
+      <td><%= token.current_task %></td>
+      <td><%= token.can_do %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.html_flows_token_path(@conn, :show, token) %></span>
+        <span><%= link "Edit", to: Routes.html_flows_token_path(@conn, :edit, token) %></span>
+        <span><%= link "Delete", to: Routes.html_flows_token_path(@conn, :delete, token), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Token", to: Routes.html_flows_token_path(@conn, :new) %></span>

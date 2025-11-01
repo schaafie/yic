@@ -1,4 +1,4 @@
-defmodule YicWeb.Flow.Flows.FlowController do
+defmodule YicWeb.Api.Flows.FlowController do
   use YicWeb, :controller
 
   alias Yic.Flows
@@ -15,7 +15,7 @@ defmodule YicWeb.Flow.Flows.FlowController do
     with {:ok, %Flow{} = flow} <- Flows.create_flow(flow_params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.flow_flows_flow_path(conn, :show, flow))
+      |> put_resp_header("location", Routes.api_flows_flow_path(conn, :show, flow))
       |> render("show.json", flow: flow)
     end
   end

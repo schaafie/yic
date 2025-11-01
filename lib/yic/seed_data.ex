@@ -120,42 +120,6 @@ defmodule Yic.SeedData do
         }
     end
 
-    def item_dd do
-        %{
-            "$schema": "https://json-schema.org/draft/2020-12/schema",
-            title: "Content item definition schema",
-            type: "object",
-            description: "Schema that defines what the content item definition should look like",
-            required: [ "name", "content", "version", "template", "owner" ],
-            properties: %{
-                id: %{ type: "integer", description: "" },
-                name: %{ type: "string", description: "" },
-                description: %{ type: "string", description: "" },
-                owner: %{ type: "integer", description: "" },
-                template: %{ type: "integer", description: "" },
-                content: %{ 
-                    type: "object", 
-                    description: "Item content object", 
-                    properties: %{},
-                    required: [],
-                    additionalProperties: true
-                },
-                version: %{
-                    type: "object",
-                    description: "Version object",
-                    required: [ "minor", "medior", "major", "author" ],
-                    properties: %{
-                        minor: %{ type: "integer", description: "", minimum: 0 },
-                        medior: %{ type: "integer", description: "", minimum: 0 },
-                        major: %{ type: "integer", description: "", minimum: 0 },
-                        author: %{ type: "integer", description: "" },
-                        comment: %{ type: "string", description: "" }
-                    }
-                }
-            }
-        }
-    end
-
     def template_ldd do
         %{
             "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -186,6 +150,42 @@ defmodule Yic.SeedData do
                             author: %{ type: "integer", description: "" },
                             comment: %{ type: "string", description: "" }
                         }
+                    }
+                }
+            }
+        }
+    end
+
+    def item_dd do
+        %{
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            title: "Content item definition schema",
+            type: "object",
+            description: "Schema that defines what the content item definition should look like",
+            required: [ "name", "content", "version", "template", "owner" ],
+            properties: %{
+                id: %{ type: "integer", description: "" },
+                name: %{ type: "string", description: "" },
+                description: %{ type: "string", description: "" },
+                owner: %{ type: "integer", description: "" },
+                template: %{ type: "integer", description: "" },
+                content: %{ 
+                    type: "object", 
+                    description: "Item content object", 
+                    properties: %{},
+                    required: [],
+                    additionalProperties: true
+                },
+                version: %{
+                    type: "object",
+                    description: "Version object",
+                    required: [ "minor", "medior", "major", "author" ],
+                    properties: %{
+                        minor: %{ type: "integer", description: "", minimum: 0 },
+                        medior: %{ type: "integer", description: "", minimum: 0 },
+                        major: %{ type: "integer", description: "", minimum: 0 },
+                        author: %{ type: "integer", description: "" },
+                        comment: %{ type: "string", description: "" }
                     }
                 }
             }
@@ -397,13 +397,119 @@ defmodule Yic.SeedData do
         }
     end
 
+    def flow_dd do
+        %{
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            title: "Flow definition schema",
+            type: "object",
+            description: "Schema that defines what the Flow data should look like",
+            required: [ "name", "version", "definition", "can_start" ],
+            properties: %{
+                id: %{ type: "integer", description: "" },
+                name: %{ type: "string", description: "" },
+                version: %{
+                    type: "object",
+                    description: "Version object",
+                    properties: %{
+                        minor: %{ type: "integer", description: "", minimum: 0 },
+                        medior: %{ type: "integer", description: "", minimum: 0 },
+                        major: %{ type: "integer", description: "", minimum: 0 },
+                        author: %{ type: "integer", description: "" },
+                        comment: %{ type: "string", description: "" }
+                    }
+                },
+                definition: %{ 
+                    type: "object", 
+                    description: "Data Definition object", 
+                    properties: %{},
+                    required: [],
+                    additionalProperties: true
+                },
+                description: %{ type: "string", description: "" },
+                can_start: %{ 
+                    type: "object", 
+                    description: "",
+                    properties: %{},
+                    required: [],
+                    additionalProperties: true
+                }
+            }
+        }
+    end
+
+    def flow_ldd do
+        %{
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            title: "Flow List data definition schema",
+            description: "Schema that defines what the Flow List data object should look like",
+            type: "array",
+            items: %{
+                type: "object",
+                properties: %{
+                    id: %{ type: "integer", description: "" },
+                    name: %{ type: "string", description: "" },
+                    version: %{
+                        type: "object",
+                        description: "Version object",
+                        properties: %{
+                            minor: %{ type: "integer", description: "", minimum: 0 },
+                            medior: %{ type: "integer", description: "", minimum: 0 },
+                            major: %{ type: "integer", description: "", minimum: 0 },
+                            author: %{ type: "integer", description: "" },
+                            comment: %{ type: "string", description: "" }
+                        }
+                    }
+                }    
+            }
+        }
+    end
+
+    def flowtoken_dd do
+        %{
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            title: "Flow Task data definition schema",
+            type: "object",
+            description: "Schema that defines what the Flow data should look like",
+            required: [ "flow_id", "can_do" ],
+            properties: %{
+                id: %{ type: "integer", description: "" },
+                flow_id: %{ type: "integer", description: "" },
+                current_task: %{ type: "string", description: ""},
+                can_do: %{ 
+                    type: "object", 
+                    description: "",
+                    properties: %{},
+                    required: [],
+                    additionalProperties: true
+                }
+            }
+        }
+    end
+
+    def flowtoken_ldd do
+        %{
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            title: "Flow Task List data definition schema",
+            description: "Schema that defines what the Flow List data object should look like",
+            type: "array",
+            items: %{
+                type: "object",
+                properties: %{
+                    id: %{ type: "integer", description: "" },
+                    flow_id: %{ type: "integer", description: "" },
+                    current_task: %{ type: "string", description: ""}
+                }    
+            }
+        }
+    end
+
     # -------------------
     # Form definitions
     # name structure is as follows: data_<type>F<item>
     # data:     it is a data object
     # <type>    o for overview, d for detail
     # F         it is a form definition
-    # <item>    the obect that it is about. d for detail, f for form etc...
+    # <item>    the obect that it is about. d for data, f for form, ct for content template etc...
     # -------------------
 
     def data_ofd do 
@@ -459,7 +565,7 @@ defmodule Yic.SeedData do
     end
 
     def data_dff do 
-        %{ type: "detail", title: "Form detail", saveaction: "/forms/forms/:id", globalValidations: [],
+        %{ title: "Form detail", type: "detail", saveaction: "/forms/forms/:id", globalValidations: [],
             actions: [
               %{create: %{url: "/forms/forms"}},
               %{save: %{url: "/forms/forms/:id"}}
@@ -490,22 +596,6 @@ defmodule Yic.SeedData do
           }
     end
 
-    # Content Item Overview Form
-    def data_ofci do 
-        %{ title: "Content item overview", type: "overview", globalValidations: [],
-            actions: [                                               
-              %{list: %{url: "orchestrator/contentitems"}},                         
-              %{edit: %{url: "orchestrator/contentitems/:id"}},  
-              %{delete: %{url: "api/contenttemplates/contentitems/:id"}} ],
-            elements: [                                              
-              %{datapath: "id", pk: true, type: "hidden"},           
-              %{datapath: "name", label: "Name", type: "text-only"},      
-              %{datapath: "template", label: "Template", type: "number-only"},      
-              %{datapath: "version", label: "Version", type: "version-only"} 
-            ]
-          }
-    end
-
     # Content Template Detail Form
     def data_dfct do 
         %{ type: "detail", title: "Content template detail", saveaction: "/content/templates/:id", globalValidations: [],
@@ -520,6 +610,22 @@ defmodule Yic.SeedData do
               %{datapath: "comment", label: "Comment", type: "text"},
               %{datapath: "author", label: "Author", type: "number"},
               %{datapath: "definition", label: "Definition", type: "json"}
+            ]
+          }
+    end
+
+    # Content Item Overview Form
+    def data_ofci do 
+        %{ title: "Content item overview", type: "overview", globalValidations: [],
+            actions: [                                               
+              %{list: %{url: "orchestrator/contentitems"}},                         
+              %{edit: %{url: "orchestrator/contentitems/:id"}},  
+              %{delete: %{url: "api/contenttemplates/contentitems/:id"}} ],
+            elements: [                                              
+              %{datapath: "id", pk: true, type: "hidden"},           
+              %{datapath: "name", label: "Name", type: "text-only"},      
+              %{datapath: "template", label: "Template", type: "number-only"},      
+              %{datapath: "version", label: "Version", type: "version-only"} 
             ]
           }
     end
@@ -543,6 +649,7 @@ defmodule Yic.SeedData do
           }
     end
 
+    # User overview form
     def data_ofu do 
         %{ title: "User overview", type: "overview", globalValidations: [],
             actions: [
@@ -559,6 +666,7 @@ defmodule Yic.SeedData do
         }
     end
 
+    # User detail form
     def data_dfu do 
         %{ title: "User detail", type: "detail", saveaction: "/iam/users/:id", globalValidations: [],
             actions: [ 
@@ -574,6 +682,7 @@ defmodule Yic.SeedData do
         }
     end
 
+    # API overview form
     def data_ofa do 
         %{ title: "Api overview", type: "overview", globalValidations: [],
             actions: [
@@ -589,6 +698,7 @@ defmodule Yic.SeedData do
         }
     end
 
+    # API detail form
     def data_dfa do 
         %{ title: "Api detail", type: "detail", saveaction: "/apis/apis/:id", globalValidations: [],
             actions: [ 
@@ -602,6 +712,72 @@ defmodule Yic.SeedData do
               %{datapath: "comment", label: "Comment", type: "text"},
               %{datapath: "author", label: "Author", type: "number"},
               %{datapath: "definition", label: "Definition", type: "json"}
+            ]
+        }
+    end
+
+    # FLOW overview form
+    def data_offl do 
+        %{ title: "Flow overview", type: "overview", globalValidations: [],
+            actions: [
+                %{list: %{label: "Show apis", url: "orchestrator/flows"}},
+                %{edit: %{label: "Edit", url: "orchestrator/flows/:id"}},
+                %{delete: %{label: "Delete", url: "flows/flows"}}
+            ],
+            elements: [
+                %{datapath: "id", pk: true, type: "hidden"},
+                %{datapath: "name", label: "Name ", type: "text-only"},
+                %{datapath: "version", label: "Version", type: "version-only"}
+              ]
+        }
+    end
+
+    # FLOW detail form
+    def data_dffl do 
+        %{ title: "Flow detail", type: "detail", saveaction: "/flows/flows/:id", globalValidations: [],
+            actions: [ 
+                %{create: %{url: "/flows/flows"}}, 
+                %{save: %{url: "/flows/flows/:id"}}
+            ],
+            elements: [
+              %{datapath: "id", type: "hidden"},
+              %{datapath: "name", label: "Flow Name", type: "text"},
+              %{datapath: "version", label: "Version", type: "version"},
+              %{datapath: "description", label: "Comment", type: "text"},
+              %{datapath: "can_start", label: "Can Start", type: "json"},
+              %{datapath: "definition", label: "Definition", type: "json"}
+            ]
+        }
+    end
+
+    # Flow Token overview form
+    def data_offt do 
+        %{ title: "Flow Token overview", type: "overview", globalValidations: [],
+            actions: [
+                %{list: %{label: "Show apis", url: "orchestrator/tokens"}},
+                %{edit: %{label: "Edit", url: "orchestrator/tokens/:id"}},
+                %{delete: %{label: "Delete", url: "flows/tokens"}}
+            ],
+            elements: [
+                %{datapath: "id", pk: true, type: "hidden"},
+                %{datapath: "token_id", label: "Token Id", type: "integer"},
+                %{datapath: "current_task", label: "Current Task", type: "version-only"}
+              ]
+        }
+    end
+
+    # Flow Token detail form
+    def data_dfft do 
+        %{ title: "Flow token detail", type: "detail", saveaction: "/flows/tokens/:id", globalValidations: [],
+            actions: [ 
+                %{create: %{url: "/flows/tokens"}}, 
+                %{save: %{url: "/flows/tokens/:id"}}
+            ],
+            elements: [
+              %{datapath: "id", type: "hidden"},
+              %{datapath: "flow_id", label: "Flow Id", type: "integer"},
+              %{datapath: "current_task", label: "Current Task", type: "text-only"},
+              %{datapath: "can_do", label: "Can do", type: "json"}
             ]
         }
     end
@@ -681,6 +857,7 @@ defmodule Yic.SeedData do
               %{ method: "get", output: "datadef", token: "jwt_local", url: "http://localhost:4000/api/forms/datadefbyname/contenttemplatelist" },
               %{ method: "get", output: "formdef", token: "jwt_local", url: "http://localhost:4000/api/forms/formbyname/listcontenttemplate" } ] }
     end
+
     # List all Content items API
     def api_laci do 
         %{ output: %{data: "data", datadef: "datadef", formdef: "formdef" }, actions: [
@@ -704,5 +881,38 @@ defmodule Yic.SeedData do
               %{ method: "get", output: "datadef", token: "jwt_local", url: "http://localhost:4000/api/forms/datadefbyname/apilist" },
               %{ method: "get", output: "formdef", token: "jwt_local", url: "http://localhost:4000/api/forms/formbyname/listapi" } ] }
     end
+    
+    # FLow by Id API
+    def api_flbyid do 
+        %{ output: %{data: "data", datadef: "datadef", formdef: "formdef" }, actions: [
+                %{ method: "get", output: "data", token: "jwt_local", url: "http://localhost:4000/api/flows/flows/:id" },
+                %{ method: "get", output: "datadef", token: "jwt_local", url: "http://localhost:4000/api/forms/datadefbyname/flow" },
+                %{ method: "get", output: "formdef", token: "jwt_local", url: "http://localhost:4000/api/forms/formbyname/detailflow" } ] }
+    end
+
+    # List all FLows API
+    def api_lafl do 
+        %{ output: %{data: "data", datadef: "datadef", formdef: "formdef" }, actions: [
+                %{ method: "get", output: "data", token: "jwt_local", url: "http://localhost:4000/api/flows/flows" },
+                %{ method: "get", output: "datadef", token: "jwt_local", url: "http://localhost:4000/api/forms/datadefbyname/flowlist" },
+                %{ method: "get", output: "formdef", token: "jwt_local", url: "http://localhost:4000/api/forms/formbyname/listflow" } ] }
+    end
+
+    # Token by Id API
+    def api_ftbyid do 
+        %{ output: %{data: "data", datadef: "datadef", formdef: "formdef" }, actions: [
+                %{ method: "get", output: "data", token: "jwt_local", url: "http://localhost:4000/api/flows/tokens/:id" },
+                %{ method: "get", output: "datadef", token: "jwt_local", url: "http://localhost:4000/api/forms/datadefbyname/token" },
+                %{ method: "get", output: "formdef", token: "jwt_local", url: "http://localhost:4000/api/forms/formbyname/detailtoken" } ] }
+    end
+
+    # List all Tokens API
+    def api_laft do 
+        %{ output: %{data: "data", datadef: "datadef", formdef: "formdef" }, actions: [
+                %{ method: "get", output: "data", token: "jwt_local", url: "http://localhost:4000/api/flows/tokens" },
+                %{ method: "get", output: "datadef", token: "jwt_local", url: "http://localhost:4000/api/forms/datadefbyname/tokenlist" },
+                %{ method: "get", output: "formdef", token: "jwt_local", url: "http://localhost:4000/api/forms/formbyname/listtoken" } ] }
+    end
+
 
 end
