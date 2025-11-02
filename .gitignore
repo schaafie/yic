@@ -10,9 +10,6 @@
 # Where 3rd-party dependencies like ExDoc output generated docs.
 /doc/
 
-# Where concept files are kept for initial ideas of what might come.
-/concepts/
-
 # Ignore .fetch files in case you like to edit your project deps locally.
 /.fetch
 
@@ -34,6 +31,3 @@ yic-*.tar
 # In case you use Node.js/npm, you want to ignore these.
 npm-debug.log
 /assets/node_modules/
-
-# Archive of js files
-/assets/jsarchive
