@@ -1,0 +1,18 @@
+services:
+  phoenix:
+    image: "elixir-phoenix:latest"
+    build: "${LOCALLOCATION}"
+    volumes:
+      - "${LOCALLOCATION}/lib:/yic/lib"
+      - "${LOCALLOCATION}/config:/yic/config"
+      - "${LOCALLOCATION}/assets:/yic/assets"
+      - "${LOCALLOCATION}/priv:/yic/priv"
+    environment:
+      PGUSER: ${PGUSER}
+      PGPASSWORD: ${PGPASSWORD}
+      PGDATABASE: ${PGDATABASE}
+      PGPORT: "${PGPORT}"
+      PGHOST: ${PGHOST}
+    ports:
+      - "${YICPORT}:4000"
+    command: [sh, -c, "chmod +x ./entrypoint.sh && bash -c ./entrypoint.sh"]

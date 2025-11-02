@@ -10,9 +10,6 @@
 # Where 3rd-party dependencies like ExDoc output generated docs.
 /doc/
 
-# Where docker-files are kept for archiving purposes.
-/docker-org/
-
 # Where concept files are kept for initial ideas of what might come.
 /concepts/
 
@@ -38,3 +35,5 @@ yic-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# Archive of js files
+/assets/jsarchive
