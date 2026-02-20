@@ -14,7 +14,7 @@ defmodule YicWeb.Api.Content.ItemView do
     %{
       id: item.id,
       name: item.name,
-      description: item.description,
+      comment: item.comment,
       version: item.version,
       content: item.content
     }

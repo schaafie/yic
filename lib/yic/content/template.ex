@@ -6,7 +6,7 @@ defmodule Yic.Content.Template do
 
   schema "templates" do
     field :definition, :map # Json
-    field :description, :string
+    field :comment, :string
     field :name, :string
     field :version, :map # Json
     field :owner, :id
@@ -17,7 +17,7 @@ defmodule Yic.Content.Template do
   @doc false
   def changeset(template, attrs) do
     template
-    |> cast(attrs, [:name, :description, :version, :definition, :owner ])
+    |> cast(attrs, [:name, :comment, :version, :definition, :owner ])
     |> validate_changes_against_schema( "contenttemplate" )
   end
 
@@ -52,7 +52,7 @@ defmodule Yic.Content.Template do
   #     %{ name: "minor", basetype: "number", validations: []},
   #     %{ name: "medior", basetype: "number", validations: []},
   #     %{ name: "major", basetype: "number", validations: []},
-  #     %{ name: "author", basetype: "id", validations: []},
+  #     %{ name: "owner", basetype: "id", validations: []},
   #     %{ name: "comment", basetype: "string", validations: []},
   #     %{ name: "owner", basetype: "id", validations: []}
   #   ]}

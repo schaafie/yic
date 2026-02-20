@@ -135,6 +135,10 @@ export default class YicForm extends HTMLElement {
         let input = document.createElement( config.component );
         if (element.label) input.setAttribute('label', element.label);
         if (element.name) input.setAttribute('name', element.name);
+        if (element.type=="select") {
+            input.setOptions( element.value, element.display );
+            this.app.getOptions( element.source, input );
+        }
         let itemlist = [];
 
         config.values.forEach( valueItem => {

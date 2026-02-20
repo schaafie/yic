@@ -1,6 +1,8 @@
 services:
   phoenix:
     image: "yic:latest"
+    env_file:
+      - ./.env.portainer
     volumes:
       - "${LOCALLOCATION}/lib:/yic/lib"
       - "${LOCALLOCATION}/config:/yic/config"

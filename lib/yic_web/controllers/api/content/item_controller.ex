@@ -25,11 +25,23 @@ defmodule YicWeb.Api.Content.ItemController do
     render(conn, "show.json", item: item)
   end
 
-  def update(conn, %{"id" => id, "item" => item_params}) do
-    item = Content.get_item!(id)
+  # def update(conn, %{"id" => id, "item" => item_params}) do
+  #   item = Content.get_item!(id)
 
-    with {:ok, %Item{} = item} <- Content.update_item(item, item_params) do
-      render(conn, "show.json", item: item)
+  #   with {:ok, %Item{} = item} <- Content.update_item(item, item_params) do
+  #     render(conn, "show.json", item: item)
+  #   end
+  # end
+
+  def update(conn, params) do
+    item = Content.get_item!(params["id"])
+    case Content.update_item(item, params) do
+      {:ok, new_item} ->
+        render(conn, "show.json", item: new_item)
+      {:error, %Ecto.Changeset{} = changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render("error.json", changeset: changeset)
     end
   end
 

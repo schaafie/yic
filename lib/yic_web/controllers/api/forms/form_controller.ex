@@ -32,8 +32,8 @@ defmodule YicWeb.Api.Forms.FormController do
   end
 
   def update(conn, form_params) do
-    form = Forms.get_form!(form_params["id"])
-    case Forms.update_form(form, form_params) do
+    current_form = Forms.get_form!(form_params["id"])
+    case Forms.update_form(current_form, form_params) do
       {:ok, form} ->
         render(conn, "show.json", form: form)
       {:error, %Ecto.Changeset{} = changeset} ->

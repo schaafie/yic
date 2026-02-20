@@ -159,7 +159,7 @@ export default class YicOverview extends HTMLElement {
     }
     
     deleteItem( path ) { 
-        let pk = this.datamodel.getValue(path);
+        let pk = this.datamodel.buildaction(this.datamodel.deleteaction, path);
         if (this.datamodel.delete(pk)) this.populate();
     }
 

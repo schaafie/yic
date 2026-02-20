@@ -49,6 +49,25 @@ export default class YicController {
         this.auth.doLogin( user, password);
     }
 
+    getOptions( url, input ) {
+        let get_url = YicConf.baseUrl() + url;
+        let headers = this.getCallOptions();
+        fetch( get_url, { method: "GET", headers: headers })
+            .then( response => {
+                if (!response.ok) {
+                    throw Error(response);
+                } else {
+                    return response.json();
+                }
+            }).then( json => {
+                if (!json.data) throw Error("no data");
+                input.optionsChange(json.data);
+                return json.data;
+            }).catch( error => {
+                console.log(error);
+            });
+    }
+
     doCommand( jsonCmd ) { 
         fetch( YicConf.baseUrl()+jsonCmd, { method: "GET", headers: this.getCallOptions() })
             .then( response => {

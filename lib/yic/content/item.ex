@@ -6,7 +6,7 @@ defmodule Yic.Content.Item do
   
   schema "items" do
     field :content, :map # Json
-    field :description, :string
+    field :comment, :string
     field :name, :string
     field :version, :map # Json
     field :template, :id
@@ -18,7 +18,7 @@ defmodule Yic.Content.Item do
   @doc false
   def changeset(item, attrs) do
     item
-    |> cast(attrs, [:name, :description, :version, :content, :template, :owner])
+    |> cast(attrs, [:name, :comment, :version, :content, :template, :owner])
     |> validate_changes_against_schema( "contentitem" )
   end
 end

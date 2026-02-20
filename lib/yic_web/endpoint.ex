@@ -46,6 +46,6 @@ defmodule YicWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
-  plug CORSPlug
+  plug CORSPlug, origin: ["http://casaos:4000"]
   plug YicWeb.Router
 end

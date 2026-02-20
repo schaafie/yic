@@ -21,7 +21,7 @@ defmodule YicWeb.Api.Forms.FormView do
       comment: form.comment,
       version: form.version,
       definition: form.definition,
-      author: form.author
+      owner: form.owner
     }
   end
 

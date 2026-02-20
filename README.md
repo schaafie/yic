@@ -65,8 +65,8 @@ mix phx.gen.json Iam Denie denies account_id:references:accounts role_id:referen
 
 2. Form Manager
 ```
-mix phx.gen.html Forms Form forms name:string comment:string version:map author:references:users definition:map --web Html.Forms
-mix phx.gen.json Forms Form forms name:string comment:string version:map author:references:users definition:map --web Api.Forms --no-context
+mix phx.gen.html Forms Form forms name:string comment:string version:map owner:references:users definition:map --web Html.Forms
+mix phx.gen.json Forms Form forms name:string comment:string version:map owner:references:users definition:map --web Api.Forms --no-context
 
 mix phx.gen.html Forms Datasource datasources name:string comment:string version:map definition:map actions:array:string --web Html.Forms
 mix phx.gen.json Forms Datasource datasources name:string comment:string version:map definition:map actions:array:string --web Api.Forms --no-context

@@ -18,17 +18,11 @@ defmodule Yic.SchemaValidator do
   def validate_changes_against_schema( changeset, schema_name ) when is_binary( schema_name ) do
     dd = Forms.get_datadef_by_name!( schema_name )
     validate_changes_against_schema( changeset, dd.definition )
-    # Datadef was stored as map but retrieved as JSON
-    # case Poison.decode( dd.definition, %{keys: :atoms} ) do
-    #  {:ok, map} ->
-    #    validate_changes_against_schema( changeset, map )
-    #  {:error, msg} ->
-    #    Logger.error( msg )
-    #    %{changeset | errors: [{schema_name, {"Schema could not be decoded", []}}], valid?: false}
-    # end    
   end
 
   def validate_dataitem errors, data, schemaitem, path do
+    IO.inspect path
+    IO.inspect data
     IO.inspect schemaitem
     case schemaitem["type"] do
       "object" when is_map( data ) ->
@@ -320,9 +314,17 @@ defmodule Yic.SchemaValidator do
       _ ->
         "#{path}.#{key}"
     end
-    errors
-    |> validate_dataitem( Map.get( data, key ), Map.get( schema_item, key), new_path )
-    |> validate_properties( keys, data, schema_item, path )
+    # case data is nil and value is not required, this check is not required
+    # if value is required, there will be an error on required check aleady.
+    case  Map.get( data, key ) do
+      nil ->
+        errors
+        |> validate_properties( keys, data, schema_item, path )
+      value ->
+        errors
+        |> validate_dataitem( value, Map.get( schema_item, key), new_path )
+        |> validate_properties( keys, data, schema_item, path )
+    end
   end
 
 end

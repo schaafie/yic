@@ -30,9 +30,8 @@ export default class YicDatamodel {
     Actions 
     ------------------ */
 
-    delete(pk){
-        let deleteaction = `${this.deleteaction}/${pk}`;
-        fetch( YicConf.baseUrl() + deleteaction, { 
+    delete( del_action ){
+        fetch( YicConf.baseUrl() + del_action, { 
                 method: "DELETE", 
                 headers: { 
                     'Authorization': `Bearer ${this.auth.getToken()}`, 
@@ -141,7 +140,7 @@ export default class YicDatamodel {
         if (item==undefined) return item;
         switch (item.type) {
             case "object":
-                let object = item.value;
+                let object = (item.value==undefined)?{}:item.value;
                 this.items.forEach(subitem => {
                     let childName = Path.getDirectChildName(pathName, subitem.path);
                     if (childName) object[childName] = this.getValue(subitem.path);
@@ -243,6 +242,12 @@ export default class YicDatamodel {
                             case "string":
                                 item.value = value;
                                 break;
+                            case "integer":
+                                item.value = parseInt(value);
+                                break;
+                            case "number":
+                                item.value = Number(value);
+                                break;                                
                             default:
                                 throw new Error(`Set Value error. Value ${value} at path ${pathName} is not of type ${item.type}.`);
                                 break;

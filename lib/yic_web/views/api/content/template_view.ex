@@ -14,7 +14,8 @@ defmodule YicWeb.Api.Content.TemplateView do
     %{
       id: template.id,
       name: template.name,
-      description: template.description,
+      comment: template.comment,
+      owner: template.owner,
       version: template.version,
       definition: template.definition
     }

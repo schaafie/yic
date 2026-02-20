@@ -11,7 +11,7 @@ defmodule YicWeb.Api.Content.TemplateController do
     render(conn, "index.json", templates: templates)
   end
 
-  def create(conn, %{"template" => template_params}) do
+  def create(conn, template_params) do
     with {:ok, %Template{} = template} <- Content.create_template(template_params) do
       conn
       |> put_status(:created)
@@ -25,11 +25,22 @@ defmodule YicWeb.Api.Content.TemplateController do
     render(conn, "show.json", template: template)
   end
 
-  def update(conn, %{"id" => id, "template" => template_params}) do
-    template = Content.get_template!(id)
+  # def update(conn, %{"id" => id, "template" => template_params}) do
+  #   template = Content.get_template!(id)
+  #   with {:ok, %Template{} = template} <- Content.update_template(template, template_params) do
+  #     render(conn, "show.json", template: template)
+  #   end
+  # end
 
-    with {:ok, %Template{} = template} <- Content.update_template(template, template_params) do
-      render(conn, "show.json", template: template)
+  def update(conn, params) do
+    template = Content.get_template!(params["id"])
+    case Content.update_template(template, params) do
+      {:ok, new_template} ->
+        render(conn, "show.json", template: new_template)
+      {:error, %Ecto.Changeset{} = changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render("error.json", changeset: changeset)
     end
   end
 

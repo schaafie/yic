@@ -120,16 +120,34 @@ export default class YicFormVersionInput extends HTMLElement {
         if (!this.is_original()) this.reset(); 
         switch(event.target.id) {
             case "minor":
-                this.setAttribute("minor", 1 + Number(this.minor));
+                if (this.minor == -1) {
+                    this.setAttribute("minor", 1);    
+                    this.setAttribute("medior", 0);
+                    this.setAttribute("major", 0);
+                } else {
+                    this.setAttribute("minor", 1 + Number(this.minor));
+                }
                 break;
             case "medior":
-                this.setAttribute("medior", 1 + Number(this.medior));
-                this.setAttribute("minor", 0);
+                if (this.medior == -1) {
+                    this.setAttribute("minor", 0);    
+                    this.setAttribute("medior", 1);
+                    this.setAttribute("major", 0);
+                } else {
+                    this.setAttribute("medior", 1 + Number(this.medior));
+                    this.setAttribute("minor", 0);
+                }
                 break;
             case "major":
-                this.setAttribute("major", 1 + Number(this.major));
-                this.setAttribute("medior", 0);
-                this.setAttribute("minor", 0);
+                if (this.major == -1) {
+                    this.setAttribute("minor", 0);    
+                    this.setAttribute("medior", 0);
+                    this.setAttribute("major", 1);
+                } else {
+                    this.setAttribute("major", 1 + Number(this.major));
+                    this.setAttribute("medior", 0);
+                    this.setAttribute("minor", 0);
+                }
                 break;
         }
     }
@@ -196,7 +214,7 @@ export default class YicFormVersionInput extends HTMLElement {
                 break;
             case 'major':
                 value = Number( newValue );
-                if (this.value != value) {
+                if (this.major != value) {
                     if (this.org_major==-1) this.org_major = value;
                     this.major = value;
                     this.dispatchEvent(new CustomEvent('change',{ detail: {major: value}, bubbles: false }));

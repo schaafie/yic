@@ -35,6 +35,10 @@
         "component": "yic-form-json-input",
         "values": [{ "path": "", "name": "value", "method": "attr" }]
     },
+    "select": {
+        "component": "yic-form-select",
+        "values": [{ "path": "", "name": "value", "method": "attr" }]
+    },
     "version": {
         "component": "yic-form-version-input",
         "values": [

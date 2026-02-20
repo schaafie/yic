@@ -9,7 +9,7 @@ defmodule Yic.Forms.Form do
     field :definition, :map # Json
     field :name, :string
     field :version, :map    # Json
-    field :author, :id
+    field :owner, :id
 
     timestamps()
   end
@@ -17,7 +17,7 @@ defmodule Yic.Forms.Form do
   @doc false
   def changeset(form, attrs) do
     form
-    |> cast(attrs, [:name, :comment, :version, :definition, :author])
+    |> cast(attrs, [:name, :comment, :version, :definition, :owner])
     |> validate_changes_against_schema( "form" )
   end
 
@@ -29,7 +29,7 @@ defmodule Yic.Forms.Form do
   #       %{ field: "definition", required: true}, 
   #       %{ field: "name", required: true}, 
   #       %{ field: "version", required: true}, 
-  #       %{ field: "author", required: false}
+  #       %{ field: "owner", required: false}
   #     ]},
   #     %{ name: "comment", basetype: "string", validations: []},
   #     %{ name: "definition", basetype: "string", type: "map", fields: [
@@ -50,7 +50,7 @@ defmodule Yic.Forms.Form do
   #     %{ name: "label", basetype: "string", validations: []},
   #     %{ name: "name", basetype: "string", validations: []},
   #     %{ name: "version", basetype: "string", validations: [ %{ type: "format", rule: "^(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)$", error: "Invalid version format." }] },
-  #     %{ name: "author", basetype: "id", validations: []}
+  #     %{ name: "owner", basetype: "id", validations: []}
   #   ]}
   # end
 end

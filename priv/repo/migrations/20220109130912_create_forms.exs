@@ -7,11 +7,11 @@ defmodule Yic.Repo.Migrations.CreateForms do
       add :comment, :string
       add :version, :map
       add :definition, :map
-      add :author, references(:users, on_delete: :nothing)
+      add :owner, references(:users, on_delete: :nothing)
 
       timestamps()
     end
 
-    create index(:forms, [:author])
+    create index(:forms, [:owner])
   end
 end
