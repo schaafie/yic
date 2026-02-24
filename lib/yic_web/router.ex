@@ -64,7 +64,13 @@ defmodule YicWeb.Router do
     resources "/datasources", DatasourceController
     resources "/datadefs", DatadefController
   end
-  
+
+  scope "/api/schema", YicWeb.Api.Schema, as: :api_schema do 
+    pipe_through :api_authenticated           
+
+    resources "/schemas", SchemaController
+  end
+
   scope "/api/content", YicWeb.Api.Content, as: :api_content do 
     pipe_through :api_authenticated           
 
@@ -169,6 +175,12 @@ defmodule YicWeb.Router do
     resources "/forms", FormController
     resources "/datasources", DatasourceController
     resources "/datadefs", DatadefController
+  end
+
+  scope "/html/schema", YicWeb.Html.Schema, as: :html_schema do
+    pipe_through [:browser, :require_authenticated_account]
+
+    resources "/schemas", SchemaController
   end
 
   scope "/html/content", YicWeb.Html.Content, as: :html_content do

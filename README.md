@@ -12,7 +12,7 @@ Phoenix 1.2.5
 The framework is in development and thus do not (yet) expect it to be complete.
 
 Docker compose and docker file are provided to run in portainer. 
-The files assume you have a running postgress instance the the container can connect to. 
+The files assume you have a running postgress instance the container can connect to. 
 The .env.portainer file contains the specifics of the connection.
 To create the image, use portainer-dockerfile and add a jar that contains .env.portainer, entrypoint.sh, mix.exs and mix.lock. 
 Name the image yic:latest (or change the docker-compose to match the image name you declared).
@@ -78,7 +78,19 @@ mix phx.gen.html Forms Dataelement dataelements name:string comment:string versi
 mix phx.gen.json Forms Dataelement dataelements name:string comment:string version:map definition:map actions:array:string --web Api.Forms --no-context
 ```
 
-6. Content Manager
+3. Api Manager
+```
+mix phx.gen.html Apis Api apis name:string description:string version:map request:string definition:map --web Html.Apis
+mix phx.gen.json Apis Api apis name:string description:string version:map request:string definition:map --web Api.Apis --no-context
+```
+
+2. JSON Schema Manager
+```
+mix phx.gen.html Schemas Schema schemas name:string description:string version:map definition:map --web Html.Schemas
+mix phx.gen.json Schemas Schema schemas name:string description:string version:map definition:map --web Api.Schemas --no-context
+```
+
+5. Content Manager
 ```
 mix phx.gen.html Content Template templates name:string description:string owner:references:users version:map definition:map --web Html.Content
 mix phx.gen.json Content Template templates name:string description:string owner:references:users version:map definition:map --web Api.Content --no-context
@@ -87,13 +99,7 @@ mix phx.gen.html Content Item items name:string description:string owner:referen
 mix phx.gen.json Content Item items name:string description:string owner:references:users version:map content:map --web Api.Content --no-context
 ```
 
-4. Api Manager
-```
-mix phx.gen.html Apis Api apis name:string description:string version:map request:string definition:map --web Html.Apis
-mix phx.gen.json Apis Api apis name:string description:string version:map request:string definition:map --web Api.Apis --no-context
-```
-
-5. Publication Manager
+6. Publication Manager
 ```
 mix phx.gen.html Publications Pubtask pubtasks name:string version:map definition:map --web Html.Publications
 mix phx.gen.json Publications Pubtask pubtasks name:string version:map definition:map --web Api.Publications --no-context
@@ -130,6 +136,3 @@ TODO:
 8. data
 
 9. site
-
-10. versioning
-

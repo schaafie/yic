@@ -1,0 +1,28 @@
+<h1>Show Schema</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @schema.name %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @schema.description %>
+  </li>
+
+  <li>
+    <strong>Version:</strong>
+    <%= @schema.version %>
+  </li>
+
+  <li>
+    <strong>Definition:</strong>
+    <%= @schema.definition %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.html_schemas_schema_path(@conn, :edit, @schema) %></span> |
+<span><%= link "Back", to: Routes.html_schemas_schema_path(@conn, :index) %></span>
