@@ -22,5 +22,14 @@ else
   echo ">>>> Database exists."
 fi
 
+# Install all node packages based on the package-lock.json
+cd assets
+npm ci
+cd ..
+
 echo ">>>> Done."
 exec mix phx.server
+
+# Sleep for debugging purposes
+# If phx.server crashes, you still can query the container.
+sleep infinity

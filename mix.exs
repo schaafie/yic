@@ -53,7 +53,8 @@ defmodule Yic.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:guardian, "~> 2.0"},
       {:httpoison, "~> 1.8"},
-      {:poison, "~> 5.0"}
+      {:poison, "~> 5.0"},
+      {:jsv, "~> 0.18.3"}
     ]
   end
 

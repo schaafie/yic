@@ -42,8 +42,8 @@ defmodule Yic.SchemaValidator do
             [{path, {"Invalid data item for JSON decoding", []}}|errors]
         end 
       "array" when is_list(data) ->
-        # TODO
         errors
+        |> validate_array( data, schemaitem, path )
       "array" ->
         [{path, {"Data is not of type array", []}}|errors]
       "number" when is_number(data) ->
@@ -327,4 +327,29 @@ defmodule Yic.SchemaValidator do
     end
   end
 
+  # ---------------------------
+  # Array validation rules
+  # ---------------------------
+
+  def validate_array( errors, data, schemaitem, path ) do
+    case Map.fetch( schemaitem, :anyOf ) do
+      {:ok, []} ->
+        errors
+      {:ok, values} ->
+        check_any_of( errors, values, data, path )
+      :error ->
+        errors
+    end
+  end
+
+  def check_any_of( errors, [], _data, _path ), do: errors
+  def check_any_of( errors, [property|properties], data, path ) do
+    result = case Map.has_key?(data, property) do
+      true ->
+        errors
+      false ->
+        [{ path, {"Missing reuired property: #{property}", []}}|errors]
+    end
+    check_required_properties( result, properties, data, path )
+  end
 end
