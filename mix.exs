@@ -54,7 +54,7 @@ defmodule Yic.MixProject do
       {:guardian, "~> 2.0"},
       {:httpoison, "~> 1.8"},
       {:poison, "~> 5.0"},
-      {:jsv, "~> 0.18.3"}
+      {:jsv, "~> 0.17.0"}
     ]
   end
 
